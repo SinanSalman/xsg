@@ -4,7 +4,9 @@ TEST_CONFIG = {'Team_Name': 'testXSG',
                'Weeks': 45,
                'Auto_Decide_Ship_Qty': True,
                'Auto_Decide_Order_Qty': True,
-               'Demand':[],
+               'Demands':[
+                    {'Name':'Consumer','Demand':[]}
+                    ],
                'Stations':[
                     {'Name':'Manufacturer',
                      'Player':'CPU',
@@ -53,11 +55,15 @@ TEST_CONFIG = {'Team_Name': 'testXSG',
                      'Initial_Values':4,
                      'Safety_Stock':4,
                      'Production_Min':[],
-                     'Production_Max':[]}],
-               'Connections': [{'supp':'Manufacturer','cust':'Distributor'},
-                               {'supp':'Distributor','cust':'Wholesaler'},
-                               {'supp':'Wholesaler','cust':'Retailer'},
-                               {'supp':'Retailer','cust':'Demand'}]}
+                     'Production_Max':[]}
+                     ],
+               'Connections': [
+                    {'supp':'Manufacturer','cust':'Distributor'},
+                    {'supp':'Distributor','cust':'Wholesaler'},
+                    {'supp':'Wholesaler','cust':'Retailer'},
+                    {'supp':'Retailer','cust':'Consumer'}
+                    ]
+               }
 
 G = game.Game(config=TEST_CONFIG)
 G.Run()
