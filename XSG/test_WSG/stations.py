@@ -35,8 +35,8 @@ class Station():
     __MAX_NODE_SUPPLIERS = 2
     __MAX_NODE_CUSTOMERS = 2
     __Default_MAX_ORDER = 999
-    __Order_Method = 'XSG'  # XSG or WSG
-    __Quick_Backorder_Recover = True  # True or False
+    __Order_Method = 'WSG'  # XSG or WSG
+    __Quick_Backorder_Recover = False  # True or False
 
     def __init__(
         self,
