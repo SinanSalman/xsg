@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+{% block body %}
+   <script src="{{url_for('static', filename='palette.js') }}"></script>
+   <script type=text/javascript src="{{url_for('static', filename='monitor_screen.js') }}"></script>
+   <!-- <script type=text/javascript src="{{url_for('static', filename='monitor_screen.js') }}?v={{ range(1, 9999) | random }}"></script> -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
+   <script type=text/javascript>{
+      var $GAME = {{ static_info.game|tojson|safe }};
+      var $WEEKS = {{ static_info.weeks|tojson|safe }}
+      var $STATIONS = {{ static_info.stations|tojson|safe }};
+      var $DEMANDS = {{ static_info.demands|tojson|safe }};
+      var $PLAYERS = {{ static_info.station_players|tojson|safe }};}
+   </script>
+   <div class=monitor_txt>
+      <span class=output>{{ static_info.game }}</span>
+      , in week <span class=output id=Week>?</span> of {{ static_info.weeks }}
+      , Waiting for: <span class=output id=WaitingFor>?</span>
+      , Disconnected stations: <span class=output id=Disconnected>?</span><br>
+   </div>
+   <span>When done, just close this tab to go back to your screen.</span>
+   <br>
+   <div class=flex_row>
+      <div class=doughnut-tbl>
+         <table class=tbl_results>
+            <tr>
+               <th> </th>
+               <th>Inventory</th>
+               <th>Backorder</th>
+               <th>Transport</th>
+               <th>Total</th>
+               <th>Fullfillment</th>
+               <th>Green_Score</th>
+            </tr>
+            {% for st in static_info.stations %}
+               <tr>
+                  <td><span id=station_{{ st }}>n/a</span></td>
+                  <td>$<span id=cost_inventory_{{ st }}>n/a</span></td>
+                  <td>$<span id=cost_backorder_{{ st }}>n/a</span></td>
+                  <td>$<span id=cost_transport_{{ st }}>n/a</span></td>
+                  <td>$<span id=cost_total_{{ st }}>n/a</span></td>
+                  <td><span id=fullfillment_{{ st }}>n/a</span>%</td>
+                  <td><span id=green_score_{{ st }}>n/a</span>%</td>
+               </tr>
+            {% else %}
+               <tr>
+                  <td>n/a</td>
+                  <td>n/a</td>
+                  <td>n/a</td>
+                  <td>n/a</td>
+                  <td>n/a</td>
+                  <td>n/a</td>
+                  <td>n/a</td>
+               </tr>
+            {% endfor %}
+            <tr>
+               <th>Totals/Averages</td>
+               <th>$<span id=tot_cost_inventory>n/a</span></th>
+               <th>$<span id=tot_cost_backorder>n/a</span></th>
+               <th>$<span id=tot_cost_transport>n/a</span></th>
+               <th>$<span id=tot_cost_total>n/a</span></th>
+               <th><span id=avg_fullfillment>n/a</span>%</th>
+               <th><span id=avg_green_score>n/a</span>%</th>
+            </tr>
+         </table>
+      </div>
+      <div class=doughnut><canvas id="xsgChart0" height="150"></canvas></div>
+   </div>
+   <br>
+   <select id=data_item onchange="update_plot()" class='plot_select'>
+      <option>orders
+      <option>inventory/backorders
+      <option>inventory-backorders
+      <option>deliveries
+      <option>shipments
+      <option>extra-shipments
+   </select>
+   <div><canvas id="xsgChart1" height="125"></canvas></div>
+   <div><canvas id="xsgChart2" height="125"></canvas></div>
+   <div class="vertical-menu">
+     <a href="{{ url_for('show_network',game_name=static_info.game) }}" target="_blank">Show supply chain</a>
+     <a href="{{ url_for('monitor_screen_radar',game_name=static_info.game) }}" target="_blank">Compare stations</a>
+   </div>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h2>Game Adminstration</h2><br>
+  <div class="vertical-menu">
+    <a href="{{ url_for('save_server_state') }}">Save server state</a>
+    <a href="{{ url_for('load_server_state') }}">Load server state</a>
+    <a href="{{ url_for('shutdown') }}">Shutdown server</a>
+  </div>
+{% endblock %}

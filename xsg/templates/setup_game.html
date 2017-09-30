@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block body %}
+<div>
+  <span>When done, just close this tab to go back to your screen.</span>
+  <ul>
+    {% for key, value in setup.items() %}
+      <li>
+        {% if key in ['stations','demands'] %}
+          {{ key }}:
+              <ul>
+                {% for dict in value %}
+                  <li>{{ dict.name }}</li>
+                  <ul>
+                    {% for key, value in dict.items() %}
+                      <li>{{ key }}: {{value}}</li>
+                    {% endfor %}
+                  </ul>
+                {% endfor %}
+              </ul>
+        {% elif key == 'connections' %}
+          {{ key }}:
+          <ul>
+            {% for dict in value %}
+              <li>{{ dict.supp }} ==> {{ dict.cust }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          {{ key }}: {{value}}
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

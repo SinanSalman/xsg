@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h2>Welcome to XSG, what would you like to do?</h2><br>
+  <div class="vertical-menu">
+    <a href="{{ url_for('join_game') }}">Join a game</a>
+    <a href="{{ url_for('create_game') }}">Create a game</a>
+    <a href="{{ url_for('admin_game_start') }}">Admin a game</a>
+  </div>
+{% endblock %}

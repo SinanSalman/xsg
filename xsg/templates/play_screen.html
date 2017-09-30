@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+{% block body %}
+   <script type=text/javascript src="{{url_for('static', filename='play_screen.js') }}"></script>
+   <!-- <script type=text/javascript src="{{url_for('static', filename='play_screen.js') }}?v={{ range(1, 9999) | random }}"></script> -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+   <script type=text/javascript>{
+      var $GAME = {{ session.selected_game|tojson|safe }}.trim().replace(/ /g, '%20');
+      var $STATION = {{ session.selected_station|tojson|safe }}.trim().replace(/ /g, '%20');
+      var $OUT_OF_SYNC_MSG = false;
+      var $CUSTOMERS = {{ static_info.customers|tojson|safe }};
+      var $SUPPLIERS = {{ static_info.suppliers|tojson|safe }};
+      var $AWAY_LIMIT = {{ static_info.secondsaway_to_disconnect|tojson|safe }};
+      var $WEEKCOUNTER = {{ static_info.current_week|tojson|safe }};
+      var $WEEK = 0;
+      var $LAST_CONNECTION = 0;
+      var $INVENTORY = 0;
+      var $ORDERS = {};
+      var $BACKORDERS = {};
+      var $ORDER_MIN = 0;
+      var $ORDER_MAX = 0;}
+   </script>
+   <div class=wrapper>
+      <div class=cell11>
+         <br>
+         <table class=tbl_l>
+            <tr>
+               <td><span>Status:</span></td> <td><span class=output id=connection_state>?</span></td>
+            </tr> <tr>
+               <td><span>Game:</span></td> <td><span class=output>{{ session.selected_game }}</span></td>
+            </tr> <tr>
+               <td><span>Connected:</span></td> <td><span class=output id=connected_stations>?</span> of {{ static_info.number_of_players }} players</td>
+            </tr> <tr>
+               <td><span>Completed turn:</span></td> <td><span class=output id=players_completed_turn>?</span> of {{ static_info.number_of_players }} players</td>
+            </tr> <tr>
+               <td></td> <td><div class="popup1" onclick="PopupFunction('game_info')">Show game info
+                  <table class=popuptext id=game_info>{{ static_info.game_info|safe }}</table></div>
+               </td>
+            </tr>
+         </table>
+      </div>
+      <div class=cell12>
+         <h2>{{ session.selected_station }}</h2>
+         <span>({{ session.player_name }})</span>
+         <br><a href="{{ url_for('show_network',game_name=session.selected_game|safe) }}" target="_blank">Show supply chain</a>
+         <br><br>
+         Week <span class=output id=current_week>?</span> of {{ static_info.weeks }}<br><br>
+      </div>
+      <div class=cell13>
+         <br>
+         <table class=tbl_r>
+            <tr>
+               <td><span>Total inventory cost:</span></td> <td><span class=output id=cost_inventory>?</span></td>
+            </tr> <tr>
+            </tr> <tr>
+               <td><span>Total backorder cost:</span></td> <td><span class=output id=cost_backorder>?</span></td>
+            </tr> <tr>
+            </tr> <tr>
+               <td><span>Total transport cost:</span></td> <td><span class=output id=cost_transport>?</span></td>
+            </tr> <tr>
+            </tr> <tr>
+               <td><span>Avg. fullfillment rate:</span></td> <td><span class=output id=fullfillment_rate>?</span></td>
+            </tr> <tr>
+            </tr> <tr>
+               <td><span>Avg. green score:</span></td> <td><span class=output id=truck_utilization>?</span></td>
+            </tr>
+         </table>
+      </div>
+      <div class=cell21>
+         <span class=SecTitle>Shipments to customers</span><br><br>
+         <table class=tbl_c>
+           <tr><th></th><th class=non_bold>PO</th><th class=non_bold>Ship</th></tr>
+            {% for shipto in static_info.customers %}
+               <tr><td>{{ shipto }}</td><td class=centered><span class=output id=incomming_order_{{ shipto }}>?</span></td>
+               {% if not static_info.auto_ship %}
+                  <td>&#8680;<input type=number value=0 min=0 max=999 name={{ shipto }}></td></tr>
+               {% else %}
+                  </tr>
+               {% endif %}
+            {% endfor %}
+         </table>
+      </div>
+      <div class=cell22>
+         Inventory: <span class=output id=inventory>?</span>
+         <div class=chart_div><canvas id=xsgChart></canvas></div>
+         <table class=tbl_c>
+         <tr><th></th><th class=non_bold>Backorder</th></tr>
+         {% for shipto in static_info.customers %}
+            <tr><td>{{ shipto }}</td><td><span class=output id=backorder_{{ shipto }}>?</span></td></tr>
+         {% endfor %}
+      </table>
+         <button class=button id=submit disabled=true >Submit</button>
+      </div>
+      <div class=cell23>
+         <span class=SecTitle>Orders to suppliers</span><br><br>
+         {% if static_info.suppliers %}
+            <table class=tbl_c>
+               <tr><th></th><th class=non_bold>Delivered</th><th class=non_bold>Order</th></tr>
+               {% for orderfrom in static_info.suppliers %}
+                  <tr><td>{{ orderfrom }}</td><td class=centered><span class=output id=incomming_delivery_{{ orderfrom }}>?</span></td>
+                  {% if not static_info.auto_order %}
+                     <td>&#8680;<input type=number value=0 min=0 max=999 name={{ orderfrom }}></td></tr>
+                  {% else %}
+                     </tr>
+                  {% endif %}
+               {% endfor %}
+            </table>
+         {% endif %}
+         <span>This week production limits: </span><span class=output id=production_min>?</span> to <span class=output id=production_max>?</span>
+         <div class=popup2 onclick="PopupFunction('production_limits')">Show next 10 weeks
+            <table class=popuptext id=production_limits>
+               <tr><th>wk</th><th>min</th><th>max</th></tr>
+             </table>
+         </div>
+      </div>
+   </div>
+{% endblock %}

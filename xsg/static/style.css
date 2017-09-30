@@ -1,0 +1,103 @@
+body     { font-family: sans-serif; }
+a, h1, h2
+         { color: #377ba8; }
+h1, h2   { font-family: 'Georgia', serif; margin: 0; }
+h1       { font-size: 4vw; border-bottom: 0.25vw solid #eee; }
+h2       { font-size: 2vw; }
+input,select,span
+         { font-size:1.5vw; }
+
+table.tbl_results
+         { margin-left: auto; margin-right: auto;
+           border: 0.25vw solid lightgrey; border-collapse: collapse; }
+table.tbl_results tr
+         { border-bottom: 0.15vw dotted lightgrey; }
+table.tbl_results th, table.tbl_results td
+         { text-align: right; padding: 0.25vw; width:7vw; font-size:1.25vw; }
+table.tbl_results th
+         { font-weight: bold; border-bottom: 0.25vw solid lightgrey; }
+table.tbl_input
+         { margin-top: 1vw; text-align: right;}
+table.tbl_l, table.tbl_output_r
+         { margin: 0; padding: 0; text-align: right;}
+table.tbl_r
+         { margin-left: auto; }
+table.tbl_c
+         { margin-left: auto; margin-right: auto;}
+
+.about   { font-size: 1.5vw; font-family: serif; width: 60vw; }
+.about_a { text-align: right; color: grey; vertical-align: top; padding: 0.5vw; }
+.about_b { text-align: justify; vertical-align: top; padding: 0.5vw; }
+
+#mynetwork {
+          width: 94vw; height: 40vw; border: 1px solid lightgray; }
+.flex_row
+         { display: flex; }
+.doughnut-tbl, .doughnut
+         { display: inline-block; }
+.doughnut
+         { position: relative; width: 30vw; }
+.radar
+         { position: relative; width: 80vw; }
+
+.page    { margin: 0.5vw auto; width: 95vw; border: 0.5vw solid #ccc; padding: 1vw;
+            background: white; }
+.metanav { font-size: 1.5vw; text-align: right; padding-bottom: 0.75vw; }
+.flash   { font-size: 2vw; background: #cee5F5; padding: 1vw; border: 0.5vw solid #aacbe2; }
+.output  { font-weight: bold; }
+.reg_text
+         { font-size: 1.5vw; }
+.button  { font-size: 1.5vw; background-color: #822D1A; }
+.plot_select
+         { display: block; margin: 0 auto; }
+.centered
+         { text-align: center; }
+.SecTitle
+        { font-weight: bold; text-decoration: underline; }
+.non_bold
+         { font-weight: normal; text-align: center; }
+.chart_div
+         { position: relative; height: 10vw; width: 33vw }
+
+.vertical-menu
+         { font-size: 2vw; width: 25vw; }
+.vertical-menu a
+         { background-color: #eee; color: black; display: block; padding: 2vw;
+           text-decoration: none; text-align: right; }
+.vertical-menu a:hover
+         { background-color: #ccc; }
+.vertical-menu a.active
+         { background-color: #4CAF50; color: white; }
+
+.wrapper { display: grid; grid-template-columns: repeat(3, 1fr); grid-gap: 0.25vw; }
+.cell11, .cell12, .cell13, .cell21, .cell22, .cell23
+         { font-size: 1.5vw; padding: 1vw; line-height: 150%; align-self: top;
+           background-color: #eee; }
+.cell11  { grid-column: 1 ; grid-row: 1; text-align: left; }
+.cell12  { grid-column: 2 ; grid-row: 1; text-align: center; }
+.cell13  { grid-column: 3 ; grid-row: 1; text-align: right; }
+.cell21  { grid-column: 1 ; grid-row: 2; text-align: center; }
+.cell22  { grid-column: 2 ; grid-row: 2; text-align: center; }
+.cell23  { grid-column: 3 ; grid-row: 2; text-align: center; }
+
+/* Popup container */
+.popup1, .popup2
+         { position: relative; cursor: pointer; color: #377ba8; display: block;
+           text-align: center; font-size: 1.25vw}
+/* The actual popup (appears on top) */
+.popup1 .popuptext, .popup2 .popuptext
+         { visibility: hidden; background-color: #555; color: #fff; text-align: left;
+           border-radius: 1vw; padding: 1vw 1vw; position: absolute; z-index: 1;
+           bottom: 125%; left: 50%; line-height: 110%; font-size: 1.25vw; font-weight: lighter;}
+.popup1 .popuptext
+         { width: 24vw; margin-left: -12vw; }
+.popup2 .popuptext
+         { width: 12vw; margin-left: -6vw; }
+/* Popup arrow */
+.popup1 .popuptext::after, .popup2 .popuptext::after
+         { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -2vw;
+           border-width: 2vw; border-style: solid;
+           border-color: #555 transparent transparent transparent; }
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+.popup1 .show, .popup2 .show
+         { visibility: visible; }

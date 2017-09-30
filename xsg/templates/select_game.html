@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block body %}
+   <h2>{{ data.text }}</h2><br>
+   <form action="{{ url_for(data.next_page) }}" method=post>
+      <table class=tbl_input>
+         <tr>
+            <td></td>
+            <td><select name="selected_game">
+            {% for game in data.games_list %}
+               <option>{{ game }}
+            {% else %}
+               <option>** No games created yet! **
+            {% endfor %}
+            </select>
+         </tr>
+      {% if data.ask_name %}
+         <tr>
+            <td><span>Player name:</span></dt>
+            <td><input type=text size=20 name=player_name autofocus="autofocus"></td>
+         </tr>
+      {% endif %}
+      {% if data.ask_password %}
+         <tr>
+            <td><span>Password:</span></td>
+            <td><input type=password size=20 name=password></td>
+         </tr>
+      {% endif %}
+         <tr>
+            <td></td>
+            <td>
+               <input type=submit value=Go>
+            </td>
+         </tr>
+      </table>
+   </form>
+{% endblock %}

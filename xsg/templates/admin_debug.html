@@ -1,0 +1,27 @@
+<!doctype html>
+<title>X Supply Chain Game (XSG)</title>
+<script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+  $GAME = {{ static_info.game|tojson|safe }}.trim().replace(/ /g, '%20');
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type=text/javascript src="{{url_for('static', filename='get_debug_data.js') }}"></script>
+<!-- <script type=text/javascript src="{{url_for('static', filename='get_debug_data.js') }}?v={{ range(1, 9999) | random }}"></script> -->
+<div class=page>
+  <h1>XSG</h1>
+  <div class=metanav>
+    <a href="{{ url_for('index') }}">Home</a>
+  </div>
+  {% for message in get_flashed_messages() %}
+    <div class=flash>{{ message }}</div>
+  {% endfor %}
+  <div class="Header">
+      <pre>Game: {{ static_info.game }}
+Players connected: <span id=connected_stations>?</span> of {{ static_info.number_of_players }}
+Players completed turn: <span id=players_completed_turn>?</span> of {{ static_info.number_of_players }}
+Week <span id=week>?</span> of {{ static_info.weeks }}</pre>
+  </div>
+  <div class="Body">
+     <pre id=report>?</pre>
+  </div>
+</div>

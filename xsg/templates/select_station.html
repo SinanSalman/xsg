@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block body %}
+   <h2>{{ data.text }}</h2><br>
+   <form action="{{ url_for(data.next_page) }}" method=post>
+      <select name="selected_station" autofocus="autofocus">
+      {% for station in data.stations_list %}
+         <option>{{ station }}
+      {% else %}
+         <option>** Sorry, this game has no available stations remaining! **
+      {% endfor %}
+      </select>
+      <input type=submit value=Go>
+   </form>
+{% endblock %}

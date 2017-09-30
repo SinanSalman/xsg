@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h2>Game Adminstration: {{ game }}</h2><br>
+  <div class="vertical-menu">
+    <a href="{{ url_for('show_network',game_name=game) }}" target="_blank">Show supply chain</a>
+    <a href="{{ url_for('monitor_screen',game_name=game) }}" target="_blank">Monitor</a>
+    <a href="{{ url_for('setup_game',game_name=game) }}" target="_blank">Setup</a>
+    <a href="{{ url_for('reset_game',game_name=game) }}">Reset</a>
+    <a href="{{ url_for('export_game',game_name=game) }}">Export</a>
+    <a href="{{ url_for('delete_game',game_name=game) }}">Delete</a>
+  </div>
+  <div>
+    <br><form action="{{ url_for('copy_game',org=game) }}" method=post>
+      <input type=submit value="Copy to:"><input type=text size=24 name=dst>
+    </form>
+    <br><form action="{{ url_for('rename_game',org=game) }}" method=post>
+      <input type=submit value="Rename to:"><input type=text size=21 name=new_name>
+    </form>
+  </div>
+{% endblock %}

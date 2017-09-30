@@ -1,0 +1,11 @@
+fix auto save on exit issue
+test multiple devices at once
+
+LATER:
+self.timer = 0
+code cleanup
+add comments and documentation
+favicon.ico
+confirmation dialog for delete game
+Auto cleanup of games (delete after a given date)
+configurable AJAX update times

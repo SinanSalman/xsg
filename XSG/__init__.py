@@ -1,1 +1,0 @@
-from .xsg import app
