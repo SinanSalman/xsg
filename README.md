@@ -17,14 +17,15 @@ Other features include:
 The **XSG** name comes from the game ability to be configured in various supply chain designs, allowing it to model almost any "X" supply chain.
 
 ## Installation ##
-XSG can be installed as a python package using the following command  (on OSX/Linux):
+XSG can be installed as a python3 package:
 
-```
-pip install xsg
-```
+* Download the project's repository using the downloads section on left side of this page
+* Unzip the downloaded file on your hard drive and rename the resulting folder to 'xsg'
+* install the python package and start it using the following code:
 
-and to start the server, use:
+On OSX:
 ```
+pip install ./xsg
 cd xsg
 ./srart.sh
 ```
