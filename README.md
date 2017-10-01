@@ -20,20 +20,12 @@ The **XSG** name comes from the game ability to be configured in various supply 
 XSG can be installed as a python3 package:
 
 * Download the project's repository using the downloads section on left side of this page
-* Unzip the downloaded file on your hard drive and rename the resulting folder to xsg
-* install the python package using the following code:
+* Unzip the downloaded file on your hard drive and rename the resulting folder to 'xsg'
+* install the python package and start it using the following code:
 
 On OSX:
 ```
 pip install ./xsg
-```
-or on linux:
-```
-pip3 install ./xsg
-```
-
-* start the server useing:
-```
 cd xsg
 ./srart.sh
 ```
