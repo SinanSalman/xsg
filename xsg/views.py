@@ -560,7 +560,6 @@ def get_station_status():
         w = GAMES[this_game].weeks - 1
     current_time = time.time()
     GAMES[this_game].connected_stations = len([1 for x in GAMES[this_game].network_stations.values() if (current_time - x.last_communication_time) < SecondsAway_to_Disconnect])
-    print('inventory',GAMES[this_game].network_stations[this_station].inventory[w],this_game,w)
     return jsonify({
         'current_week':w,
         'timer':GAMES[this_game].timer,
