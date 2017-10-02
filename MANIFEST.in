@@ -1,3 +1,2 @@
 graft xsg/templates
 graft xsg/static
-include xsg/schema.sql
