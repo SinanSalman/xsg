@@ -1,4 +1,3 @@
-fix auto save on exit issue
 test multiple devices at once
 
 LATER:

@@ -2,7 +2,7 @@ import os
 import time
 import json
 import pickle
-# import atexit
+import atexit
 from math import floor
 from xsg.json_pprint import MyEncoder
 from xsg import game, app
@@ -20,20 +20,17 @@ app.secret_key = 'change to a random value and keep this really secret'  # set t
 ALLOWED_EXTENSIONS = set(['json'])
 
 GAMES = {}
-# print('original GAMES variable id:',id(GAMES))
 
 
 ################################################################################
 # output formating & utility functions
 ################################################################################
-# @atexit.register  # there is an issue here with GAMES reverting to the originally loaded value from the file! the variable ID changes!
-# def cleanup():
-#     print('in cleanup',id(GAMES),len(GAMES),GAMES)
-#     if save_games_state():
-#         msg = '\nSaved games state. Server shutting down...'
-#     else:
-#         msg = '\nFailed to saved games state. Server shutting down...'
-#     print(msg)
+@atexit.register  # this won't work in Flask-debug-mode as the restart process will change the variable ID
+def cleanup():
+    if save_games_state():
+        print('\nSaved games state. Server shutting down...')
+    else:
+        print('\nFailed to save games state. Server shutting down...')
 
 
 def save_games_state():
