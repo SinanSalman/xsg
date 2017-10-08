@@ -38,7 +38,7 @@ Windows installation and use was not tested but should follow similar steps.
 The source distribution contains Python, JavaScript, CSS, HTML code, in addition to a sample of supply chain game designs, including: the root-beer game, the wood supply game. The code makes use of several libraries including Python-Flask, jQuery, charts.js, and vis.js. The game analytical engine is written exclusively in Python.
 
 ## CONTRIBUTE	##
-Code submissions are greatly appreciated and highly encouraged. Please send fixes, enhancements, etc. to SinanSalmanat GitHub or sinan[dot]salman[at]zu[dot]ac[dot]ae.
+Code submissions are greatly appreciated and highly encouraged. Please send fixes, enhancements, etc. to SinanSalman at GitHub or sinan[dot]salman[at]zu[dot]ac[dot]ae.
 
 ## LICENSE	##
 XSG is released under the GPLv3 license, which is available at [GNU](https://www.gnu.org/licenses/gpl-3.0.en.html)
