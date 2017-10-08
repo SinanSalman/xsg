@@ -1,7 +1,7 @@
 # README #
 
 ## OVERVIEW ##
-The X-Supply Game (**XSG**) is an educational simulation game used to help participants explore the dynamics of a real supply chains. The game is a team-based multi-player online simulation where each player take on the role of managing a virtual station in a simple supply chain. The game is played in turns, in which players analyze weekly standing of their stations and decide on orders to suppliers and shipment to customers. At the end of the game, individual and team performances are analyzed and discussed in groups.
+The X-Supply Game (**XSG**) is an educational simulation game used to help participants explore the dynamics of real supply chains. The game is a team-based multi-player online simulation where each player take on the role of managing a virtual station in a simple supply chain. The game is played in turns, in which players analyze weekly standing of their stations and decide on orders to suppliers and shipment to customers. At the end of the game, individual and team performances are analyzed and discussed in groups.
 XSG is influenced by previous supply chain management games, such as the beer game and the wood supply game, but it introduces several new concepts, including:
 
 * **Configurable supply chain design**: the simulated simple supply chain can be of virtually any design; number of nodes, number of layers, number of suppliers/customers per node (although this is currently limited to two for user interface simplicity). The only exception is supply chains containing closed-loop.
