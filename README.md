@@ -16,6 +16,9 @@ Other features include:
 
 The **XSG** name comes from the game ability to be configured in various supply chain designs, allowing it to model almost any "X" supply chain.
 
+## Screen shots ##
+[XSG screen shots](https://sinansalman.github.io/xsg/docs/screenshots.html)
+
 ## Installation ##
 XSG can be installed as a python3 package:
 
