@@ -66,7 +66,7 @@ def list_avg(x):
 
 def toHTMLtbl(x):
     if type(x) is list:
-        return ' ' + str(x).replace('[','').replace(']','').replace('(','<tr><td>')\
+        return ' ' + str(x).replace('\'','').replace('[','').replace(']','').replace('(','<tr><td>')\
             .replace('), ','</td></tr>').replace(', ','</td><td>').replace(')','</td></tr>')
 
 
@@ -576,7 +576,7 @@ def get_station_status():
         'incomming_delivery':show_week(GAMES[this_game].network_stations[this_station].inbound,w),
         'production_min':GAMES[this_game].network_stations[this_station].production_min[w],
         'production_max':GAMES[this_game].network_stations[this_station].production_max[w],
-        'production_limits':toHTMLtbl(GAMES[this_game].network_stations[this_station].production_limits[w+1:w+11])})
+        'production_limits':toHTMLtbl([('wk','min','max')]+GAMES[this_game].network_stations[this_station].production_limits[w+1:w+11])})
 
 
 @app.route('/get_game_status', methods=['GET'])

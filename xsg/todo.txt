@@ -1,6 +1,18 @@
-test multiple devices at once
+fix performance chart  when the best is zero (backorder as an example)
+main screen include XSG version
+server admin can manage games
+one monitor screen for multiple games at once
+player interface clean up
+    supplier on left, customer on right
+    capacity heading wk,min,max
+    show remaining players to play turn and disconnected stations or all connected, and connected state all in one smart field
+    results screen - rename from monitor, and include a refresh station names button (just referesh the screen)
+create a new game
+    from template
+    from json file (exists)
+    from screen
+edit game and station optinos
 
-LATER:
 self.timer = 0
 code cleanup
 add comments and documentation

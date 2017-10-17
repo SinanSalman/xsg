@@ -66,18 +66,24 @@
          </table>
       </div>
       <div class=cell21>
-         <span class=SecTitle>Shipments to customers</span><br><br>
-         <table class=tbl_c>
-           <tr><th></th><th class=non_bold>PO</th><th class=non_bold>Ship</th></tr>
-            {% for shipto in static_info.customers %}
-               <tr><td>{{ shipto }}</td><td class=centered><span class=output id=incomming_order_{{ shipto }}>?</span></td>
-               {% if not static_info.auto_ship %}
-                  <td>&#8680;<input type=number value=0 min=0 max=999 name={{ shipto }}></td></tr>
-               {% else %}
-                  </tr>
-               {% endif %}
-            {% endfor %}
-         </table>
+        <span class=SecTitle>Orders to suppliers</span><br><br>
+        {% if static_info.suppliers %}
+           <table class=tbl_c>
+              <tr><th></th><th class=non_bold>Delivered</th><th class=non_bold>Order</th></tr>
+              {% for orderfrom in static_info.suppliers %}
+                 <tr><td>{{ orderfrom }}</td><td class=centered><span class=output id=incomming_delivery_{{ orderfrom }}>?</span></td>
+                 {% if not static_info.auto_order %}
+                    <td>&#8680;<input type=number value=0 min=0 max=999 name={{ orderfrom }}></td></tr>
+                 {% else %}
+                    </tr>
+                 {% endif %}
+              {% endfor %}
+           </table>
+        {% endif %}
+        <span>This week production limits: </span><span class=output id=production_min>?</span> to <span class=output id=production_max>?</span>
+        <div class=popup2 onclick="PopupFunction('production_limits')">Show next 10 weeks
+           <table class=popuptext id=production_limits></table>
+        </div>
       </div>
       <div class=cell22>
          Inventory: <span class=output id=inventory>?</span>
@@ -91,26 +97,18 @@
          <button class=button id=submit disabled=true >Submit</button>
       </div>
       <div class=cell23>
-         <span class=SecTitle>Orders to suppliers</span><br><br>
-         {% if static_info.suppliers %}
-            <table class=tbl_c>
-               <tr><th></th><th class=non_bold>Delivered</th><th class=non_bold>Order</th></tr>
-               {% for orderfrom in static_info.suppliers %}
-                  <tr><td>{{ orderfrom }}</td><td class=centered><span class=output id=incomming_delivery_{{ orderfrom }}>?</span></td>
-                  {% if not static_info.auto_order %}
-                     <td>&#8680;<input type=number value=0 min=0 max=999 name={{ orderfrom }}></td></tr>
-                  {% else %}
-                     </tr>
-                  {% endif %}
-               {% endfor %}
-            </table>
-         {% endif %}
-         <span>This week production limits: </span><span class=output id=production_min>?</span> to <span class=output id=production_max>?</span>
-         <div class=popup2 onclick="PopupFunction('production_limits')">Show next 10 weeks
-            <table class=popuptext id=production_limits>
-               <tr><th>wk</th><th>min</th><th>max</th></tr>
-             </table>
-         </div>
+        <span class=SecTitle>Shipments to customers</span><br><br>
+        <table class=tbl_c>
+          <tr><th></th><th class=non_bold>PO</th><th class=non_bold>Ship</th></tr>
+           {% for shipto in static_info.customers %}
+              <tr><td>{{ shipto }}</td><td class=centered><span class=output id=incomming_order_{{ shipto }}>?</span></td>
+              {% if not static_info.auto_ship %}
+                 <td>&#8680;<input type=number value=0 min=0 max=999 name={{ shipto }}></td></tr>
+              {% else %}
+                 </tr>
+              {% endif %}
+           {% endfor %}
+        </table>
       </div>
    </div>
 {% endblock %}
