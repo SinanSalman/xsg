@@ -26,7 +26,7 @@ XSG can be installed as a python3 package:
 *   Unzip the file to a folder on your hard drive and rename the resulting folder to 'xsg'
 *   Install the python package and start it
 
-The following was tested on OSX with a new anaconda environment initialized to python 3.6:
+The following was tested on MacOS with a new anaconda environment initialized to python 3.6:
 
 ```
 git clone https://github.com/SinanSalman/xsg.git
