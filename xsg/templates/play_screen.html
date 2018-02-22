@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
-   <script type=text/javascript src="{{url_for('static', filename='play_screen.js') }}"></script>
-   <!-- <script type=text/javascript src="{{url_for('static', filename='play_screen.js') }}?v={{ range(1, 9999) | random }}"></script> -->
+   <script type=text/javascript src="{{url_for('static', filename='play_screen.js') }}{{ js_debug() }}"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
    <script type=text/javascript>{
       var $GAME = {{ session.selected_game|tojson|safe }}.trim().replace(/ /g, '%20');
@@ -17,7 +16,9 @@
       var $ORDERS = {};
       var $BACKORDERS = {};
       var $ORDER_MIN = 0;
-      var $ORDER_MAX = 0;}
+      var $ORDER_MAX = 0;
+      var $TURN_TIME = {{ static_info.turn_time|tojson|safe }};
+      var $TURN_START_TIME = 0;}
    </script>
    <div class=wrapper>
       <div class=cell11>
@@ -41,9 +42,10 @@
       <div class=cell12>
          <h2>{{ session.selected_station }}</h2>
          <span>({{ session.player_name }})</span>
-         <br><a href="{{ url_for('show_network',game_name=session.selected_game|safe) }}" target="_blank">Show supply chain</a>
+         <br><a href="{{ url_for('show_network',game_name=session.selected_game|safe) }}">Show supply chain</a>
          <br><br>
-         Week <span class=output id=current_week>?</span> of {{ static_info.weeks }}<br><br>
+         Week <span class=output id=current_week>?</span> of {{ static_info.weeks }}<br>
+         Timer: <span class=output id=time_left>?</span> seconds<br>
       </div>
       <div class=cell13>
          <br>
@@ -58,7 +60,7 @@
                <td><span>Total transport cost:</span></td> <td><span class=output id=cost_transport>?</span></td>
             </tr> <tr>
             </tr> <tr>
-               <td><span>Avg. fullfillment rate:</span></td> <td><span class=output id=fullfillment_rate>?</span></td>
+               <td><span>Avg. fulfillment rate:</span></td> <td><span class=output id=fulfillment_rate>?</span></td>
             </tr> <tr>
             </tr> <tr>
                <td><span>Avg. green score:</span></td> <td><span class=output id=truck_utilization>?</span></td>
@@ -94,7 +96,7 @@
             <tr><td>{{ shipto }}</td><td><span class=output id=backorder_{{ shipto }}>?</span></td></tr>
          {% endfor %}
       </table>
-         <button class=button id=submit disabled=true >Submit</button>
+         <button class=button id=submit disabled=true >Send</button>
       </div>
       <div class=cell23>
         <span class=SecTitle>Shipments to customers</span><br><br>

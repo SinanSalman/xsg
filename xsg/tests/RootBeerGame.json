@@ -1,10 +1,10 @@
 {
-   "team_name": "root_beer",
+   "team_name": "RootBeerGame",
    "admin_password": "admin",
    "play_password": "play",
    "weeks": 45,
-   "auto_decide_ship_qty": true,
-   "auto_decide_order_qty": true,
+   "expiry": 730,
+   "turn_time": 90,
    "quick_backorder_recovery": true,
    "demands":[
         {"name":"Consumer"}

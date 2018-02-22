@@ -5,8 +5,7 @@
   $GAME = {{ static_info.game|tojson|safe }}.trim().replace(/ /g, '%20');
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type=text/javascript src="{{url_for('static', filename='get_debug_data.js') }}"></script>
-<!-- <script type=text/javascript src="{{url_for('static', filename='get_debug_data.js') }}?v={{ range(1, 9999) | random }}"></script> -->
+<script type=text/javascript src="{{url_for('static', filename='get_debug_data.js') }}{{ js_debug() }}"></script>
 <div class=page>
   <h1>XSG</h1>
   <div class=metanav>

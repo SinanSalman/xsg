@@ -2,8 +2,9 @@
 {% block body %}
   <h2>Welcome to XSG, what would you like to do?</h2><br>
   <div class="vertical-menu">
-    <a href="{{ url_for('join_game') }}">Join a game</a>
-    <a href="{{ url_for('create_game') }}">Create a game</a>
-    <a href="{{ url_for('admin_game_start') }}">Admin a game</a>
+    <a href="{{ url_for('demo') }}">Try demo game</a>
+    <a href="{{ url_for('cmd',cmd='join_game') }}">Join game</a>
+    <a href="{{ url_for('cmd',cmd='create_game_from_template') }}">Create game</a>
+    <a href="{{ url_for('cmd',cmd='advanced_menu') }}">Advanced menu ⇨</a>
   </div>
 {% endblock %}

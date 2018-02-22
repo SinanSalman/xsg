@@ -44,7 +44,9 @@ function load_data() {
 			}
 			xsgChart.update();
 		}
-	 });
+	 }).fail(function (d, textStatus, error) {
+			console.error("getJSON failed, status: " + textStatus + ", error: " + error)
+		});
 };
 
 $(function() {
@@ -53,6 +55,5 @@ $(function() {
 							      options: {  title: { display: true },
 								     legend: {position: 'right', labels: { boxWidth: 20 } } } }
 	xsgChart = new Chart(document.getElementById("xsgChart").getContext('2d'),chrtcfg)
-	load_data;
 	setInterval('load_data()', 5000); // run this every 5 seconds
 });

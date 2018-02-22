@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block body %}
+   <h2>Select up to ten games to monitor:</h2>
+   <span>(Games with empty/incorrect passwords are ignored)</span><br><br>
+   <form action="{{ url_for('monitor_games_screen') }}" method=post>
+      <table>
+         <tr>
+            <th><span>Game</span></th>
+            <th><span>Admin Password</span></th>
+         </tr>
+         {% for i in [0,1,2,3,4,5,6,7,8,9]|sort %}
+            <tr>
+               <td>
+                  <select name="selected_game{{i}}">
+                     {% for game in games_list|sort %}
+                        <option>{{ game }}
+                     {% else %}
+                        <option>** No games created yet! **
+                     {% endfor %}
+                  </select>
+               </td>
+               <td><input type=password size=20 name="password{{i}}"></td>
+            </tr>
+         {% endfor %}
+      </table>
+      <input type=submit value=Go>
+   </form>
+{% endblock %}

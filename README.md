@@ -35,10 +35,10 @@ pip install .
 ./srart.sh
 ```
 
-Windows installation and use was not tested but should follow similar steps.
+Windows installation and use was not tested but should follow similar steps. To install the package for development purposes use: ```pip install -e .```
 
 ## Source Code ##
-The source distribution contains Python, JavaScript, CSS, HTML code, in addition to a sample of supply chain game designs, including: the root-beer game, the wood supply game. The code makes use of several libraries including Python-Flask, jQuery, charts.js, and vis.js. The game analytical engine is written exclusively in Python.
+The source distribution contains Python, JavaScript, CSS, HTML code, in addition to a sample of supply chain game designs, including: the root-beer game, the wood supply game. The code makes use of several libraries including Python-Flask, jQuery, AlpacaJs, charts.js, and vis.js. The game analytical engine is written exclusively in Python.
 
 ## Contribute ##
 Code submissions are greatly appreciated and highly encouraged. Please send fixes, enhancements, etc. to SinanSalman at GitHub or sinan\[dot\]salman\[at\]zu\[dot\]ac\[dot\]ae.
@@ -50,4 +50,5 @@ XSG is released under the GPLv3 license, which is available at [GNU](https://www
 2017 Sinan Salman, PhD
 
 ## Version and History ##
-*   Oct 05th, 2017		Initial release
+*   Oct 05th, 2017    Initial release
+*   Feb 22nd, 2018    v0.1b, add: multi-game monitor, create/edit games, timer, game expiry  

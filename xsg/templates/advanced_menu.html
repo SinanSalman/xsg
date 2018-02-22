@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h2>Advanced options:</h2><br>
+  <div class="vertical-menu">
+    <a href="{{ url_for('cmd',cmd='monitor_games') }}">Monitor games</a>
+    <a href="{{ url_for('cmd',cmd='admin_game_start') }}">Admin game</a>
+    <a href="{{ url_for('cmd',cmd='import_game') }}">Import game</a>
+    <a href="{{ url_for('index') }}">⇦ Back</a>
+  </div>
+{% endblock %}

@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='xsg',
-    version="0.0.1",
+    version="0.1",
     license="GPLv3",
     author='Sinan Salman',
     author_email='sinan[dot]salman[at]zu[dot]ac[dot]ae',
@@ -14,5 +14,5 @@ setup(
     packages=['xsg'],
     include_package_data=True,
     install_requires=['flask',],
-    python_requires=">=3.6",
+    python_requires=">=3.5",
 )

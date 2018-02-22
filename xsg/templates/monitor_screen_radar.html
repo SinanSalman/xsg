@@ -1,8 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
    <script src="{{url_for('static', filename='palette.js') }}"></script>
-   <script type=text/javascript src="{{url_for('static', filename='monitor_screen_radar.js') }}"></script>
-   <!-- <script type=text/javascript src="{{url_for('static', filename='monitor_screen_radar.js') }}?v={{ range(1, 9999) | random }}"></script> -->
+   <script type=text/javascript src="{{url_for('static', filename='monitor_screen_radar.js') }}{{ js_debug() }}"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
    <script type=text/javascript>{
       var $GAME = {{ static_info.game|tojson|safe }};
@@ -10,6 +9,6 @@
       var $PLAYERS = {{ static_info.station_players|tojson|safe }}; }
    </script>
    <h2>Station performance comparison for {{ static_info.game }}</h2>
-   <span>When done, just close this tab to go back to your screen.</span>
+   <button type="button" class="InScreenButton" onclick="javascript:history.back()">Back</button>
    <div class=radar><canvas id=xsgChart height=200></canvas></div>
 {% endblock %}

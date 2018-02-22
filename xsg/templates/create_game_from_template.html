@@ -1,0 +1,14 @@
+{% extends "layout.html" %} {% block body %}
+<h2>Select a template to base your new game on:</h2>
+<div>
+  <form action="{{ url_for('edit_game_setup', action='create') }}" method=post>
+    <select name="selected_game">
+      {% for game in data|sort%}
+        <option>{{ game }} 
+      {% else %}
+        <option>** No game templates found! ** {% endfor %}
+    </select>
+    <input type=submit value=Go>
+  </form>
+</div>
+{% endblock %}

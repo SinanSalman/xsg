@@ -6,7 +6,7 @@
          <tr>
             <td></td>
             <td><select name="selected_game">
-            {% for game in data.games_list %}
+            {% for game in data.games_list|sort%}
                <option>{{ game }}
             {% else %}
                <option>** No games created yet! **

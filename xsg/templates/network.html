@@ -2,7 +2,7 @@
 {% block body %}
    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.1/vis.min.js"></script>
    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.1/vis.min.css" rel="stylesheet" type="text/css" />
-   <span>When done, just close this tab to go back to your screen.</span>
+   <button type="button" class="InScreenButton" onclick="javascript:history.back()">Back</button>
    <div id="mynetwork"></div>
    <script type="text/javascript">
       var nodes = new vis.DataSet({{ static_info.nodes|tojson|safe }});

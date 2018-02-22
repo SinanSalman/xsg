@@ -1,8 +1,10 @@
 {
-   "team_name": "4_auto_and_1_player",
+   "team_name": "5stations_1player",
    "admin_password": "admin",
    "play_password": "play",
    "weeks": 45,
+   "expiry": 730,
+   "turn_time": 90,
    "demands": [
       {  "name":"client1",
          "demand":[4,4,4,4,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8] },

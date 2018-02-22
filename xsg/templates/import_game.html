@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h2>Import a game file</h2><br>
+  <div>
+    <form enctype=multipart/form-data action="{{ url_for('import_game_file') }}" method=post>
+      <span class=reg_text>Create game from JSON file: </span><input type=file accept=".json" value='Select import file...' name=importfilename autofocus="autofocus">
+      <input type=submit value=upload>
+    </form>
+  </div>
+{% endblock %}

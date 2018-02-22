@@ -3,7 +3,7 @@
    <h2>{{ data.text }}</h2><br>
    <form action="{{ url_for(data.next_page) }}" method=post>
       <select name="selected_station" autofocus="autofocus">
-      {% for station in data.stations_list %}
+      {% for station in data.stations_list|sort %}
          <option>{{ station }}
       {% else %}
          <option>** Sorry, this game has no available stations remaining! **

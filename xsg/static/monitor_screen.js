@@ -70,7 +70,7 @@ function load_data() {
 					$("#"+key+"_"+k).text(Math.round(v).toLocaleString());
 				})
 			}
-			if (['fullfillment','green_score'].includes(key)){
+			if (['fulfillment','green_score'].includes(key)){
 				$.each( val, function( k, v ) {
 					$("#station_"+k).text(k+'('+$PLAYERS[k]+')'); // repeats for each row resetting to the same value, but it is okay
 					$("#"+key+"_"+k).text(Math.round(v*100));
@@ -84,7 +84,7 @@ function load_data() {
 			$("#tot_cost_backorder").text(Math.round(sum(data.data.cost_backorder)).toLocaleString());
 			$("#tot_cost_transport").text(Math.round(sum(data.data.cost_transport)).toLocaleString());
 			$("#tot_cost_total").text(Math.round(sum(data.data.cost_total)).toLocaleString());
-			$("#avg_fullfillment").text(Math.round(avg(data.data.fullfillment)*100));
+			$("#avg_fulfillment").text(Math.round(avg(data.data.fulfillment)*100));
 			$("#avg_green_score").text(Math.round(avg(data.data.green_score)*100));
 
 			$DATA = data.data;
@@ -94,7 +94,7 @@ function load_data() {
 			$("[id^=avg_]").each(function() { $(this).text('n/a'); });
 			$("[id^=cost_]").each(function() { $(this).text('n/a'); });
 			$("[id^=green_score_]").each(function() { $(this).text('n/a'); });
-			$("[id^=fullfillment_]").each(function() { $(this).text('n/a'); });
+			$("[id^=fulfillment_]").each(function() { $(this).text('n/a'); });
 
 			xsgChart0.data.datasets[0].data = [];
 			for (x in xsgChart1.data.datasets){
@@ -105,7 +105,9 @@ function load_data() {
 			xsgChart1.update();
 			xsgChart2.update();
 		}
-	})
+	}).fail(function (d, textStatus, error) {
+			console.error("getJSON failed, status: " + textStatus + ", error: " + error)
+		})
 };
 
 function update_plot() {
@@ -256,6 +258,5 @@ $(function() {
 	xsgChart1 = new Chart(ctx1,chrt1cfg);
 	xsgChart2 = new Chart(ctx2,chrt2cfg);
 
-	load_data;
 	setInterval('load_data()', 5000); // run this every 5 seconds
 });

@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block body %}
+<script type=text/javascript src="{{url_for('static', filename='multi-game-monitor.js') }}{{ js_debug() }}"></script>
+<script type=text/javascript>{var $GAMES_LIST = {{ games_list|tojson|safe }}; }</script>
+   <h2>Multi-game monitoring screen</h2>
+      <button type="button" class="InScreenButton" onclick="javascript:history.back()">Back</button>
+   <span id=reset_msg></span>
+   <table class=tbl_results>
+         <tr>
+            <th><label>Game</label></th>
+            <th><label>Week</label></th>
+            <th><label>Inv.</label></th>
+            <th><label>B.order</label></th>
+            <th><label>Trucks</label></th>
+            <th><label>Cost</label></th>
+            <th><label>Fulfillment</label></th>
+            <th><label>Green</label></th>
+            <th><label>Disconnected</label></th>
+            <th><label>Waiting</label></th>
+         </tr>
+      {% for i in games_list|sort %}
+         <tr>
+            <td>
+               <div style="display:inline-flex">
+                  <label>{{i}}&nbsp</label>
+                  <button type="button" class="InScreenButton" title="Restart game" onclick="javascript:reset_game('{{i}}')">⟲</button>
+               </div>
+            </td>
+            <td><label id=week_{{i}}>?</label></td>
+            <td><label id=inventory_{{i}}>?</label></td>
+            <td><label id=backorder_{{i}}>?</label></td>
+            <td><label id=trucks_{{i}}>?</label></td>
+            <td>$<label id=cost_{{i}}>?</label></td>
+            <td><label id=fulfillment_{{i}}>?</label>%</td>
+            <td><label id=greenscore_{{i}}>?</label>%</td>
+            <td><label id=disconnected_{{i}}>?</label></td>
+            <td><label id=waiting_{{i}}>?</label></td>
+         </tr>
+      {% endfor %}
+   </table>
+{% endblock %}

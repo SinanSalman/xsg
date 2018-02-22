@@ -1,8 +1,10 @@
 {
-   "team_name": "one_station",
+   "team_name": "test",
    "admin_password": "admin",
    "play_password": "play",
    "weeks": 10,
+   "expiry": 0.0166,
+   "turn_time": -1,
    "demands": [
       {  "name":"Client",         "demand":[4,4,4,4,8,8,8,8,8,8] }
    ],

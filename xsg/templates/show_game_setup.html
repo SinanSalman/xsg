@@ -1,0 +1,43 @@
+{% extends "layout.html" %} {% block body %}
+<div>
+  <button type="button" class="InScreenButton" onclick="javascript:history.back()">Back</button>
+  <ul>
+    {% for key, value in setup.items() %}
+      {% if key not in ['stations','demands','connections'] %}
+        <li>
+          {{ key }}: {{value}}
+          {% if key == 'expiry' %}days{% endif %}
+        </li>
+      {% endif %}
+    {% endfor %}
+
+    {% for key, value in setup.items() %}
+      {% if key in ['stations','demands'] %}
+        <li>
+          {{ key }}:
+          <ul>
+            {% for dict in value %}
+              <li>{{ dict.name }}</li>
+              <ul>
+                {% for key, value in dict.items() %}
+                  <li>{{ key }}: {{value}}</li>
+                {% endfor %}
+              </ul>
+            {% endfor %}
+          </ul>
+        </li>
+      {% elif key == 'connections' %}
+        <li>
+          {{ key }}:
+            <ul>
+            {% for dict in value %}
+              <li>{{ dict.supp }} ==> {{ dict.cust }}</li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% endif %}
+    {% endfor %}
+
+  </ul>
+</div>
+{% endblock %}

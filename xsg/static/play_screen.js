@@ -14,7 +14,6 @@ function sum( obj ) {
 
 function load_data() {
    $.getJSON($SCRIPT_ROOT + '/get_station_status?game=' + $GAME + '&station=' + $STATION, function (data){
-      // console.log(data);
       $.each( data, function( key, val ) {
           if (key == 'current_week'){
             $("#"+key).text(val+1);
@@ -28,6 +27,10 @@ function load_data() {
             $("#"+key).append(val);
           } else if (key == 'connection_state') {
             $LAST_CONNECTION = val;
+          } else if (key == 'turn_start_time') {
+            $TURN_START_TIME = val;
+          } else if (key == 'turn_time') {
+            $TURN_TIME = val;
           } else{
              $("#"+key).text(val);
           };
@@ -45,7 +48,6 @@ function load_data() {
       xsgChart.update();
 
       var button = document.getElementById('submit');
-      // console.log($WEEK,$WEEKCOUNTER);
       if ( data.game_done ){
          button.style.backgroundColor = "#822D1A";
          button.textContent = "DONE";
@@ -53,8 +55,36 @@ function load_data() {
       }
       else if ( $WEEK == $WEEKCOUNTER ){
          button.style.backgroundColor = "#9BE6BB";
-         button.textContent = "Submit";
+         button.textContent = "Send";
          button.disabled = false;
+         if ($TURN_START_TIME > 0 && $TURN_TIME > 0){
+           var TIME_LEFT = Math.round($TURN_TIME - (Date.now() / 1000 - $TURN_START_TIME));
+           $("#time_left").text(TIME_LEFT);
+           if (TIME_LEFT < 0){
+             var data = { week: $WEEK };
+             data['customers'] = {}
+             for (i = 0; i < $CUSTOMERS.length; i++) {data['customers'][$CUSTOMERS[i]] = 0;};
+             data['suppliers'] = {}
+             for (i = 0; i < $SUPPLIERS.length; i++) {data['suppliers'][$SUPPLIERS[i]] = 0;};
+             $.ajax({
+               url: $SCRIPT_ROOT + '/submit',
+               type: 'POST',
+               contentType: "application/json; charset=utf-8",
+               dataType: "json",
+               data: JSON.stringify({ DATA: data }),
+               success: function (data) {
+                 $WEEKCOUNTER++;
+                 var button = document.getElementById('submit');
+                 button.style.backgroundColor = "#822D1A";
+                 button.disabled = true;
+                 setTimeout(function () { button.focus(); }, 1000);
+               }
+             });
+           }
+         }
+         else {
+           $("#time_left").text('-');
+         }
       }
       else if ( ($WEEK > $WEEKCOUNTER) || ($WEEK < $WEEKCOUNTER - 1) ){
          if ( !$OUT_OF_SYNC_MSG ){
@@ -69,14 +99,17 @@ function load_data() {
          else {return;}
       };
    })
-   .always(function() {
+    .fail(function (d, textStatus, error) {
+       console.error("getJSON failed, status: " + textStatus + ", error: " + error)
+    })
+    .always(function() {
       if (Date.now()/1000 - $LAST_CONNECTION < $AWAY_LIMIT){
          $("#connection_state").text('connected');
       }
       else{
          $("#connection_state").text('DISCONNECTED');
       }
-   });
+    });
 };
 
 function send_data() {
@@ -107,7 +140,6 @@ function send_data() {
    if ( (total_orders < $ORDER_MIN) || (total_orders > $ORDER_MAX) ){
       alert('Your order total is out of production limits!'); return;
    };
-   // console.log(data);
    $.ajax({
           url: $SCRIPT_ROOT + '/submit',
           type: 'POST',
@@ -122,7 +154,6 @@ function send_data() {
              setTimeout(function() { button.focus(); },1000);
           }
    });
-
 };
 
 $(function() {
@@ -138,6 +169,5 @@ $(function() {
 	 xsgChart = new Chart(ctx,chrtcfg);
 
    $('button#submit').on("click", send_data)
-   load_data();
    setInterval('load_data()', 1000); // run this every second
 });

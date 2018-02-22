@@ -6,7 +6,10 @@ h1       { font-size: 4vw; border-bottom: 0.25vw solid #eee; }
 h2       { font-size: 2vw; }
 input,select,span
          { font-size:1.5vw; }
+img      { margin-left: auto; margin-right: auto; display:block }
 
+span.version
+         { float:right; font-size:1vw; }
 table.tbl_results
          { margin-left: auto; margin-right: auto;
            border: 0.25vw solid lightgrey; border-collapse: collapse; }
@@ -43,10 +46,12 @@ table.tbl_c
 .page    { margin: 0.5vw auto; width: 95vw; border: 0.5vw solid #ccc; padding: 1vw;
             background: white; }
 .metanav { font-size: 1.5vw; text-align: right; padding-bottom: 0.75vw; }
-.flash   { font-size: 2vw; background: #cee5F5; padding: 1vw; border: 0.5vw solid #aacbe2; }
+.flash   { font-size: 1.75vw; background: #cee5F5; padding: 1vw; border: 0.5vw solid #aacbe2; }
 .output  { font-weight: bold; }
 .reg_text
          { font-size: 1.5vw; }
+.InScreenButton
+         { font-size: 1.25vw; background-color: #eee; }
 .button  { font-size: 1.5vw; background-color: #822D1A; }
 .plot_select
          { display: block; margin: 0 auto; }

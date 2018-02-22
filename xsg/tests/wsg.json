@@ -3,8 +3,8 @@
   "admin_password": "admin",
   "play_password": "play",
   "weeks": 45,
-  "auto_decide_ship_qty": true,
-  "auto_decide_order_qty": true,
+  "expiry": 730,
+  "turn_time": 90,
   "auto_order_method": "WSG",
   "demands":[
     {"name":"LumberClient","demand":[4,4,4,4,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8]},

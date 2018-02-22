@@ -1,0 +1,57 @@
+{% extends "layout.html" %} {% block body %}
+<div class=about>
+  <table>
+    <tr>
+      <td class=about_a>The Game</td>
+      <td class=about_b>The X-Supply Game (XSG) is an educational game designed to help participants explore the dynamics of real supply chains.
+        This demo is a single-player version of the game, where you will manage a virtual station in a simple supply chain.
+        The game is played in turns, in which you'll analyze the weekly standing of your station and decide on orders to
+        suppliers and shipments to customers. Your goal is to reduce costs, improve customer satisfaction, and minimize transportation
+        environmental impact.
+      </td>
+    </tr>
+    <tr>
+      <td class=about_a>The Demo</td>
+      <td class=about_b>
+        This demo supply chain network consists of 5 stations and 2 demand points, as illustrated bellow. You will assume the role
+        of the wholesaler manager, and will be responsible for ordering supplies from the manufacturers in order to meet
+        the demands of the retailers, and ultimately the clients. The remaining stations are automated. Each game turn is
+        a week in a 45 weeks simulation. You will have 3 minutes to complete each turn.
+        <br>
+        <img src="{{ url_for('static', filename='demo_game.png') }}" alt="Supply Chain Network Diagram" width=50%>
+      </td>
+    </tr>
+    <tr>
+      <td class=about_a>Details</td>
+      <td class=about_b>
+        A demo game has been created with the below details. To keep the server from crowding, this game will be automatically
+        deleted after 1 hour. After clicking on the 'Start Demo' button below you will be automatically logged into the game.
+        You can also access this game from the main menu "Join game" option using the below player name and password.
+        After completing the game, you can view your results from the "Advanced menu" ➤ "Admin game" option. Enjoy
+        the demo!
+        <table>
+          <tr align=right>
+            <td>Game:</td>
+            <td>demo_{{ id }}</td>
+          </tr>
+          <tr align=right>
+            <td>Player name:</td>
+            <td>DemoPlayer</td>
+          </tr>
+          <tr align=right>
+            <td>Play password:</td>
+            <td>{{ id }}</td>
+          </tr>
+          <tr align=right>
+            <td>Admin password:</td>
+            <td>{{ id }}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="vertical-menu">
+  <a href="{{ url_for('play_screen') }}">Start Demo</a>
+</div>
+{% endblock %}
