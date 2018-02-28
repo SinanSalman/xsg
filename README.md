@@ -67,4 +67,4 @@ XSG is released under the GPLv3 license, which is available at [GNU](https://www
 ## Version and History ##
 *   Oct 05th, 2017    Initial release
 *   Feb 22nd, 2018    v0.1b, add: multi-game monitor, create/edit games, timer, game expiry  
-*   Feb 27th, 2018    v0.11b, add: favicon.ico, secret_key configuration, disclaimers, and test drive link
+*   Feb 28th, 2018    v0.11b, add: favicon.ico, secret_key configuration, disclaimers, and test drive link
