@@ -62,7 +62,7 @@ XSG is released under the GPLv3 license, which is available at [GNU](https://www
 *   Games and/or games player data may also be lost due to upgrades or new feature introductions. You may export your game setup file and take screen shots of the game results to keep on your computer.
 
 ## Copyright ##
-2017 Sinan Salman, PhD
+2017-2018 Sinan Salman, PhD
 
 ## Version and History ##
 *   Oct 05th, 2017    Initial release
