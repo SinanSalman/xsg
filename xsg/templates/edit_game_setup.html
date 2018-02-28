@@ -2,6 +2,7 @@
 <script type=text/javascript>
   var SETUP = {{ setup|tojson|safe }}
   var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+  var ACTION = {{ action|tojson|safe }};
 </script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
@@ -14,6 +15,6 @@
 <button type="button" class="InScreenButton" onclick="javascript:history.back()">Back</button>
 <div id="form"></div>
 <div id=msg class=flash></div>
-<span class="version">Saving game setting here will reset game progress and erase all players data!</span>
+<div class="ver"><span class="version">Saving game setting here will reset game progress and erase all players data!</span></div>
 <br>
 {% endblock %}

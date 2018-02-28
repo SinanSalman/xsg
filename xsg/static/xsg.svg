@@ -1,0 +1,67 @@
+<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">
+ <defs>
+  <path id="c1agfBsWkP" d="m384.91,0c63.56,0 115.09,51.53 115.09,115.09c0,76.98 0,191.71 0,268.41c0,64.34 -52.16,116.5 -116.5,116.5c-76.7,0 -189.17,0 -265.58,0c-65.13,0 -117.92,-52.79 -117.92,-117.91c0,-76.42 0,-183.23 0,-258.51c0,-68.25 55.33,-123.58 123.57,-123.58c75.29,0 184.36,0 261.34,0z"/>
+  <path id="bRkOTQryN" d="m521.73,25.78c-24.11,4.6 -39.18,7.48 -45.21,8.63c-42.42,8.1 -84.13,18.96 -124.88,32.48c-46.89,15.56 -92.51,34.63 -136.47,57.03c-58.28,29.7 -113.66,65.27 -165.22,106.29c-11.03,8.77 -38.61,30.72 -82.74,65.82"/>
+  <path id="a4AVfnBfXP" d="m131.84,-40.51c23.8,11.42 38.68,18.56 44.63,21.41c97.44,46.75 176.56,124.59 224.91,221.25c15.06,30.12 52.72,105.41 112.97,225.88"/>
+  <path id="h677xNb5lW" d="m560.62,211.7c-50.58,-14.13 -82.19,-22.96 -94.83,-26.5c-70.99,-19.83 -144.72,-27.97 -218.32,-24.1c-14.65,0.77 -51.26,2.7 -109.85,5.78"/>
+  <path id="elKQJrOlx" d="m101,-34.51c7.6,54.29 12.34,88.23 14.24,101.8c18.31,130.9 61.98,256.98 128.55,371.17c9,15.43 31.48,54.01 67.46,115.72"/>
+  <path id="h265thPjsy" d="m526.76,84.26c-21.85,12.58 -35.51,20.45 -40.97,23.59c-132.06,76.03 -240.45,187.2 -313.11,321.15c-8.82,16.27 -30.87,56.92 -66.16,121.97"/>
+  <path id="a5Dp1QNhf7" d="m166.52,166.95c0,16.55 -13.44,30 -30,30c-16.55,0 -30,-13.45 -30,-30c0,-16.56 13.45,-30 30,-30c16.56,0 30,13.44 30,30z"/>
+  <path id="hl1XLkih2" d="m339.15,84.26c0,16.56 -13.44,30 -30,30c-16.56,0 -30,-13.44 -30,-30c0,-16.55 13.44,-30 30,-30c16.56,0 30,13.45 30,30z"/>
+  <path id="b1drcsmz1" d="m236.13,374.2c0,16.55 -13.45,30 -30,30c-16.56,0 -30,-13.45 -30,-30c0,-16.56 13.44,-30 30,-30c16.55,0 30,13.44 30,30z"/>
+  <path id="a2W8IvcqMu" d="m415.4,173.82c0,16.56 -13.44,30 -30,30c-16.56,0 -30,-13.44 -30,-30c0,-16.56 13.44,-30 30,-30c16.56,0 30,13.44 30,30z"/>
+ </defs>
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="502" width="502" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g stroke="null" id="svg_3">
+   <use transform="matrix(1,0,0,1,0,0) " stroke="null" x="0" y="0" id="svg_4" fill="#377ba8" xlink:href="#c1agfBsWkP"/>
+   <g stroke="null" id="svg_5">
+    <use transform="matrix(1,0,0,1,0,0) " stroke="#97c9dd" x="0" y="0" id="svg_6" stroke-width="0" fill-opacity="0" xlink:href="#c1agfBsWkP"/>
+   </g>
+   <g stroke="null" id="svg_7">
+    <use transform="matrix(1,0,0,1,0,0) " stroke="#97c9dd" x="0" y="0" id="svg_8" stroke-width="0" fill-opacity="0" xlink:href="#c1agfBsWkP"/>
+   </g>
+  </g>
+  <g stroke="null" id="svg_9">
+   <g stroke="null" id="svg_10">
+    <use stroke="#ffffff" transform="matrix(0.9026184151418453,0,0,0.9426456188212029,-2.9009974944279726,16.806554066057288) " x="3" y="-3" id="svg_11" stroke-width="12" fill-opacity="0" xlink:href="#bRkOTQryN"/>
+   </g>
+  </g>
+  <g stroke="null" id="svg_12">
+   <g stroke="null" id="svg_13">
+    <use transform="matrix(1.1281012296676636,0,0,0.9893285632133484,-17.273169339267042,-0.4536427598889077) " stroke="#ffffff" x="3" y="-2" id="svg_14" stroke-width="12" fill-opacity="0" xlink:href="#a4AVfnBfXP"/>
+   </g>
+  </g>
+  <g stroke="null" id="svg_15">
+   <g stroke="null" id="svg_16">
+    <use transform="matrix(1.01654851436615,0,0,1.077614665031433,-9.343622100612265,-16.19818035519893) " stroke="#ffffff" x="4" y="-3" id="svg_17" stroke-width="12" fill-opacity="0" xlink:href="#h677xNb5lW"/>
+   </g>
+  </g>
+  <g stroke="null" id="svg_18">
+   <g stroke="null" id="svg_19">
+    <use transform="matrix(0.9571937918663025,0,0,0.9983013272285461,13.451850906014442,0.9362744457284862) " stroke="#ffffff" x="3" y="-3" id="svg_20" stroke-width="12" fill-opacity="0" xlink:href="#elKQJrOlx"/>
+   </g>
+  </g>
+  <g stroke="null" id="svg_21">
+   <g stroke="null" id="svg_22">
+    <use transform="matrix(1.0047591924667358,0,0,0.9592894911766052,-0.5307451279140878,22.308136327264947) " stroke="#ffffff" x="5" y="-3" id="svg_23" stroke-width="12" fill-opacity="0" xlink:href="#h265thPjsy"/>
+   </g>
+  </g>
+  <g id="svg_24">
+   <use x="6" y="-10" id="svg_25" fill="#ffffff" xlink:href="#a5Dp1QNhf7"/>
+  </g>
+  <g id="svg_26">
+   <use x="25" y="-12" id="svg_27" fill="#ffffff" xlink:href="#hl1XLkih2"/>
+  </g>
+  <g id="svg_28">
+   <use x="3" y="-3" id="svg_29" fill="#ffffff" xlink:href="#b1drcsmz1"/>
+  </g>
+  <g id="svg_30">
+   <use x="31" y="-5" id="svg_31" fill="#ffffff" xlink:href="#a2W8IvcqMu"/>
+  </g>
+ </g>
+</svg>

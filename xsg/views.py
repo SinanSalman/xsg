@@ -6,7 +6,7 @@ import atexit
 from math import floor, inf
 from xsg.json_pprint import MyEncoder
 from xsg import game, app
-from flask import request, session, redirect, url_for, render_template, flash, jsonify, Response
+from flask import request, session, redirect, url_for, render_template, flash, jsonify, Response, send_from_directory
 import logging
 from logging.handlers import RotatingFileHandler
 
@@ -46,10 +46,10 @@ try:
 except Exception as e:
     show_error('Error in reading XSG\'s config file',e)
 config_data['GameStatusData'] = os.path.join(app.instance_path, config_data['GameStatusData'])
+app.secret_key = config_data['SECRET_KEY']  # set the secret key for 'session'
 app.config.update(config_data)
 app.config.from_envvar('XSG_SETTINGS', silent=True)
-SecondsAway_to_Disconnect = int(config_data['SecondsAway_to_Disconnect'])
-app.secret_key = 'change to a random value and keep this really secret'  # set the secret key for 'session'
+SecondsAway_to_Disconnect = int(config_data['SECONDSAWAY_TO_DISCONNECT'])
 ALLOWED_EXTENSIONS = set(['json'])
 
 GAMES = {}
@@ -143,6 +143,12 @@ def week_sum(D,week):
 ################################################################################
 # application views
 ################################################################################
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -465,6 +471,7 @@ def select_station_page(text,game_name,next_page):
 ################################################################################
 @app.route('/edit_game_setup', methods=['POST','GET'])
 def edit_game_setup():
+    action = request.args.get('action','')
     if request.method == 'GET':
         if 'selected_game' in session.keys():
             this_game = session['selected_game']
@@ -475,7 +482,6 @@ def edit_game_setup():
             return redirect(url_for('index'))
     if request.method == 'POST':
         this_game = request.form.get('selected_game')
-        action = request.args.get('action','')
         if this_game == '** No game templates found! **':
             return redirect(url_for('index'))
         if action == 'edit':
@@ -503,8 +509,11 @@ def edit_game_setup():
                 if this_game in GAMES.keys():
                     del GAMES[this_game]
                 show_error("Could not create game", e)
+        else:
+            flash('Error: no action type provided; must include edit or create actions call.')
+            return redirect(request.url)
     session['selected_game'] = this_game
-    return render_template('edit_game_setup.html', setup=GAMES[this_game].get_config(), sort_keys=True)
+    return render_template('edit_game_setup.html', setup=GAMES[this_game].get_config(), action=action, sort_keys=True)
 
 
 @app.route('/import_game_file', methods=['POST'])

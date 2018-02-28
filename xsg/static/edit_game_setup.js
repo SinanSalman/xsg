@@ -181,8 +181,13 @@ var options = {
       "back": {
         "title": "Cancel",
         "click": function() {
-          if (confirm("Are you sure? press [OK] to abort new game creation or [Cancle] to return.")) {
-            window.location.href = $SCRIPT_ROOT + '/delete_game?next=index&game_name=' + SETUP.team_name;
+          if (ACTION == 'edit'){
+            history.back();
+          }
+          else if (ACTION == 'create') {
+            if (confirm("Are you sure? press [OK] to abort new game creation or [Cancle] to return.")) {
+              window.location.href = $SCRIPT_ROOT + '/delete_game?next=index&game_name=' + SETUP.team_name;
+            }
           }
         }
       },

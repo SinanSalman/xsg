@@ -1,36 +1,41 @@
-<!doctype html>
+<!DOCTYPE HTML>
+<html>
 <HEAD>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-86962030-2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
-
-  gtag('config', 'UA-86962030-2');
-</script>
+  <title>X Supply Chain Game (XSG)</title>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-86962030-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-86962030-2');
+  </script>
 </HEAD>
-
-<title>X Supply Chain Game (XSG)</title>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}{{ js_debug() }}">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type=text/javascript> $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}; </script>
-<div class=page>
-  <h1>XSG</h1>
-  <div class=metanav>
-    <a href="{{ url_for('cmd',cmd='about') }}">About</a> &ensp; &ensp;
-  {% if session.password %}
-    <a href="{{ url_for('cmd',cmd='logout') }}">Logout</a> &ensp; &ensp;
-  {% endif %}
-  {% if session.player_name %}
-    <a href="{{ url_for('cmd',cmd='reset') }}">Home</a>
-  {% else %}
-    <a href="{{ url_for('index') }}">Home</a>
-  {% endif %}
-  </div>
-  {% for message in get_flashed_messages() %}
+<body>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}{{ js_debug() }}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type=text/javascript>
+    $SCRIPT_ROOT = {{ request.script_root | tojson | safe  }};
+  </script>
+  <div class=page>
+    <div class=headding>
+      <div class="xsg_title">
+        <h1><img class="logo" src="{{ url_for('static', filename='xsg.png') }}" alt="XSG">XSG</h1>
+      </div>
+      <div class=metanav>
+        <a href="{{ url_for('cmd',cmd='about') }}">About</a> &ensp; {% if session.password %}
+        <a href="{{ url_for('cmd',cmd='logout') }}">Logout</a> &ensp; {% endif %} {% if session.player_name %}
+        <a href="{{ url_for('cmd',cmd='reset') }}">Home</a> {% else %}
+        <a href="{{ url_for('index') }}">Home</a> {% endif %}
+      </div>
+    </div>
+    {% for message in get_flashed_messages() %}
     <div class=flash>{{ message }}</div>
-  {% endfor %}
-  {% block body %}{% endblock %}
-</div>
-<span class=version>ver 0.1 (beta)&ensp; &ensp; &ensp; &ensp; &ensp; &ensp;</span>
+    {% endfor %} {% block body %}{% endblock %}
+  </div>
+  <div class="ver">
+    <span class=version>ver 0.1 (beta)</span>
+  </div>
+</body>
+</html>

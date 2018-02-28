@@ -2,4 +2,3 @@ a hide all lines button on the results graph + sort legend by SCM order
 server admin can manage games
 configurable AJAX update times
 add comments and documentation
-Logo and favicon.ico

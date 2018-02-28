@@ -1,6 +1,7 @@
 {
+  "SECRET_KEY":"change to a random value and keep this really secret",
   "GameStatusData":"xsg.dat",
   "USERNAME":"admin",
   "PASSWORD":"admin",
-  "SecondsAway_to_Disconnect":"5"
+  "SECONDSAWAY_TO_DISCONNECT":"5"
 }
