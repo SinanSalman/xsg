@@ -70,7 +70,7 @@ def kill_expired_games():
     d = []
     for k,v in GAMES.items():
         if (time.time() - v.created)/86400 > v.expiry:  # 86400 second in a day
-            d.extend(k)
+            d.append(k)
     if len(d) > 0:
         log_msg("The following game(s) expired and will be deleted: {:}.".format(str(d)))
         for k in d:
