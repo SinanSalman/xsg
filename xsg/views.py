@@ -36,6 +36,7 @@ def show_error(m: str, e: Exception):
 ################################################################################
 # flask setup
 ################################################################################
+log_msg('****** XSG server started')
 log_msg('   Local working folder location: ' + os.getcwd())
 log_msg('   Current instance location:     ' + app.instance_path)
 app.config.from_object(__name__)  # load config from this file
@@ -311,7 +312,7 @@ def join_station():
         return select_station_page(text='Select your game station:',game_name=this_game,next_page='play_screen')
     else:
         if GAMES[this_game].Run():
-            flash('Done simulating autopilot game.')
+            flash('Game simulation complete. (All stations are fully automated, see game config)')
         else:
             flash('Game already simulated. Nothing done.')
         return redirect(url_for('index'))
@@ -423,15 +424,15 @@ def show_network():
     node_id = {}
     i = 1
     for x in GAMES[this_game].demand_stations_names:
-        nodes.append({'id': i, 'label': x, 'image':'/static/clients.png'})
+        nodes.append({'id': i, 'label': x, 'image':url_for('static', filename='clients.png')})
         node_id[x] = i
         i += 1
     for x in GAMES[this_game].manual_stations_names:
-        nodes.append({'id': i, 'label': x + '\n(' + GAMES[this_game].network_stations[x].player_name + ')', 'image':'/static/warehouse1.png'})
+        nodes.append({'id': i, 'label': x + '\n(' + GAMES[this_game].network_stations[x].player_name + ')', 'image':url_for('static', filename='warehouse1.png')})
         node_id[x] = i
         i += 1
     for x in GAMES[this_game].auto_stations_names:
-        nodes.append({'id': i, 'label': x + '\n(' + GAMES[this_game].network_stations[x].player_name + ')', 'image':'/static/warehouse0.png'})
+        nodes.append({'id': i, 'label': x + '\n(' + GAMES[this_game].network_stations[x].player_name + ')', 'image':url_for('static', filename='warehouse0.png')})
         node_id[x] = i
         i += 1
     edges = []
