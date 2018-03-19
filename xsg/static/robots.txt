@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /demo
+Disallow: /cmd/join_game
+Disallow: /cmd/create_game_from_template
+Disallow: /cmd/advanced_menu
+Disallow: /cmd/index

@@ -1,4 +1,6 @@
 a hide all lines button on the results graph + sort legend by SCM order
-server admin can manage games
+add a link to game results in "multi-monitor screen"
+server admin can manage games (multi-delete, and enter game admin with no password)
 configurable AJAX update times
 add comments and documentation
+adding captcha for create game and DEMO; https://www.google.com/recaptcha/intro/

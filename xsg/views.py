@@ -150,6 +150,12 @@ def favicon():
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
+@app.route('/robots.txt')
+def robots():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'robots.txt', mimetype='text/plain')
+
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -188,16 +194,6 @@ def cmd(cmd):
     if cmd == 'under_construction':
         return 'Sorry, this part is still under construction'
     return "Unknown cmd: " + cmd
-
-
-@app.route('/shutdown', methods=['GET'])
-def shutdown():
-    func = request.environ.get('werkzeug.server.shutdown')
-    if func is None:
-        flash('Error: Not running with the Werkzeug Server.')
-        raise RuntimeError('Not running with the Werkzeug Server.')
-    func()
-    return 'Server shutting down...'
 
 
 # direct entry point, not reachable through WUI

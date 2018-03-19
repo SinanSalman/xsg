@@ -75,7 +75,7 @@
               {% for orderfrom in static_info.suppliers %}
                  <tr><td>{{ orderfrom }}</td><td class=centered><span class=output id=incomming_delivery_{{ orderfrom }}>?</span></td>
                  {% if not static_info.auto_order %}
-                    <td>&#8680;<input type=number value=0 min=0 max=999 name={{ orderfrom }}></td></tr>
+                    <td>&#8680;<input type=number value=0 min=0 max=9999 name={{ orderfrom }}></td></tr>
                  {% else %}
                     </tr>
                  {% endif %}
@@ -105,7 +105,7 @@
            {% for shipto in static_info.customers %}
               <tr><td>{{ shipto }}</td><td class=centered><span class=output id=incomming_order_{{ shipto }}>?</span></td>
               {% if not static_info.auto_ship %}
-                 <td>&#8680;<input type=number value=0 min=0 max=999 name={{ shipto }}></td></tr>
+                 <td>&#8680;<input type=number value=0 min=0 max=9999 name={{ shipto }}></td></tr>
               {% else %}
                  </tr>
               {% endif %}

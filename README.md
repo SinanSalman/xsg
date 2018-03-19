@@ -55,8 +55,10 @@ Code submissions are greatly appreciated and highly encouraged. Please send fixe
 ## License ##
 XSG is released under the GPLv3 license, which is available at [GNU](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
-## Disclaimers ##
+## Publications on XSG ##
+* Salman S, Alaswad S. The X-Supply Game. Proceedings of the 2018 Industrial and Systems Engineering Conference, 2018.
 
+## Disclaimers ##
 *   XSG uses Google analytics to measure its use.
 *   Every game includes an expiry parameter to keep the server from crowding. When a game expires its setup and data are automatically erased. You may choose to export your game setup file to keep on your computer, however, game player data cannot be exported.
 *   Games and/or games player data may also be lost due to upgrades or new feature introductions. You may export your game setup file and take screen shots of the game results to keep on your computer.
@@ -65,6 +67,7 @@ XSG is released under the GPLv3 license, which is available at [GNU](https://www
 2017-2018 Sinan Salman, PhD
 
 ## Version and History ##
+*   Mar 19th, 2018    v0.13b, fix: station names w/period, enlarge order/shipment input box, OSG setup. add: html meta tags, robots.txt. remove: admin server shutdown function
 *   Mar  1st, 2018    v0.12b, fix: expired game kill logic
 *   Feb 28th, 2018    v0.11b, add: favicon.ico, secret_key configuration, disclaimers, and test drive link
 *   Feb 22nd, 2018    v0.1b, add: multi-game monitor, create/edit games, timer, game expiry  

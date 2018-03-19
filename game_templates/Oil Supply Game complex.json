@@ -13,7 +13,7 @@
     },
     {
     "name": "Retailer.2",
-    "demand": [100, 100, 100, 100, 100, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150]
+    "demand": [100, 100, 100, 100, 100, 100, 100, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150, 150]
     }
   ],
   "stations": [
@@ -28,8 +28,8 @@
       "transport_size": 200,
       "delay_shipping": 2,
       "delay_ordering": 1,
-      "initial_queue_quantity": 50,
-      "initial_inventory": 200,
+      "initial_queue_quantity": 100,
+      "initial_inventory": 100,
       "safety_stock": 0,
       "production_min": [],
       "production_max": []
@@ -45,8 +45,42 @@
       "transport_size": 200,
       "delay_shipping": 2,
       "delay_ordering": 1,
-      "initial_queue_quantity": 50,
-      "initial_inventory": 200,
+      "initial_queue_quantity": 100,
+      "initial_inventory": 100,
+      "safety_stock": 0,
+      "production_min": [],
+      "production_max": []
+    },
+    {
+      "name": "Manufacturer.1",
+      "player_name": "cpu",
+      "auto_decide_ship_qty": true,
+      "auto_decide_order_qty": true,
+      "holding_cost": 1,
+      "backorder_cost": 2,
+      "transport_cost": 220,
+      "transport_size": 200,
+      "delay_shipping": 2,
+      "delay_ordering": 1,
+      "initial_queue_quantity": 100,
+      "initial_inventory": 100,
+      "safety_stock": 0,
+      "production_min": [],
+      "production_max": []
+    },
+    {
+      "name": "Manufacturer.2",
+      "player_name": "cpu",
+      "auto_decide_ship_qty": true,
+      "auto_decide_order_qty": true,
+      "holding_cost": 1,
+      "backorder_cost": 2,
+      "transport_cost": 220,
+      "transport_size": 200,
+      "delay_shipping": 2,
+      "delay_ordering": 1,
+      "initial_queue_quantity": 100,
+      "initial_inventory": 100,
       "safety_stock": 0,
       "production_min": [],
       "production_max": []
@@ -62,8 +96,8 @@
       "transport_size": 200,
       "delay_shipping": 2,
       "delay_ordering": 1,
-      "initial_queue_quantity": 50,
-      "initial_inventory": 200,
+      "initial_queue_quantity": 100,
+      "initial_inventory": 100,
       "safety_stock": 0,
       "production_min": [],
       "production_max": []
@@ -79,8 +113,8 @@
       "transport_size": 200,
       "delay_shipping": 2,
       "delay_ordering": 1,
-      "initial_queue_quantity": 50,
-      "initial_inventory": 200,
+      "initial_queue_quantity": 100,
+      "initial_inventory": 100,
       "safety_stock": 0,
       "production_min": [],
       "production_max": []
@@ -96,11 +130,11 @@
       "transport_size": 200,
       "delay_shipping": 2,
       "delay_ordering": 1,
-      "initial_queue_quantity": 50,
-      "initial_inventory": 200,
+      "initial_queue_quantity": 100,
+      "initial_inventory": 100,
       "safety_stock": 0,
       "production_min": [],
-      "production_max": []
+      "production_max": [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000]
     },
     {
       "name": "Well.2",
@@ -113,11 +147,11 @@
       "transport_size": 200,
       "delay_shipping": 2,
       "delay_ordering": 1,
-      "initial_queue_quantity": 50,
-      "initial_inventory": 200,
+      "initial_queue_quantity": 100,
+      "initial_inventory": 100,
       "safety_stock": 0,
       "production_min": [],
-      "production_max": []
+      "production_max": [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000]
     }
   ],
   "connections": [
@@ -125,10 +159,14 @@
     { "supp": "Well.1",        "cust": "Refinery.2" },
     { "supp": "Well.2",        "cust": "Refinery.1" },
     { "supp": "Well.2",        "cust": "Refinery.2" },
-    { "supp": "Refinery.1",    "cust": "Distributor.1" },
-    { "supp": "Refinery.1",    "cust": "Distributor.2" },
-    { "supp": "Refinery.2",    "cust": "Distributor.1" },
-    { "supp": "Refinery.2",    "cust": "Distributor.2" },
+    { "supp": "Refinery.1",    "cust": "Manufacturer.1" },
+    { "supp": "Refinery.1",    "cust": "Manufacturer.2" },
+    { "supp": "Refinery.2",    "cust": "Manufacturer.1" },
+    { "supp": "Refinery.2",    "cust": "Manufacturer.2" },
+    { "supp": "Manufacturer.1","cust": "Distributor.1" },
+    { "supp": "Manufacturer.1","cust": "Distributor.2" },
+    { "supp": "Manufacturer.2","cust": "Distributor.1" },
+    { "supp": "Manufacturer.2","cust": "Distributor.2" },
     { "supp": "Distributor.1", "cust": "Retailer.1" },
     { "supp": "Distributor.1", "cust": "Retailer.2" },
     { "supp": "Distributor.2", "cust": "Retailer.1" },

@@ -67,13 +67,13 @@ function load_data() {
 		$.each( data.data, function( key, val ) {
 			if (['cost_inventory','cost_backorder','cost_transport','cost_total'].includes(key)){
 				$.each( val, function( k, v ) {
-					$("#"+key+"_"+k).text(Math.round(v).toLocaleString());
+					$(("#"+key+"_"+k).replace('.','\\.')).text(Math.round(v).toLocaleString());
 				})
 			}
 			if (['fulfillment','green_score'].includes(key)){
 				$.each( val, function( k, v ) {
-					$("#station_"+k).text(k+'('+$PLAYERS[k]+')'); // repeats for each row resetting to the same value, but it is okay
-					$("#"+key+"_"+k).text(Math.round(v*100));
+					$(("#station_"+k).replace('.','\\.')).text(k+'('+$PLAYERS[k]+')'); // repeats for each row resetting to the same value, but it is okay
+					$(("#"+key+"_"+k).replace('.','\\.')).text(Math.round(v*100));
 				})
 			}
 		})
