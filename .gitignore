@@ -4,6 +4,7 @@ xsg.egg*
 xsg.git*
 .ipynb_checkpoints*
 __pycache__
+*.dat
 
 # Compiled source #
 ###################

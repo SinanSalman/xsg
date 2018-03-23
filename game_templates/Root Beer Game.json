@@ -4,7 +4,7 @@
       "play_password": "play",
       "weeks": 45,
       "expiry": 120,
-      "turn_time": 90,
+      "turn_time": 60,
       "quick_backorder_recovery": true,
       "demands": [{
             "name": "Consumer"
