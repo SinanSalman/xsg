@@ -13,6 +13,6 @@ setup(
     url="https://sinansalman.github.io/xsg/",
     packages=['xsg'],
     include_package_data=True,
-    install_requires=['flask',],
+    install_requires=['flask','numpy',],
     python_requires=">=3.5",
 )
