@@ -69,27 +69,27 @@ XSG is released under the GPLv3 license, which is available at [GNU](https://www
 
 ## Version and History ##
 *   Jun 21st, 2018    v0.14b, Major revision, includes:
-        = max customer/supplier nodes per station 3 -> 4
-        = production_min/max/limits -> order_min/max/limits
-        + ship_min/max/limits
-        + browser compatibility check in index.html
-        + optional game script
-        + two HARD Game templates to replace HRD
-        + configurable: screen refresh delays & number of games monitored
-        + [Toggle Auto-Decisions] button in game setup edit screen
-        + [Toggle Visible Stations] button in game results screen
-        + cost/fulfilment/green score graphs to game results screen
-        + cost/fulfilment/green score graphs to multi-game competition screen
-        + link to game results on multi-game competition screen
-        = changed behavior for multi-game competition screen; no password = read-only
-        + improved tab/focus behavior in player screen
-        + fixed timer issue when client computer time is set incorrectly
-        + stations.py report warnings/errors to WGUI
-        + publications in About page
-        + [<= Go Back] link in layout.HTML
-        = improved network rendering settings
-        - moved palette.js to CDN
-        + several bug fixes, CSS style and HTML improvements,
+  * change max customer/supplier nodes per station 3 -> 4
+  * change production_min/max/limits -> order_min/max/limits
+  * add ship_min/max/limits
+  * add browser compatibility check in index.html
+  * add optional game script
+  * add two HARD Game templates to replace HRD
+  * add configurable: screen refresh delays & number of games monitored
+  * add [Toggle Auto-Decisions] button in game setup edit screen
+  * add [Toggle Visible Stations] button in game results screen
+  * add cost/fulfilment/green score graphs to game results screen
+  * add cost/fulfilment/green score graphs to multi-game competition screen
+  * add link to game results on multi-game competition screen
+  * change behavior for multi-game competition screen; no password = read-only
+  * add improved tab/focus behavior in player screen
+  * fixed timer issue when client computer time is set incorrectly
+  * add stations.py report warnings/errors to WGUI
+  * add publications in About page
+  * add [<= Go Back] link in layout.HTML
+  * improved network rendering settings
+  * moved palette.js to CDN
+  * several bug fixes, CSS style and HTML improvements
 *   Mar 19th, 2018    v0.13b, fix: station names w/period, enlarge order/shipment input box, OSG setup. add: html meta tags, robots.txt. remove: admin server shutdown function
 *   Mar  1st, 2018    v0.12b, fix: expired game kill logic
 *   Feb 28th, 2018    v0.11b, add: favicon.ico, secret_key configuration, disclaimers, and test drive link

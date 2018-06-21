@@ -5,6 +5,7 @@ xsg.git*
 .ipynb_checkpoints*
 __pycache__
 *.dat
+server.log*
 
 # Compiled source #
 ###################
