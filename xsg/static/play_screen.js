@@ -12,6 +12,15 @@ function sum( obj ) {
   return sum;
 }
 
+function SetFocus() {
+  if ($('input[name="' + $SUPPLIERS[0] + '"]').length){ // does supplier have an input box?
+      $('input[name="' + $SUPPLIERS[0] + '"]').select();
+  }
+  else if ($('input[name="' + $CUSTOMERS[0] + '"]').length){ // does customer have an input box?
+      $('input[name="' + $CUSTOMERS[0] + '"]').select();
+  }
+}
+
 function load_data() {
    $.getJSON($SCRIPT_ROOT + '/get_station_status?game=' + $GAME + '&station=' + $STATION, function (data){
       $.each( data, function( key, val ) {
@@ -20,9 +29,12 @@ function load_data() {
           }
           else if (['incomming_order','incomming_delivery','backorder'].includes(key)){
             $.each( val, function( k, v ) {
-              $("#"+key+"_"+k).text(v);
+              $(("#"+key+"_"+k).replace(/\./g,"\\.")).text(v);
             });
-          } else if (key == 'production_limits'){
+          } else if (key == 'ordering_limits'){
+            $("#"+key).find(":not(:first)").remove();
+            $("#"+key).append(val);
+          } else if (key == 'shipping_limits'){
             $("#"+key).find(":not(:first)").remove();
             $("#"+key).append(val);
           } else if (key == 'connection_state') {
@@ -31,6 +43,8 @@ function load_data() {
             $TURN_START_TIME = val;
           } else if (key == 'turn_time') {
             $TURN_TIME = val;
+          } else if (key == 'server_time') {
+            $ServerClientTimeDiff = (Date.now()/1000 - val);
           } else{
              $("#"+key).text(val);
           };
@@ -39,8 +53,10 @@ function load_data() {
       $INVENTORY = data.inventory
       $ORDERS = data.incomming_order
       $BACKORDERS = data.backorder
-      $ORDER_MIN = data.production_min
-      $ORDER_MAX = data.production_max
+      $ORDER_MIN = data.order_min
+      $ORDER_MAX = data.order_max
+      $SHIP_MIN = data.ship_min
+      $SHIP_MAX = data.ship_max
 
       xsgChart.data.datasets.forEach((dataset) => {
         if (dataset.label == "Inventory"){ dataset.data = [$INVENTORY]; }
@@ -58,7 +74,7 @@ function load_data() {
          button.textContent = "Send";
          button.disabled = false;
          if ($TURN_START_TIME > 0 && $TURN_TIME > 0){
-           var TIME_LEFT = Math.round($TURN_TIME - (Date.now() / 1000 - $TURN_START_TIME));
+           var TIME_LEFT = Math.round($TURN_TIME - (Date.now() / 1000 - $TURN_START_TIME) + $ServerClientTimeDiff);
            $("#time_left").text(TIME_LEFT);
            if (TIME_LEFT < 0){
              var data = { week: $WEEK };
@@ -77,7 +93,7 @@ function load_data() {
                  var button = document.getElementById('submit');
                  button.style.backgroundColor = "#822D1A";
                  button.disabled = true;
-                 setTimeout(function () { button.focus(); }, 1000);
+                 // setTimeout(function () { button.focus(); }, 1000);
                }
              });
            }
@@ -116,30 +132,54 @@ function send_data() {
    var data = { week:$WEEK };
    var total_shipments = 0;
    var total_orders = 0;
+   var total_customers_orders_backorders = 0;
    data['customers'] = {}
    for (i = 0; i < $CUSTOMERS.length; i++){
-      var value = Number($('input[name="' + $CUSTOMERS[i] + '"]').val());
-      data['customers'][$CUSTOMERS[i]] = value;
-      total_shipments += value;
-      if (value > $ORDERS[$CUSTOMERS[i]] + $BACKORDERS[$CUSTOMERS[i]]){
-         alert('Shipment to \'' + $CUSTOMERS[i] + '\' is more than their total request (PO + Backorder)!'); return;
+      if ($('input[name="' + $CUSTOMERS[i] + '"]').length){ // does customer have an input box?
+        var value = Number($('input[name="' + $CUSTOMERS[i] + '"]').val());
+        if ( value < 0 ){
+           alert('Cannot ship negative ammount!'); return;
+        };
+        if (value > $ORDERS[$CUSTOMERS[i]] + $BACKORDERS[$CUSTOMERS[i]]){
+           alert('Shipment to \'' + $CUSTOMERS[i] + '\' is more than their total request (PO+BackOrder)!'); return;
+        };
+        data['customers'][$CUSTOMERS[i]] = value;
+        total_shipments += value;
+        total_customers_orders_backorders += $ORDERS[$CUSTOMERS[i]] + $BACKORDERS[$CUSTOMERS[i]]
       };
    };
    data['suppliers'] = {}
    for (i = 0; i < $SUPPLIERS.length; i++){
-      var value = Number($('input[name="' + $SUPPLIERS[i] + '"]').val());
-      data['suppliers'][$SUPPLIERS[i]] = value;
-      total_orders += value;
+     if ($('input[name="' + $SUPPLIERS[i] + '"]').length){ // does supplier have an input box?
+        var value = Number($('input[name="' + $SUPPLIERS[i] + '"]').val());
+        if ( value < 0 ){
+           alert('Cannot order negative ammount!'); return;
+        };
+        data['suppliers'][$SUPPLIERS[i]] = value;
+        total_orders += value;
+      };
    };
-   if ( total_shipments < 0 ){
-      alert('Cannot ship negative ammount!'); return;
-   };
-   if ( total_shipments > $INVENTORY ){
-      alert('Cannot ship more than what you have in inventory!'); return;
-   };
-   if ( (total_orders < $ORDER_MIN) || (total_orders > $ORDER_MAX) ){
-      alert('Your order total is out of production limits!'); return;
-   };
+   if ($('input[name="' + $CUSTOMERS[0] + '"]').length){ // does player decide shipments to customers?
+     if ( total_shipments > $INVENTORY ){
+        alert('Cannot ship more than what you have in inventory!'); return;
+     };
+     if ( ( $SHIP_MIN > $INVENTORY ) && ( total_shipments != 0 ) ) {
+        alert('Your inventory is below the shipping mimumum limit, therefore you cannot ship. Please enter 0 units for this week shipments!'); return;
+     }
+     if ( ( $SHIP_MIN > total_customers_orders_backorders ) && ( total_shipments != 0 ) ) {
+        alert('Your total customers demand (POs+BackOrders) is below the shipping mimumum limit, therefore you cannot ship. Please enter 0 units for this week shipments!'); return;
+     }
+     if ( (total_shipments < $SHIP_MIN) || (total_shipments > $SHIP_MAX) ){
+        if ( total_shipments != 0 ){ // zero shipments is considered a 'turn pass' and allowed when out of limits; for the case when $SHIP_MIN > $INVENTORY
+            alert('Your shipments total is out of shipping limits!'); return;
+        }
+     };
+   }
+   if ($('input[name="' + $SUPPLIERS[0] + '"]').length){ // does player decide orders to suppliers?
+     if ( (total_orders < $ORDER_MIN) || (total_orders > $ORDER_MAX) ){
+        alert('Your order total is out of ordering limits!'); return;
+     };
+   }
    $.ajax({
           url: $SCRIPT_ROOT + '/submit',
           type: 'POST',
@@ -151,9 +191,10 @@ function send_data() {
              var button = document.getElementById('submit');
              button.style.backgroundColor = "#822D1A";
              button.disabled = true;
-             setTimeout(function() { button.focus(); },1000);
+             // setTimeout(function() { button.focus(); },1000);
           }
    });
+   SetFocus();
 };
 
 $(function() {
@@ -169,5 +210,6 @@ $(function() {
 	 xsgChart = new Chart(ctx,chrtcfg);
 
    $('button#submit').on("click", send_data)
-   setInterval('load_data()', 1000); // run this every second
+   setInterval('load_data()', $REFRESH_INTERVAL); // run this every $REFRESH_INTERVAL
+   SetFocus();
 });

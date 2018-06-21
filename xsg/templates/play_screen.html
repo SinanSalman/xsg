@@ -9,6 +9,7 @@
       var $CUSTOMERS = {{ static_info.customers|tojson|safe }};
       var $SUPPLIERS = {{ static_info.suppliers|tojson|safe }};
       var $AWAY_LIMIT = {{ static_info.secondsaway_to_disconnect|tojson|safe }};
+      var $REFRESH_INTERVAL = {{ static_info.RefreshInterval_PlayScreen|tojson|safe }};
       var $WEEKCOUNTER = {{ static_info.current_week|tojson|safe }};
       var $WEEK = 0;
       var $LAST_CONNECTION = 0;
@@ -18,7 +19,8 @@
       var $ORDER_MIN = 0;
       var $ORDER_MAX = 0;
       var $TURN_TIME = {{ static_info.turn_time|tojson|safe }};
-      var $TURN_START_TIME = 0;}
+      var $TURN_START_TIME = 0;
+      var $ServerClientTimeDiff = 0;}
    </script>
    <div class=wrapper>
       <div class=cell11>
@@ -41,11 +43,10 @@
       </div>
       <div class=cell12>
          <h2>{{ session.selected_station }}</h2>
-         <span>({{ session.player_name }})</span>
-         <br><a href="{{ url_for('show_network',game_name=session.selected_game|safe) }}">Show supply chain</a>
-         <br><br>
+         <span>({{ session.player_name }})</span><br><br>
          Week <span class=output id=current_week>?</span> of {{ static_info.weeks }}<br>
          Timer: <span class=output id=time_left>?</span> seconds<br>
+         <div class=popup2 onclick="javascript:window.location.href = '{{ url_for('show_network',game_name=session.selected_game|safe) }}'">Show supply chain</div>
       </div>
       <div class=cell13>
          <br>
@@ -60,7 +61,7 @@
                <td><span>Total transport cost:</span></td> <td><span class=output id=cost_transport>?</span></td>
             </tr> <tr>
             </tr> <tr>
-               <td><span>Avg. fulfillment rate:</span></td> <td><span class=output id=fulfillment_rate>?</span></td>
+               <td><span>Avg. fulfilment rate:</span></td> <td><span class=output id=fulfilment_rate>?</span></td>
             </tr> <tr>
             </tr> <tr>
                <td><span>Avg. green score:</span></td> <td><span class=output id=truck_utilization>?</span></td>
@@ -71,20 +72,25 @@
         <span class=SecTitle>Orders to suppliers</span><br><br>
         {% if static_info.suppliers %}
            <table class=tbl_c>
-              <tr><th></th><th class=non_bold>Delivered</th><th class=non_bold>Order</th></tr>
+              <tr><th></th><th class=non_bold>Delivered</th>
+              {% if not static_info.auto_order %}
+                 <th class=non_bold>Order</th></tr>
+              {% else %}
+                 </tr>
+              {% endif %}
               {% for orderfrom in static_info.suppliers %}
                  <tr><td>{{ orderfrom }}</td><td class=centered><span class=output id=incomming_delivery_{{ orderfrom }}>?</span></td>
                  {% if not static_info.auto_order %}
-                    <td>&#8680;<input type=number value=0 min=0 max=9999 name={{ orderfrom }}></td></tr>
+                    <td>&#8680;<input type=number value=0 min=0 max=9999 name={{ orderfrom }} tabindex=1></td></tr>
                  {% else %}
                     </tr>
                  {% endif %}
               {% endfor %}
            </table>
         {% endif %}
-        <span>This week production limits: </span><span class=output id=production_min>?</span> to <span class=output id=production_max>?</span>
-        <div class=popup2 onclick="PopupFunction('production_limits')">Show next 10 weeks
-           <table class=popuptext id=production_limits></table>
+        <span>This week ordering limits: </span><span class=output id=order_min>?</span> to <span class=output id=order_max>?</span>
+        <div class=popup2 onclick="PopupFunction('ordering_limits')">Show next 10 weeks
+           <table class=popuptext id=ordering_limits></table>
         </div>
       </div>
       <div class=cell22>
@@ -101,16 +107,28 @@
       <div class=cell23>
         <span class=SecTitle>Shipments to customers</span><br><br>
         <table class=tbl_c>
-          <tr><th></th><th class=non_bold>PO</th><th class=non_bold>Ship</th></tr>
+          <tr><th></th><th class=non_bold>PO</th>
+           {% if not static_info.auto_ship %}
+              <th class=non_bold>Ship</th></tr>
+           {% else %}
+              </tr>
+           {% endif %}
            {% for shipto in static_info.customers %}
               <tr><td>{{ shipto }}</td><td class=centered><span class=output id=incomming_order_{{ shipto }}>?</span></td>
               {% if not static_info.auto_ship %}
-                 <td>&#8680;<input type=number value=0 min=0 max=9999 name={{ shipto }}></td></tr>
+                 <td>&#8680;<input type=number value=0 min=0 max=9999 name={{ shipto }} tabindex=2></td></tr>
               {% else %}
                  </tr>
               {% endif %}
            {% endfor %}
         </table>
+        <span>This week shipping limits: </span><span class=output id=ship_min>?</span> to <span class=output id=ship_max>?</span>
+        <div class=popup2 onclick="PopupFunction('shipping_limits')">Show next 10 weeks
+           <table class=popuptext id=shipping_limits></table>
+        </div>
+      </div>
+      <div class=cell3_>
+        <span class=week_msg id=script></span>
       </div>
    </div>
 {% endblock %}

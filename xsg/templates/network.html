@@ -2,7 +2,6 @@
 {% block body %}
    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.1/vis.min.js"></script>
    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.1/vis.min.css" rel="stylesheet" type="text/css" />
-   <button type="button" class="InScreenButton" onclick="javascript:history.back()">Back</button>
    <div id="mynetwork"></div>
    <script type="text/javascript">
       var nodes = new vis.DataSet({{ static_info.nodes|tojson|safe }});
@@ -10,7 +9,23 @@
       var container = document.getElementById('mynetwork');
       var data = { nodes: nodes, edges: edges };
       var options = { nodes:{ shape: 'image',
-                              shadow:{ enabled: true } } };
+                              shadow:{ enabled: true } },
+                      'edges': { 'smooth': {
+                                            // 'type': 'cubicBezier',
+                                            'forceDirection': 'none'
+                                          } },
+                      'physics': { 'barnesHut': { 'gravitationalConstant': -30000,
+                                                  'centralGravity': 0,
+                                                  'springLength': 150,
+                                                  'springConstant': 0.1,
+                                                  'damping': 0.1,
+                                                  'avoidOverlap': 0
+                                                 },
+                                   'minVelocity': 0.75
+                                 },
+                      layout: { randomSeed: 1, improvedLayout:true}
+                      };
       var network = new vis.Network(container, data, options);
+      network.fit();
    </script>
 {% endblock %}

@@ -1,20 +1,24 @@
 {
-      "team_name": "RootBeerGame",
+      "team_name": "Test",
       "admin_password": "admin",
       "play_password": "play",
       "weeks": 45,
-      "expiry": 120,
-      "turn_time": 60,
-      "quick_backorder_recovery": true,
+      "expiry": 0.0417,
+      "turn_time": 180,
       "script": [
-                  {"week":1,"msg":"Welcome to the RootBeer game! Please take time to familiarize yourself with the game interface. Starting next turn, you'll have one minute to make your decisions. You may want to check the 'Show game info' link on the top left side."},
-                  {"week":45,"msg":"Congradulations! You are about to complete your game."}
+                  {"week":1,"msg":"This is a TEST scenario game. ordering and shipping limits are incomplete and some are incorrect"},
                 ],
       "demands": [{
-            "name": "Consumer"
-      }],
+                  "name": "client1",
+                  "demand": [4, 4, 4, 4, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+            },
+            {
+                  "name": "client2",
+                  "demand": [4, 4, 4, 4, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+            }
+      ],
       "stations": [{
-                  "name": "Manufacturer",
+                  "name": "retailer1",
                   "player_name": "cpu",
                   "auto_decide_ship_qty": true,
                   "auto_decide_order_qty": true,
@@ -26,14 +30,14 @@
                   "delay_ordering": 2,
                   "initial_queue_quantity": 4,
                   "initial_inventory": 4,
-                  "safety_stock": 4,
+                  "safety_stock": 0,
                   "order_min": [],
                   "order_max": [],
                   "ship_min": [],
                   "ship_max": []
             },
             {
-                  "name": "Distributor",
+                  "name": "retailer2",
                   "player_name": "cpu",
                   "auto_decide_ship_qty": true,
                   "auto_decide_order_qty": true,
@@ -45,14 +49,33 @@
                   "delay_ordering": 2,
                   "initial_queue_quantity": 4,
                   "initial_inventory": 4,
-                  "safety_stock": 4,
+                  "safety_stock": 0,
                   "order_min": [],
                   "order_max": [],
                   "ship_min": [],
                   "ship_max": []
             },
             {
-                  "name": "Wholesaler",
+                  "name": "wholesaler",
+                  "player_name": "DemoPlayer",
+                  "auto_decide_ship_qty": false,
+                  "auto_decide_order_qty": false,
+                  "holding_cost": 1,
+                  "backorder_cost": 2,
+                  "transport_cost": 5,
+                  "transport_size": 5,
+                  "delay_shipping": 2,
+                  "delay_ordering": 2,
+                  "initial_queue_quantity": 4,
+                  "initial_inventory": 4,
+                  "safety_stock": 0,
+                  "order_min": [0,10,20,30,40,50,60,70,80,90],
+                  "order_max": [10,0,100,100,100,100,100,100,100,100],
+                  "ship_min": [10,30,40,50,80,100,120],
+                  "ship_max": [100,100,100,100,100,100,100,100,100]
+            },
+            {
+                  "name": "manufacturer1",
                   "player_name": "cpu",
                   "auto_decide_ship_qty": true,
                   "auto_decide_order_qty": true,
@@ -64,14 +87,14 @@
                   "delay_ordering": 2,
                   "initial_queue_quantity": 4,
                   "initial_inventory": 4,
-                  "safety_stock": 4,
+                  "safety_stock": 0,
                   "order_min": [],
                   "order_max": [],
                   "ship_min": [],
                   "ship_max": []
             },
             {
-                  "name": "Retailer",
+                  "name": "manufacturer2",
                   "player_name": "cpu",
                   "auto_decide_ship_qty": true,
                   "auto_decide_order_qty": true,
@@ -83,7 +106,7 @@
                   "delay_ordering": 2,
                   "initial_queue_quantity": 4,
                   "initial_inventory": 4,
-                  "safety_stock": 4,
+                  "safety_stock": 0,
                   "order_min": [],
                   "order_max": [],
                   "ship_min": [],
@@ -91,20 +114,28 @@
             }
       ],
       "connections": [{
-                  "supp": "Manufacturer",
-                  "cust": "Distributor"
+                  "supp": "retailer1",
+                  "cust": "client1"
             },
             {
-                  "supp": "Distributor",
-                  "cust": "Wholesaler"
+                  "supp": "retailer2",
+                  "cust": "client2"
             },
             {
-                  "supp": "Wholesaler",
-                  "cust": "Retailer"
+                  "supp": "wholesaler",
+                  "cust": "retailer1"
             },
             {
-                  "supp": "Retailer",
-                  "cust": "Consumer"
+                  "supp": "wholesaler",
+                  "cust": "retailer2"
+            },
+            {
+                  "supp": "manufacturer1",
+                  "cust": "wholesaler"
+            },
+            {
+                  "supp": "manufacturer2",
+                  "cust": "wholesaler"
             }
       ]
 }

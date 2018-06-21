@@ -4,8 +4,12 @@
   "play_password": "play",
   "weeks": 45,
   "expiry": 120,
-  "turn_time": 60,
+  "turn_time": 90,
   "auto_order_method": "WSG",
+  "script": [
+              {"week":1,"msg":"Welcome to the Wood Supply game! The original game is at (http://woodsupplygame.slu.se/Accueil.aspx). Please take time to familiarize yourself with the game interface. Starting next turn, you'll have 90 seconds to make your decisions. You may want to check the 'Show game info' link on the top left side."},
+              {"week":45,"msg":"Congradulations! You are about to complete your game."}
+            ],
   "demands": [{
       "name": "LumberClient",
       "demand": [4, 4, 4, 4, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
@@ -29,8 +33,10 @@
       "initial_queue_quantity": 4,
       "initial_inventory": 12,
       "safety_stock": 40,
-      "production_min": [],
-      "production_max": []
+      "order_min": [],
+      "order_max": [],
+      "ship_min": [],
+      "ship_max": []
     },
     {
       "name": "PaperRetailer",
@@ -46,8 +52,10 @@
       "initial_queue_quantity": 4,
       "initial_inventory": 12,
       "safety_stock": 40,
-      "production_min": [],
-      "production_max": []
+      "order_min": [],
+      "order_max": [],
+      "ship_min": [],
+      "ship_max": []
     },
     {
       "name": "LumberWholesaler",
@@ -63,8 +71,10 @@
       "initial_queue_quantity": 4,
       "initial_inventory": 12,
       "safety_stock": 40,
-      "production_min": [],
-      "production_max": []
+      "order_min": [],
+      "order_max": [],
+      "ship_min": [],
+      "ship_max": []
     },
     {
       "name": "PaperWholesaler",
@@ -80,8 +90,10 @@
       "initial_queue_quantity": 4,
       "initial_inventory": 12,
       "safety_stock": 40,
-      "production_min": [],
-      "production_max": []
+      "order_min": [],
+      "order_max": [],
+      "ship_min": [],
+      "ship_max": []
     },
     {
       "name": "PaperMill",
@@ -97,8 +109,10 @@
       "initial_queue_quantity": 4,
       "initial_inventory": 12,
       "safety_stock": 40,
-      "production_min": [],
-      "production_max": []
+      "order_min": [],
+      "order_max": [],
+      "ship_min": [],
+      "ship_max": []
     },
     {
       "name": "SawMill",
@@ -114,8 +128,10 @@
       "initial_queue_quantity": 8,
       "initial_inventory": 24,
       "safety_stock": 85,
-      "production_min": [],
-      "production_max": []
+      "order_min": [],
+      "order_max": [],
+      "ship_min": [],
+      "ship_max": []
     },
     {
       "name": "Forest",
@@ -131,8 +147,10 @@
       "initial_queue_quantity": 7,
       "initial_inventory": 12,
       "safety_stock": 35,
-      "production_min": [7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 0, 0, 6, 6, 6, 6, 4, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4],
-      "production_max": [18, 18, 18, 24, 24, 24, 24, 24, 24, 24, 26, 26, 26, 26, 0, 0, 28, 28, 28, 28, 26, 26, 26, 26, 26, 26, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 26, 26, 26, 26, 26]
+      "order_min": [7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 0, 0, 6, 6, 6, 6, 4, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4],
+      "order_max": [18, 18, 18, 24, 24, 24, 24, 24, 24, 24, 26, 26, 26, 26, 0, 0, 28, 28, 28, 28, 26, 26, 26, 26, 26, 26, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 26, 26, 26, 26, 26],
+      "ship_min": [],
+      "ship_max": []
     }
   ],
   "connections": [{

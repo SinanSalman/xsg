@@ -1,6 +1,7 @@
-a hide all lines button on the results graph + sort legend by SCM order
-add a link to game results in "multi-monitor screen"
+add comments to code
+add documentation (user manual) to website
 server admin can manage games (multi-delete, and enter game admin with no password)
-configurable AJAX update times
-add comments and documentation
-adding captcha for create game and DEMO; https://www.google.com/recaptcha/intro/
+end game? one possibility is via current week = end week??
+adding captcha (to istm.zu.ac ONLY) for create game and DEMO; https://www.google.com/recaptcha/intro/
+export/import game data to/from JSON file
+include automated testing

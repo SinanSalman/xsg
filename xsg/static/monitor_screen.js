@@ -38,6 +38,20 @@ function sum_elem(A) {
 	return sum
 }
 
+function avg_elem(A) {
+	var avg = [];
+	var keys = Object.keys(A);
+	var keys_count = keys.length;
+	for (i=0;i<A[keys[0]].length;i++){
+		avg.push(0);
+		for (var k in keys){
+			avg[i] += A[keys[k]][i];
+		}
+		avg[i] /= keys_count;
+	}
+	return avg
+}
+
 function hex2rgba(hex, alpha) {
     var r = parseInt(hex.slice(1, 3), 16),
         g = parseInt(hex.slice(3, 5), 16),
@@ -58,6 +72,14 @@ function find_object_index(array_of_objects,key,val){
     }
 }
 
+function hidallstationsdata(){
+		$.each(xsgChart2.data.datasets, function(k,v){
+		a = v._meta[2];
+		a.hidden = null === a.hidden ? !v.hidden : null;
+		xsgChart2.update();
+	})
+}
+
 function load_data() {
 	$.getJSON($SCRIPT_ROOT + '/get_game_status?game=' + $GAME, function (data){
 		$("#Week").text(data.week+1);
@@ -65,27 +87,27 @@ function load_data() {
 		$("#Disconnected").text(data.disconnected);
 
 		$.each( data.data, function( key, val ) {
-			if (['cost_inventory','cost_backorder','cost_transport','cost_total'].includes(key)){
+			if (['cost_inventory_sum','cost_backorder_sum','cost_transport_sum','cost_total_sum'].includes(key)){
 				$.each( val, function( k, v ) {
-					$(("#"+key+"_"+k).replace('.','\\.')).text(Math.round(v).toLocaleString());
+					$(("#"+key+"_"+k).replace(/\./g,'\\.')).text(Math.round(v).toLocaleString());
 				})
 			}
-			if (['fulfillment','green_score'].includes(key)){
+			if (['fulfilment_avg','green_score_avg'].includes(key)){
 				$.each( val, function( k, v ) {
-					$(("#station_"+k).replace('.','\\.')).text(k+'('+$PLAYERS[k]+')'); // repeats for each row resetting to the same value, but it is okay
-					$(("#"+key+"_"+k).replace('.','\\.')).text(Math.round(v*100));
+					$(("#station_"+k).replace(/\./g,'\\.')).text(k+' ('+$PLAYERS[k]+')'); // repeats for each row resetting to the same value, but it is okay
+					$(("#"+key+"_"+k).replace(/\./g,'\\.')).text(Math.round(v*100));
 				})
 			}
 		})
 
 		$WEEK = data.week;
 		if ($WEEK > 0) {
-			$("#tot_cost_inventory").text(Math.round(sum(data.data.cost_inventory)).toLocaleString());
-			$("#tot_cost_backorder").text(Math.round(sum(data.data.cost_backorder)).toLocaleString());
-			$("#tot_cost_transport").text(Math.round(sum(data.data.cost_transport)).toLocaleString());
-			$("#tot_cost_total").text(Math.round(sum(data.data.cost_total)).toLocaleString());
-			$("#avg_fulfillment").text(Math.round(avg(data.data.fulfillment)*100));
-			$("#avg_green_score").text(Math.round(avg(data.data.green_score)*100));
+			$("#tot_cost_inventory").text(Math.round(sum(data.data.cost_inventory_sum)).toLocaleString());
+			$("#tot_cost_backorder").text(Math.round(sum(data.data.cost_backorder_sum)).toLocaleString());
+			$("#tot_cost_transport").text(Math.round(sum(data.data.cost_transport_sum)).toLocaleString());
+			$("#tot_cost_total").text(Math.round(sum(data.data.cost_total_sum)).toLocaleString());
+			$("#avg_fulfilment").text(Math.round(avg(data.data.fulfilment_avg)*100));
+			$("#avg_green_score").text(Math.round(avg(data.data.green_score_avg)*100));
 
 			$DATA = data.data;
 			update_plot();
@@ -94,7 +116,7 @@ function load_data() {
 			$("[id^=avg_]").each(function() { $(this).text('n/a'); });
 			$("[id^=cost_]").each(function() { $(this).text('n/a'); });
 			$("[id^=green_score_]").each(function() { $(this).text('n/a'); });
-			$("[id^=fulfillment_]").each(function() { $(this).text('n/a'); });
+			$("[id^=fulfilment_]").each(function() { $(this).text('n/a'); });
 
 			xsgChart0.data.datasets[0].data = [];
 			for (x in xsgChart1.data.datasets){
@@ -116,8 +138,8 @@ function update_plot() {
 	if (!$DATA.hasOwnProperty('orders')) return;  // data not initialized yet
 	if (($WEEK == xsgChart1.data.labels.length) && (xsgChart0.data.datasets[0].data.length > 0) && (previous_plot == data_item)) return;  // data didn't change
 
-	xsgChart0.data.labels=Object.keys($DATA.cost_total).map(function(x) {return x +'('+$PLAYERS[x]+')';});
-	xsgChart0.data.datasets[0].data=Object.values($DATA.cost_total);
+	xsgChart0.data.labels=Object.keys($DATA.cost_total_sum).map(function(x) {return x +'('+$PLAYERS[x]+')';});
+	xsgChart0.data.datasets[0].data=Object.values($DATA.cost_total_sum);
 	seq = palette(PALETTE_NAME, xsgChart0.data.labels.length).map(function(hex) { return '#' + hex; });
 	xsgChart0.data.datasets[0].borderColor = seq;
 	xsgChart0.data.datasets[0].backgroundColor = seq;
@@ -132,13 +154,19 @@ function update_plot() {
 	var chart1data = {}
 	var chart2data = {}
 
+	if (data_item == 'orders'){
+		$DEMANDS.forEach(function(val){
+			chart2data[val+'('+$PLAYERS[val]+')'] = $DATA[data_item][val].slice(0,$WEEK);});
+	}
+
 	if (data_item == 'inventory/backorders'){
 		chart1data['inventory'] = sum_elem($DATA.inventory).slice(0,$WEEK);
 		chart1data['backorders'] = sum_elem($DATA.backorder).slice(0,$WEEK).map(function(x) {return x * -1;});
 		$STATIONS.forEach(function(val){
 			chart2data[val+'('+$PLAYERS[val]+'):I'] = $DATA.inventory[val].slice(0,$WEEK);
 			chart2data[val+'('+$PLAYERS[val]+'):B'] = $DATA.backorder[val].slice(0,$WEEK).map(function(x) {return x * -1;});});
-  	} else if (data_item == 'inventory-backorders'){
+  	}
+	else if (data_item == 'inventory-backorders'){
 			var I_B = {};
 			$STATIONS.forEach(function(val){
 				for (i=0; i<= $WEEK; i++){
@@ -147,18 +175,21 @@ function update_plot() {
 			chart1data['inventory-backorders'] = sum_elem(I_B).slice(0,$WEEK);
 			$STATIONS.forEach(function(val){
 				chart2data[val+'('+$PLAYERS[val]+')'] =I_B[val].slice(0,$WEEK); });
-  	} else {
-		chart1data[data_item] = sum_elem($DATA[data_item]).slice(0,$WEEK);
+  	}
+	else {
+		if (['fulfilment','green_score'].includes(data_item)){
+			chart1data[data_item] = avg_elem($DATA[data_item]).slice(0,$WEEK);
+		} else {
+			chart1data[data_item] = sum_elem($DATA[data_item]).slice(0,$WEEK);
+		}
 		$STATIONS.forEach(function(val){
 			chart2data[val+'('+$PLAYERS[val]+')'] = $DATA[data_item][val].slice(0,$WEEK);});
   	}
 
-	if (data_item == 'orders'){
-		$DEMANDS.forEach(function(val){
-			chart2data[val+'('+$PLAYERS[val]+')'] = $DATA[data_item][val].slice(0,$WEEK);});
-	}
 	var unit = ' (units)';
 	if (['shipments','extra-shipments'].includes(data_item)) { unit = ' (trucks)'; }
+	if (['fulfilment','green_score'].includes(data_item)) { unit = ' (%)'; }
+	if (['cost'].includes(data_item)) { unit = ' ($)'; }
 
 	if (previous_plot == data_item){
 		var index = 0;
@@ -258,5 +289,5 @@ $(function() {
 	xsgChart1 = new Chart(ctx1,chrt1cfg);
 	xsgChart2 = new Chart(ctx2,chrt2cfg);
 
-	setInterval('load_data()', 5000); // run this every 5 seconds
+	setInterval('load_data()', $REFRESH_INTERVAL); // run this every $REFRESH_INTERVAL
 });

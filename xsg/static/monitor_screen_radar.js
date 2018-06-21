@@ -55,5 +55,5 @@ $(function() {
 							      options: {  title: { display: true },
 								     legend: {position: 'right', labels: { boxWidth: 20 } } } }
 	xsgChart = new Chart(document.getElementById("xsgChart").getContext('2d'),chrtcfg)
-	setInterval('load_data()', 5000); // run this every 5 seconds
+	setInterval('load_data()', $REFRESH_INTERVAL); // run this every $REFRESH_INTERVAL
 });

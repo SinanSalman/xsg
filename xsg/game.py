@@ -55,6 +55,7 @@ class Game(object):
         self.quick_backorder_recovery = False  # auto order method parameter: True or False
         self.expiry = 120  # game expiry in days
         self.turn_time = 90  # seconds, use -1 to disable
+        self.script = []
 
         # setting available config values
         for k,v in config.items():
@@ -121,8 +122,8 @@ class Game(object):
 
     def get_config(self):
         data = {}
-        for x in ['team_name', 'admin_password', 'play_password', 'weeks', 'expiry','turn_time','auto_order_method', 'quick_backorder_recovery']:
-            data[x] = getattr(self,x,None)
+        for x in ['team_name', 'admin_password', 'play_password', 'weeks', 'expiry','turn_time','auto_order_method', 'quick_backorder_recovery','script']:
+            data[x] = getattr(self,x,'')
         data['stations'] = []
         for x in self.manual_stations_names:
             data['stations'].append(self.network_stations[x].get_config())
@@ -182,7 +183,7 @@ class Game(object):
             node.process(week)
             if node_name not in self.demand_stations_names:
                 n += 1
-                self.kpi_customer_satisfaction[week] += node.kpi_fulfillment_rate[week]
+                self.kpi_customer_satisfaction[week] += node.kpi_fulfilment_rate[week]
                 self.kpi_green_score[week] += node.kpi_truck_utilization[week]
                 self.kpi_cost['inventory'][week] += node.kpi_weeklycost_inventory[week]
                 self.kpi_cost['backorder'][week] += node.kpi_weeklycost_backorder[week]
@@ -247,8 +248,10 @@ class Game(object):
                 report_txt += 'Ordering delay: {:}'.format(x.delay_ordering) + '\n'
                 report_txt += '     Customers: {:}'.format(', '.join([str(y.station_name) for y in x.customers])) + '\n'
                 report_txt += '     Suppliers: {:}'.format(', '.join([str(y.station_name) for y in x.suppliers])) + '\n'
-                report_txt += 'Production min: {:}'.format(x.production_min) + '\n'
-                report_txt += 'Production max: {:}'.format(x.production_max) + '\n'
+                report_txt += 'Order min: {:}'.format(x.order_min) + '\n'
+                report_txt += 'Order max: {:}'.format(x.order_max) + '\n'
+                report_txt += ' Ship min: {:}'.format(x.ship_min) + '\n'
+                report_txt += ' Ship max: {:}'.format(x.ship_max) + '\n'
                 report_txt += ' Wk ' + \
                     'Fullfill ' + \
                     'TruckUtl ' + \
@@ -268,7 +271,7 @@ class Game(object):
                         report_txt += '{:3}\n'.format(week+1)
                     else:
                         report_txt += '{:3} {:} {:} {:} {:} {:} {:} '.format(week+1,
-                                                                             percent(x.kpi_fulfillment_rate[week]),
+                                                                             percent(x.kpi_fulfilment_rate[week]),
                                                                              percent(x.kpi_truck_utilization[week]),
                                                                              currency(x.kpi_weeklycost_inventory[week]),
                                                                              currency(x.kpi_weeklycost_backorder[week]),
@@ -291,7 +294,7 @@ class Game(object):
             x = self.network_stations[y]
             if type(x) is not stations.Demand:
                 report_txt += '{:>20} {:} {:} {:} {:} {:} {:} {:8d}'.format(y,
-                                                                            percent(sum(x.kpi_fulfillment_rate)/(w+1)),
+                                                                            percent(sum(x.kpi_fulfilment_rate)/(w+1)),
                                                                             percent(sum(x.kpi_truck_utilization)/(w+1)),
                                                                             currency(sum(x.kpi_weeklycost_inventory)),
                                                                             currency(sum(x.kpi_weeklycost_backorder)),

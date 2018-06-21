@@ -1,60 +1,74 @@
 {% extends "layout.html" %}
 {% block body %}
-  <div class=about>
-    <button type="button" class="InScreenButton" onclick="javascript:history.back()">Back</button>
-    <table>
-      <tr>
-        <td class=about_a>ABOUT XSG</td>
-        <td class=about_b>The X-Supply Game (XSG) is an educational simulation game designed to
-          help participants explore the dynamics of real supply chains. The game is a
-          team-based multi-player online simulation where each player take on the
-          role of managing a virtual station in a simple supply chain. The game is
-          played in turns, in which players analyze weekly standing of their stations
-          and decide on orders to suppliers and shipments to customers. At the end of
-          the game, individual and team performances are analyzed and discussed in groups.<br>
-          XSG is influenced by previous supply chain management games, such as
-          the beer game and the wood supply game, but it introduces several new
-          concepts, including: configurable supply chain design, production capacity,
-          triple-bottom-line objective, and transportation environmental and monetary impacts.
-          The XSG name comes from the game ability to be configured in various supply chain designs,
-          allowing it to model almost any "X" supply chain.
-        </td>
-      </tr>
-      <tr>
-        <td class=about_a>SOURCE CODE</td>
-        <td class=about_b>XSG source code and additional information can be found at
-          its GitHub <a href="https://sinansalman.github.io/xsg/">website</a>.
-        </td>
-      </tr>
-      <tr>
-        <td class=about_a>CONTRIBUTE</td>
-        <td class=about_b>Code submissions are greatly appreciated and highly encouraged.
-          Please send fixes, enhancements, etc. to SinanSalman at GitHub or sinan[dot]salman[at]zu[dot]ac[dot]ae</td>
-      </tr>
-      <tr>
-        <td class=about_a>LICENSE</td>
-        <td class=about_b>XSG is released under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GPLv3</a> license.</td>
-      </tr>
-      <tr>
-        <td class=about_a>PUBLICATIONS</td>
-        <td class=about_b>Salman S, Alaswad S. The X-Supply Game. Proceedings of the 2018 Industrial and Systems Engineering Conference, 2018.</td>
-      </tr>
-      <tr>
-        <td class=about_a>DISCLAIMERS</td>
-        <td class=about_b>1) XSG uses Google analytics to measure its use.<br>
-            2) Every game includes an expiry parameter to keep the server from crowding.
-            When a game expires its setup and data are automatically erased.
-            You may choose to export your game setup file to keep on your computer,
-            however, game player data cannot be exported.<br>
-            3) Games and/or games player data may also be lost due to upgrades or
-            new feature introductions. You may export your game setup file and take screen
-            shots of the game results to keep on your computer.
-        </td>
-      </tr>
-      <tr>
-        <td class=about_a>COPYRIGHT</td>
-        <td class=about_b>2017-2018 Sinan Salman, PhD</td>
-      </tr>
-    </table>
-  </div>
+  <table>
+    <tr>
+      <td>
+        <div class=about>
+          <table>
+            <tr>
+              <td class=about_a>ABOUT XSG</td>
+              <td class=about_b>The X-Supply Game (XSG) is an educational simulation game designed to
+                help participants explore the dynamics of real supply chains. The game is a
+                team-based multi-player online simulation where each player take on the
+                role of managing a virtual station in a simple supply chain. The game is
+                played in turns, in which players analyze weekly standing of their stations
+                and decide on orders to suppliers and shipments to customers. At the end of
+                the game, individual and team performances are analyzed and discussed in groups.<br>
+                XSG is influenced by previous supply chain management games, such as
+                the beer game and the wood supply game, but it introduces several new
+                concepts, including: configurable supply chain design, ordering snd shipping capacities,
+                triple-bottom-line objective, and transportation environmental and monetary impacts.
+                The XSG name comes from the game ability to be configured in various supply chain designs,
+                allowing it to model almost any "X" supply chain.
+              </td>
+            </tr>
+            <tr>
+              <td class=about_a>SOURCE CODE</td>
+              <td class=about_b>XSG source code and additional information can be found at
+                its GitHub <a href="https://sinansalman.github.io/xsg/">website</a>.
+              </td>
+            </tr>
+            <tr>
+              <td class=about_a>CONTRIBUTE</td>
+              <td class=about_b>Code submissions are greatly appreciated and highly encouraged.
+                Please send fixes, enhancements, etc. to SinanSalman at GitHub or sinan[dot]salman[at]zu[dot]ac[dot]ae</td>
+            </tr>
+            <tr>
+              <td class=about_a>LICENSE</td>
+              <td class=about_b>XSG is released under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GPLv3</a> license.</td>
+            </tr>
+            <tr>
+              <td class=about_a>PUBLICATIONS</td>
+              <td class=about_b>
+                - Salman S, Alaswad S. The X-Supply Game. Proceedings of the 2018 Industrial and Systems Engineering Conference, 2018. <a href="https://sinansalman.github.io/xsg/docs/2018IISE_XSG_Paper.pdf">Download pdf</a><br><br>
+                - XSG presentation at the 2018 Industrial and Systems Engineering Conference, 2018. <a href="https://sinansalman.github.io/xsg/docs/2018IISE_XSG_Presentation.pdf">Download pdf</a>
+              </td>
+            </tr>
+            <tr>
+              <td class=about_a>DISCLAIMERS</td>
+              <td class=about_b>1) XSG uses Google analytics to measure its use.<br>
+                  2) Every game includes an expiry parameter to keep the server from crowding.
+                  When a game expires its setup and data are automatically erased.
+                  You may choose to export your game setup file to keep on your computer,
+                  however, game player data cannot be exported.<br>
+                  3) Games and/or games player data may also be lost due to upgrades or
+                  new feature introductions. You may export your game setup file and take screen
+                  shots of the game results to keep on your computer.
+              </td>
+            </tr>
+            <tr>
+              <td class=about_a>COPYRIGHT</td>
+              <td class=about_b>2017-2018 Sinan Salman, PhD</td>
+            </tr>
+          </table>
+        </div>
+        <div class="vertical-menu">
+          <a href="{{ url_for('index') }}">Go to XSG main menu</a>
+        </div>
+      </td>
+      <td class=logo_large_cell>
+        <img class=logo_large src="{{ url_for('static', filename='xsg.png') }}" alt="XSG">
+      </td>
+    </tr>
+  </table>
 {% endblock %}

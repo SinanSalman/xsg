@@ -1,10 +1,21 @@
 {% extends "layout.html" %}
 {% block body %}
+<script src="https://cdn.jsdelivr.net/npm/google-palette@1.1.0/palette.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
+<script type=text/javascript>{
+  var $GAMES_LIST = {{ games_list|tojson|safe }};
+  var $REFRESH_INTERVAL = {{ RefreshInterval|tojson|safe }};}
+</script>
 <script type=text/javascript src="{{url_for('static', filename='multi-game-monitor.js') }}{{ js_debug() }}"></script>
-<script type=text/javascript>{var $GAMES_LIST = {{ games_list|tojson|safe }}; }</script>
    <h2>Multi-game monitoring screen</h2>
-      <button type="button" class="InScreenButton" onclick="javascript:history.back()">Back</button>
    <span id=reset_msg></span>
+   <select id=data_item onchange="update_plot()" class='plot_select'>
+      <option>cost
+      <option>fulfilment
+      <option>green_score
+   </select>
+   <div><canvas id="xsgChart" height="125"></canvas></div>
+   <br>
    <table class=tbl_results>
          <tr>
             <th><label>Game</label></th>
@@ -13,28 +24,32 @@
             <th><label>B.order</label></th>
             <th><label>Trucks</label></th>
             <th><label>Cost</label></th>
-            <th><label>Fulfillment</label></th>
+            <th><label>Fulfilment</label></th>
             <th><label>Green</label></th>
             <th><label>Disconnected</label></th>
             <th><label>Waiting</label></th>
+            <th><label>Actions</label></th>
          </tr>
-      {% for i in games_list|sort %}
+      {% for i in games_list | sort %}
          <tr>
-            <td>
-               <div style="display:inline-flex">
-                  <label>{{i}}&nbsp</label>
-                  <button type="button" class="InScreenButton" title="Restart game" onclick="javascript:reset_game('{{i}}')">⟲</button>
-               </div>
-            </td>
+            <td><label>{{i}}</label></td>
             <td><label id="week_{{i}}">?</label></td>
             <td><label id="inventory_{{i}}">?</label></td>
             <td><label id="backorder_{{i}}">?</label></td>
             <td><label id="trucks_{{i}}">?</label></td>
             <td>$<label id="cost_{{i}}">?</label></td>
-            <td><label id="fulfillment_{{i}}">?</label>%</td>
+            <td><label id="fulfilment_{{i}}">?</label>%</td>
             <td><label id="greenscore_{{i}}">?</label>%</td>
-            <td><label id="disconnected_{{i}}">?</label></td>
-            <td><label id="waiting_{{i}}">?</label></td>
+            <td><table id="disconnected_{{i}}"></table></td>
+            <td><table id="waiting_{{i}}"></table></td>
+            <td>
+               <div style="display:inline-flex">
+                  {% if actions_allowed[i] == true %}
+                  <button type="button" class="InScreenButton" title="Restart game" onclick="javascript:reset_game('{{i}}')">⟲</button>
+                  {% endif %}
+                  <button type="button" class="InScreenButton" title="Game results" onclick="javascript:window.open('{{ url_for('monitor_screen',game_name=i) }}')">Results</button>
+               </div>
+            </td>
          </tr>
       {% endfor %}
    </table>

@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
-   <script src="{{url_for('static', filename='palette.js') }}"></script>
+   <script src="https://cdn.jsdelivr.net/npm/google-palette@1.1.0/palette.min.js"></script>
    <script type=text/javascript src="{{url_for('static', filename='monitor_screen.js') }}{{ js_debug() }}"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
    <script type=text/javascript>{
@@ -8,10 +8,9 @@
       var $WEEKS = {{ static_info.weeks|tojson|safe }}
       var $STATIONS = {{ static_info.stations|tojson|safe }};
       var $DEMANDS = {{ static_info.demands|tojson|safe }};
-      var $PLAYERS = {{ static_info.station_players|tojson|safe }};}
+      var $PLAYERS = {{ static_info.station_players|tojson|safe }};
+      var $REFRESH_INTERVAL = {{ static_info.RefreshInterval_GameMonitor|tojson|safe }};}
    </script>
-   <button type="button" class="InScreenButton" onclick="javascript:history.back()">Back</button>
-   <button type="button" class="InScreenButton" onclick="javascript:location.reload();">Refresh Player Names</button>
    <div class=reg_text>
       <span class=output>{{ static_info.game }}</span>
       , in week <span class=output id=Week>?</span> of {{ static_info.weeks }}
@@ -28,18 +27,18 @@
                <th>Backorder</th>
                <th>Transport</th>
                <th>Total</th>
-               <th>Fulfillment</th>
+               <th>fulfilment</th>
                <th>Green_Score</th>
             </tr>
             {% for st in static_info.stations %}
                <tr>
-                  <td><span id="station_{{ st }}">n/a</span></td>
-                  <td>$<span id="cost_inventory_{{ st }}">n/a</span></td>
-                  <td>$<span id="cost_backorder_{{ st }}">n/a</span></td>
-                  <td>$<span id="cost_transport_{{ st }}">n/a</span></td>
-                  <td>$<span id="cost_total_{{ st }}">n/a</span></td>
-                  <td><span id="fulfillment_{{ st }}">n/a</span>%</td>
-                  <td><span id="green_score_{{ st }}">n/a</span>%</td>
+                  <td><label id="station_{{ st }}">n/a</label></td>
+                  <td>$<label id="cost_inventory_sum_{{ st }}">n/a</label></td>
+                  <td>$<label id="cost_backorder_sum_{{ st }}">n/a</label></td>
+                  <td>$<label id="cost_transport_sum_{{ st }}">n/a</label></td>
+                  <td>$<label id="cost_total_sum_{{ st }}">n/a</label></td>
+                  <td><label id="fulfilment_avg_{{ st }}">n/a</label>%</td>
+                  <td><label id="green_score_avg_{{ st }}">n/a</label>%</td>
                </tr>
             {% else %}
                <tr>
@@ -54,12 +53,12 @@
             {% endfor %}
             <tr>
                <th>Totals($)/Averages(%)</td>
-               <th>$<span id=tot_cost_inventory>n/a</span></th>
-               <th>$<span id=tot_cost_backorder>n/a</span></th>
-               <th>$<span id=tot_cost_transport>n/a</span></th>
-               <th>$<span id=tot_cost_total>n/a</span></th>
-               <th><span id=avg_fulfillment>n/a</span>%</th>
-               <th><span id=avg_green_score>n/a</span>%</th>
+               <th>$<label id=tot_cost_inventory>n/a</label></th>
+               <th>$<label id=tot_cost_backorder>n/a</label></th>
+               <th>$<label id=tot_cost_transport>n/a</label></th>
+               <th>$<label id=tot_cost_total>n/a</label></th>
+               <th><label id=avg_fulfilment>n/a</label>%</th>
+               <th><label id=avg_green_score>n/a</label>%</th>
             </tr>
          </table>
       </div>
@@ -67,6 +66,9 @@
    </div>
    <br>
    <select id=data_item onchange="update_plot()" class='plot_select'>
+      <option>cost
+      <option>fulfilment
+      <option>green_score
       <option>orders
       <option>inventory/backorders
       <option>inventory-backorders
@@ -77,6 +79,8 @@
    <div><canvas id="xsgChart1" height="125"></canvas></div>
    <div><canvas id="xsgChart2" height="125"></canvas></div>
    <div class="vertical-menu">
+     <a href="javascript:location.reload();">Refresh Player Names</a>
+     <a href="javascript:hidallstationsdata()">Toggle Visible Stations</a>
      <a href="{{ url_for('show_network',game_name=static_info.game) }}">Show supply chain</a>
      <a href="{{ url_for('monitor_screen_radar',game_name=static_info.game) }}">Compare stations</a>
    </div>

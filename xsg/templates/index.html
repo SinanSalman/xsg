@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
+<script type=text/javascript src="{{url_for('static', filename='modernizr-custom.js') }}{{ js_debug() }}"></script>
+<div class="BrowserAlertBox"><table><tr><td class=icon>!</td><td>An outdated browser detected. Please update your browser or try a different one.<br>If you continue, your player_screen may not render correctly.<br>Supported broswers include: Chrome(v58+), Firefox(v54+), Safari(v11+), and Edge(v16+).</td></tr></table></div>
   <h2>Welcome to XSG, what would you like to do?</h2>
   <div class="vertical-menu">
     <a href="{{ url_for('demo') }}">Try demo game</a>

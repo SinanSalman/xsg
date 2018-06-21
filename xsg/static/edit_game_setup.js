@@ -72,7 +72,7 @@ var schema_station = {
     },
     "initial_inventory": {
       "type": "number",
-      "title": "Initial Inventory",
+      "title": "Initial inventory",
       "minimum": 0
     },
     "safety_stock": {
@@ -80,13 +80,21 @@ var schema_station = {
       "title": "Safety stock",
       "minimum": 0
     },
-    "production_min": {
+    "order_min": {
       "type": "string",
-      "title": "Weekly production minimum"
+      "title": "Weekly order minimum"
     },
-    "production_max": {
+    "order_max": {
       "type": "string",
-      "title": "Weekly production maximum"
+      "title": "Weekly order maximum"
+    },
+    "ship_min": {
+      "type": "string",
+      "title": "Weekly ship minimum"
+    },
+    "ship_max": {
+      "type": "string",
+      "title": "Weekly ship maximum"
     }
   }
 }
@@ -103,6 +111,23 @@ var schema_connection = {
     "cust": {
       "type": "string",
       "title": "Customer",
+      "required": true
+    }
+  }
+}
+
+var schema_script = {
+  "type": "object",
+  // "uniqueItems": true,
+  "properties": {
+    "week": {
+      "type": "string",
+      "title": "Week",
+      "required": true
+    },
+    "msg": {
+      "type": "string",
+      "title": "Message",
       "required": true
     }
   }
@@ -167,6 +192,11 @@ var schema = {
       "type": "array",
       "title": "Network connections",
       "items": schema_connection
+    },
+    "script": {
+      "type": "array",
+      "title": "Game script",
+      "items": schema_script
     }
   }
 }
@@ -178,6 +208,19 @@ var options = {
       "method": "post",
     },
     "buttons": {
+      "ToggleAuto": {
+        "title": "Toggle Auto-Decisions",
+        "click": function() {
+          self = this;
+          var S = self.getValue();
+          for (i in S['stations']){
+            S['stations'][i]['auto_decide_order_qty'] = !S['stations'][i]['auto_decide_order_qty'];
+            S['stations'][i]['auto_decide_ship_qty'] = !S['stations'][i]['auto_decide_ship_qty'];
+          }
+          self.setValue(S);
+          this.refreshValidationState(true);
+        }
+      },
       "back": {
         "title": "Cancel",
         "click": function() {
@@ -298,13 +341,23 @@ var options = {
             "safety_stock": {
               "placeholder": "Safety stock level, used in auto-ordering logic; default = 4 units"
             },
-            "production_min": {
-              "placeholder": "Array of minimum production limits; e.g. 10, 10, 20, 30, 10",
+            "order_min": {
+              "placeholder": "Array of minimum ordering limits; e.g. 10, 10, 20, 30, 10",
               "type": "textarea",
               "rows": 2
             },
-            "production_max": {
-              "placeholder": "Array of maximum production limits; e.g. 20, 20, 40, 50, 20",
+            "order_max": {
+              "placeholder": "Array of maximum ordering limits; e.g. 20, 20, 40, 50, 20",
+              "type": "textarea",
+              "rows": 2
+            },
+            "ship_min": {
+              "placeholder": "Array of minimum shipping limits; e.g. 10, 10, 20, 30, 10",
+              "type": "textarea",
+              "rows": 2
+            },
+            "ship_max": {
+              "placeholder": "Array of maximum shipping limits; e.g. 20, 20, 40, 50, 20",
               "type": "textarea",
               "rows": 2
             }
@@ -322,6 +375,22 @@ var options = {
             },
             "cust": {
               "placeholder": "Unique Customer ID; see demand points and stations"
+            }
+
+          }
+        }
+      }
+    },
+    "script": {
+      "toolbarSticky": true,
+      "fields": {
+        "item": {
+          "fields": {
+            "week": {
+              "placeholder": "week number"
+            },
+            "msg": {
+              "placeholder": "message to players"
             }
 
           }
@@ -351,7 +420,8 @@ var view = {
       "auto_order_method": "column-2",
       "demands": "column-3",
       "stations": "column-3",
-      "connections": "column-3"
+      "connections": "column-3",
+      "script": "column-3"
     }
   }
 }

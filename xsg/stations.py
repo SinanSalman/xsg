@@ -2,6 +2,7 @@ from collections import deque
 from math import floor, ceil, inf
 import time
 import logging
+from flask import flash
 
 logger = logging.getLogger(__name__)
 
@@ -34,9 +35,9 @@ class Station():
     """
 
     __player_name_counter = 1
-    __MAX_NODE_SUPPLIERS = 3  # limited to 3 for display interface design purposes
-    __MAX_NODE_CUSTOMERS = 3  # limited to 3 for display interface design purposes
-    __Default_MAX_ORDER = inf  # used when no maximum is set
+    __MAX_NODE_SUPPLIERS = 4  # limited to 4 for display interface design purposes
+    __MAX_NODE_CUSTOMERS = 4  # limited to 4 for display interface design purposes
+    __Default_PlayerInput_MAX = inf  # used when no maximum is set
 
     def __init__(self,game,config):
         self.game = game
@@ -64,7 +65,7 @@ class Station():
         self.kpi_weeklycost_backorder = [0] * game.weeks
         self.kpi_weeklycost_transport = [0] * game.weeks
         self.kpi_total_cost = [0] * game.weeks
-        self.kpi_fulfillment_rate = [0] * game.weeks
+        self.kpi_fulfilment_rate = [0] * game.weeks
         self.kpi_truck_utilization = [0] * game.weeks
         self.kpi_shipment_trucks = [0] * game.weeks
 
@@ -85,14 +86,16 @@ class Station():
         self.last_communication_time = 0
         self.week_turn_completed = -1
 
-        self.production_min = [0] * game.weeks
-        self.production_max = [self.__Default_MAX_ORDER]*game.weeks
+        self.order_min = [0] * game.weeks
+        self.order_max = [self.__Default_PlayerInput_MAX]*game.weeks
+        self.ship_min = [0] * game.weeks
+        self.ship_max = [self.__Default_PlayerInput_MAX]*game.weeks
 
         # setting available config values
         for k,v in config.items():
             if k.lower() in ['transport_size','delay_shipping','delay_ordering','initial_queue_quantity','initial_inventory']:
                 setattr(self,k.lower(),max(v,1))  # value must not be less than 1 for logic to work; delays b/c of queues
-            elif k.lower() in ['player_name','production_min','production_max']:
+            elif k.lower() in ['player_name','order_min','order_max','ship_min','ship_max']:
                 if v:  # ignore empty values, and keep defaults
                     setattr(self,k.lower(),v)
             else:
@@ -100,18 +103,37 @@ class Station():
 
         self.inventory = [self.initial_inventory] + [0] * (game.weeks-1)
 
-        # ensuring production_min and production_max are of equal lengths
-        a = len(self.production_min)
-        b = len(self.production_max)
-        if a > b:
-            logger.warning("Warning - in {:}, production_min has more values than production_max, filling missing values with {:}}".format(
-                game.team_name + ':' + self.station_name, self.__Default_MAX_ORDER))
-            self.production_max.extend([self.__Default_MAX_ORDER]*(a-b))
-        if a < b:
-            logger.warning("Warning - in {:}, production_max has more values than production_min, filling missing values with 0".format(
-                game.team_name + ':' + self.station_name))
-            self.production_max.extend([0]*(b-a))
-        self.production_limits = list(zip(range(1,game.weeks+1),self.production_min,self.production_max))  # for display purposes
+        # ensuring order/ship min/max arrays cover all weeks
+        attr_list = ['order_min','order_max','ship_min','ship_max']
+        for k in attr_list:
+            v = getattr(self,k)
+            v_len = len(v)
+            fil = 0
+            if k[-3:] == 'max':
+                fil = self.__Default_PlayerInput_MAX
+            if v_len < game.weeks:
+                msg = "Warning - in {:}, {:} has too few values to cover for game weeks ({:} out of {:}), filling missing values with {:}".format(
+                    game.team_name + ':' + self.station_name, k, v_len, game.weeks, fil)
+                logger.warning(msg)
+                flash(msg)
+                v.extend([fil]*(game.weeks-v_len))
+        # ensuring order/ship min <= max for all weeks
+        for w in range(game.weeks):
+            if self.order_min[w] > self.order_max[w]:
+                msg = "Warning - {:} has order_min > order_max for week {:}, replacing order_min with {:}".format(
+                    game.team_name + ':' + self.station_name, w+1, 0)
+                logger.warning(msg)
+                flash(msg)
+                self.order_min[w] = 0
+            if self.ship_min[w] > self.ship_max[w]:
+                msg = "Warning - {:} has ship_min > ship_max for week {:}, replacing ship_min with {:}".format(
+                    game.team_name + ':' + self.station_name, w+1, 0)
+                logger.warning(msg)
+                flash(msg)
+                self.ship_min[w] = 0
+        # preparing limits for display in player screen
+        self.ordering_limits = list(zip(range(1,game.weeks+1),self.order_min,self.order_max))
+        self.shipping_limits = list(zip(range(1,game.weeks+1),self.ship_min,self.ship_max))
 
     def reset(self):
         # initialize variables
@@ -119,7 +141,7 @@ class Station():
         self.kpi_weeklycost_backorder = [0] * self.game.weeks
         self.kpi_weeklycost_transport = [0] * self.game.weeks
         self.kpi_total_cost = [0] * self.game.weeks
-        self.kpi_fulfillment_rate = [0] * self.game.weeks
+        self.kpi_fulfilment_rate = [0] * self.game.weeks
         self.kpi_truck_utilization = [0] * self.game.weeks
         self.kpi_shipment_trucks = [0] * self.game.weeks
 
@@ -160,13 +182,15 @@ class Station():
 
     def get_config(self):
         data = {}
-        for x in ['name','player_name','auto_decide_ship_qty','auto_decide_order_qty','holding_cost','backorder_cost','transport_cost','transport_size','delay_shipping','delay_ordering','initial_queue_quantity','initial_inventory','safety_stock','production_min','production_max']:
-            data[x] = getattr(self,x,None)
+        for x in ['name','player_name','auto_decide_ship_qty','auto_decide_order_qty','holding_cost','backorder_cost',
+                  'transport_cost','transport_size','delay_shipping','delay_ordering','initial_queue_quantity','initial_inventory',
+                  'safety_stock','order_min','order_max','ship_min','ship_max']:
+            data[x] = getattr(self,x,'')
         return data
 
     def add_customer(self,customer):
         if len(self.customers) == self.__MAX_NODE_CUSTOMERS:
-            raise ValueError('Too many customer connections per node({:}), max is {:}, check game ({:}) settings data (Connections)'.format(self.station_name,self.__MAX_NODE_CUSTOMERS,self.game.team_name))
+            raise ValueError('Too many customer connections per node({:}:{:}), max is {:}, check game ({:}) settings data (Connections)'.format(self.game.team_name,self.station_name,self.__MAX_NODE_CUSTOMERS,self.game.team_name))
         self.customers.extend([customer])
         self.backorder[customer.station_name] = [0] * self.game.weeks
         self.received_po[customer.station_name] = [0] * self.game.weeks
@@ -174,7 +198,7 @@ class Station():
 
     def add_supplier(self,supplier):
         if len(self.suppliers) == self.__MAX_NODE_SUPPLIERS:
-            raise ValueError('Too many supplier connections per node ({:}), max is {:}, check game ({:}) settings data (Connections)'.format(self.station_name,self.__MAX_NODE_SUPPLIERS,self.game.team_name))
+            raise ValueError('Too many supplier connections per node ({:}:{:}), max is {:}, check game ({:}) settings data (Connections)'.format(self.game.team_name,self.station_name,self.__MAX_NODE_SUPPLIERS,self.game.team_name))
         self.suppliers.extend([supplier])
         self.outstanding_orders_to_suppliers[supplier.station_name] = [0] * self.game.weeks
         self.sent_po[supplier.station_name] = [0] * self.game.weeks
@@ -203,18 +227,54 @@ class Station():
 
     def set_player_order_and_shipment(self,week,order,shipment):
         if self.week_turn_completed < week:
-            if sum(order.values()) > self.production_max[week] or sum(order.values()) < self.production_min[week]:
-                logger.warning(
-                    'Warning - player passed order value(s) that is out of production limits')
-            if sum(shipment.values()) > self.inventory[week] or sum(shipment.values()) < 0:
-                logger.error(
-                    'Error - player passed shipment value(s) that is out of inventory limits, using zeros instead')
+            for k in order.keys():
+                if order[k] < 0:
+                    msg = 'Error - player passed negative order value; using zeros instead.(st:{:}:{:}/sup:{:}/wk:{:}/po:{:})'.format(self.game.team_name,self.station_name,k,week,order[k])
+                    logger.error(msg)
+                    flash(msg)
+                    order[k] = 0
+            for k in shipment.keys():
+                if shipment[k] < 0:
+                    msg = 'Error - player passed negative shipment value; using zeros instead.(st:{:}:{:}/cus:{:}/wk:{:}/shp:{:})'.format(self.game.team_name,self.station_name,k,week,shipment[k])
+                    logger.error(msg)
+                    flash(msg)
+                    shipment[k] = 0
+            orders_sum = sum(order.values())
+            shipments_sum = sum(shipment.values())
+            totaldemand = week_sum(self.received_po,week) + week_sum(self.backorder,week)
+            if orders_sum > self.order_max[week] or orders_sum < self.order_min[week]:
+                msg = 'Warning - player passed order value(s) that is out of ordering limits.(st:{:}:{:}/wk:{:}/sum.po:{:})'.format(self.game.team_name,self.station_name,week,orders_sum)
+                logger.warning(msg)
+                flash(msg)
+            if (shipments_sum > self.ship_max[week] or shipments_sum < self.ship_min[week]) and shipments_sum > 0:
+                msg = 'Warning - player passed ship value(s) that is out of shipping limits.(st:{:}:{:}/wk:{:}/sum.shp:{:})'.format(self.game.team_name,self.station_name,week,shipments_sum)
+                logger.warning(msg)
+                flash(msg)
+            if self.ship_min[week] > self.inventory[week] and shipments_sum > 0:
+                msg = 'Error - player inventory is below shipping mimumum limit, must ship 0 units for this week; using zeros instead.(st:{:}:{:}/wk:{:}/sum.shp:{:})'.format(self.game.team_name,self.station_name,week,shipments_sum)
+                logger.warning(msg)
+                flash(msg)
+                for k in shipment.keys():
+                    shipment[k] = 0
+                shipments_sum = 0
+            if self.ship_min[week] > totaldemand and shipments_sum > 0:
+                msg = 'Error - total customer(s) demand (POs+BackOrders) is below the shipping mimumum limit, must ship 0 units for this week; using zeros instead.(st:{:}:{:}/wk:{:})'.format(self.game.team_name,self.station_name,week)
+                logger.warning(msg)
+                flash(msg)
+                for k in shipment.keys():
+                    shipment[k] = 0
+                shipments_sum = 0
+            if shipments_sum > self.inventory[week] or shipments_sum < 0:
+                msg = 'Error - player passed shipment value(s) that is out of inventory limits, using zeros instead.(st:{:}:{:}/wk:{:}/sum.shp:{:})'.format(self.game.team_name,self.station_name,week,shipments_sum)
+                logger.error(msg)
+                flash(msg)
                 for k in shipment.keys():
                     shipment[k] = 0
             for k,v in shipment.items():
                 if v > (self.received_po[k][week] + self.backorder[k][week]):
-                    logger.error(
-                        'Error - player passed shipment value that is greater than the requested amount (PO+backorder) for: {:}. Defaulting to zero instead'.format(k))
+                    msg = 'Error - player passed shipment value that is greater than the requested amount (PO+backorder). Defaulting to zero instead.(st:{:}:{:}/cus:{:}/wk:{:}/shp:{:})'.format(self.game.team_name,self.station_name,k,week,v)
+                    logger.error(msg)
+                    flash(msg)
                     shipment[k] = 0
             self.player_order.append(order)
             self.player_shipment.append(shipment)
@@ -222,12 +282,19 @@ class Station():
             self.week_turn_completed += 1
             return True
         else:
-            logger.warning(
-                'Warning - player sent multiple orders/shipments for the same week. Most recent data ignored.')
+            msg = 'Warning - player sent multiple orders/shipments for the same week. Most recent data ignored.(st:{:}:{:}/wk:{:})'.format(self.game.team_name,self.station_name,week)
+            logger.warning(msg)
+            flash(msg)
             return False
 
-    def limit_production(self,value,week):
-        return min(max(value,self.production_min[week]),self.production_max[week])
+    def limit_ordering(self,value,week):
+        return min(max(value,self.order_min[week]),self.order_max[week])
+
+    def limit_shipping(self,value,week):
+        if self.ship_min[week] > self.inventory[week]:
+            return 0
+        value = min(value,self.inventory[week])
+        return min(max(value,self.ship_min[week]),self.ship_max[week])
 
     def decide_order(self,week):
         if self.auto_decide_order_qty:
@@ -237,7 +304,7 @@ class Station():
                 total_order = max(0,backorders + self.safety_stock - self.inventory[week] - round(outstanding_orders/2))  # use half the outstanding orders to help recover from backorders faster
             else:
                 total_order = max(0,backorders + self.safety_stock - self.inventory[week] - outstanding_orders)
-            total_order = self.limit_production(total_order,week)
+            total_order = self.limit_ordering(total_order,week)
             order = {}
             n_suppliers = len(self.suppliers)
             if n_suppliers == 0:
@@ -265,7 +332,7 @@ class Station():
     def decide_shipment(self,week):
         if self.auto_decide_ship_qty:
             backorders = week_sum(self.backorder,week)
-            total_shipment = min(backorders,self.inventory[week])
+            total_shipment = self.limit_shipping(backorders,week)
             shipment = {}
             if total_shipment > 0:  # also means backorders is not zero
                 for k,v in self.backorder.items():
@@ -357,9 +424,9 @@ class Station():
         self.kpi_total_cost[week] = self.kpi_weeklycost_inventory[week] + self.kpi_weeklycost_backorder[week] + self.kpi_weeklycost_transport[week]
         self.kpi_shipment_trucks[week] = trucks
         if (backorders+shipments) > 0:
-            self.kpi_fulfillment_rate[week] = shipments/(backorders+shipments)
+            self.kpi_fulfilment_rate[week] = shipments/(backorders+shipments)
         else:
-            self.kpi_fulfillment_rate[week] = 1
+            self.kpi_fulfilment_rate[week] = 1
         if trucks > 0:
             self.kpi_truck_utilization[week] = (shipments/self.transport_size)/trucks
         else:
@@ -375,7 +442,7 @@ class Demand():
 
     """
 
-    __MAX_NODE_SUPPLIERS = 2
+    __MAX_NODE_SUPPLIERS = 4
 
     def __init__(self,game,config):
         self.game = game
@@ -403,7 +470,7 @@ class Demand():
     def get_config(self):
         data = {}
         for x in ['name','demand']:
-            data[x] = getattr(self,x,None)
+            data[x] = getattr(self,x,'')
         return data
 
     def add_supplier(self,supplier):  # its okay to have multiple suppliers to the same demand point; they all will receive identical demand, and each will need to satisfy the full demand on its own

@@ -14,5 +14,5 @@ function load_data() {
 };
 
 $(function() {
-  setInterval('load_data()', 5000); // run every 5 seconds
+  setInterval('load_data()', $REFRESH_INTERVAL); // run every $REFRESH_INTERVAL
 });

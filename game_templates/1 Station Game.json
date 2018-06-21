@@ -5,6 +5,10 @@
       "weeks": 45,
       "expiry": 7,
       "turn_time": 60,
+      "script": [
+                  {"week":1,"msg":"Welcome! this is a single station/player game."},
+                  {"week":45,"msg":"You are about to complete the simulation."}
+                ],
       "demands": [{
                   "name": "Customer",
                   "demand": [4, 4, 4, 4, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
@@ -24,8 +28,10 @@
                   "initial_queue_quantity": 4,
                   "initial_inventory": 4,
                   "safety_stock": 0,
-                  "production_min": [],
-                  "production_max": []
+                  "order_min": [],
+                  "order_max": [],
+                  "ship_min": [],
+                  "ship_max": []
             }
       ],
       "connections": [{

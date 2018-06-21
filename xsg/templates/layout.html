@@ -29,10 +29,16 @@
         <h1><img class="logo" src="{{ url_for('static', filename='xsg.png') }}" alt="XSG">XSG</h1>
       </div>
       <div class=metanav>
-        <a href="{{ url_for('cmd',cmd='about') }}">About</a> &ensp; {% if session.password %}
-        <a href="{{ url_for('cmd',cmd='logout') }}">Logout</a> &ensp; {% endif %} {% if session.player_name %}
-        <a href="{{ url_for('cmd',cmd='reset') }}">Home</a> {% else %}
-        <a href="{{ url_for('index') }}">Home</a> {% endif %}
+        <a href="javascript:history.back()" tabindex=-1>⇦ Go Back</a> &ensp;
+        <a href="{{ url_for('cmd',cmd='about') }}" tabindex=-1>About</a> &ensp;
+        {% if session.password %}
+          <a href="{{ url_for('cmd',cmd='logout') }}" tabindex=-1>Logout</a> &ensp;
+        {% endif %}
+        {% if session.player_name %}
+          <a href="{{ url_for('cmd',cmd='reset') }}" tabindex=-1>Home</a>
+        {% else %}
+          <a href="{{ url_for('index') }}" tabindex=-1>Home</a>
+        {% endif %}
       </div>
     </div>
     {% for message in get_flashed_messages() %}

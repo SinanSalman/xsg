@@ -3,6 +3,7 @@ import time
 import json
 import pickle
 import atexit
+import numpy
 from math import floor, inf
 from xsg.json_pprint import MyEncoder
 from xsg import game, app
@@ -51,6 +52,10 @@ app.secret_key = config_data['SECRET_KEY']  # set the secret key for 'session'
 app.config.update(config_data)
 app.config.from_envvar('XSG_SETTINGS', silent=True)
 SecondsAway_to_Disconnect = int(config_data['SECONDSAWAY_TO_DISCONNECT'])
+RefreshInterval_PlayScreen = int(config_data['SECONDS_TO_REFRESH_PLAY_SCREEN']) * 1000
+RefreshInterval_GameMonitor = int(config_data['SECONDS_TO_REFRESH_GAME_MONITOR']) * 1000
+RefreshInterval_GameDebug = int(config_data['SECONDS_TO_REFRESH_GAME_DEBUG']) * 1000
+MaxGamesMonitored = int(config_data['MAX_GAMES_MONITORED'])
 ALLOWED_EXTENSIONS = set(['json'])
 
 GAMES = {}
@@ -113,6 +118,15 @@ def list_avg(x):
         return sum(x)/len(x)
 
 
+def list_cum_avg(x):
+    if len(x) == 0:
+        return 0
+    else:
+        cum_sum = [numpy.asscalar(i) for i in numpy.cumsum(x)]
+        cum_avg = [cum_sum[i]/(i+1) for i in range(len(cum_sum))]
+        return cum_avg
+
+
 def toHTMLtbl(x):
     if type(x) is list:
         return ' ' + str(x).replace('\'','').replace('[','').replace(']','').replace('(','<tr><td>')\
@@ -123,7 +137,7 @@ def txt2list(l):
     try:
         return [inf if x == 'Infinity' else int(x) for x in l.split(',')]
     except Exception as e:
-        msg = "Could not convert text list '{:}' to numeric list. Exception {:} - {:!r}.".format(l,type(e).__name__, e.args)
+        msg = "Could not convert text list '{0}' to numeric list. Exception {1} - {2!r}.".format(l,type(e).__name__, e.args)
         log_msg(msg)
         raise ValueError(msg)
 
@@ -190,7 +204,7 @@ def cmd(cmd):
         return render_template('create_game_from_template.html', data=templates)
     if cmd == 'monitor_games':
         kill_expired_games()
-        return render_template('multi-game-select.html', games_list=[' ']+[x.team_name for x in GAMES.values()])
+        return render_template('multi-game-select.html', MaxGamesMonitored=[x for x in range(MaxGamesMonitored)], games_list=[' ']+[x.team_name for x in GAMES.values()])
     if cmd == 'under_construction':
         return 'Sorry, this part is still under construction'
     return "Unknown cmd: " + cmd
@@ -239,6 +253,7 @@ def demo():
         id = '{:03d}'.format(random.randint(1, 999))
     if os.path.isfile(demo_filename):
         try:
+            game_data = {}
             with open(demo_filename) as game_file:
                 game_data = json.load(game_file)
             game_data['team_name'] = 'demo_'+id
@@ -250,7 +265,7 @@ def demo():
             session['selected_station'] = 'wholesaler'
             return render_template('demo_start.html', id=id)
         except Exception as e:
-            if game_data['team_name'] in GAMES.keys():
+            if game_data.get('team_name','') in GAMES.keys():
                 del GAMES[game_data['team_name']]
             show_error("Could not create demo game",e)
     else:
@@ -353,6 +368,7 @@ def play_screen():
                    'turn_time': GAMES[this_game].turn_time,
                    'number_of_players': len(GAMES[this_game].manual_stations_names),
                    'secondsaway_to_disconnect':SecondsAway_to_Disconnect,
+                   'RefreshInterval_PlayScreen':RefreshInterval_PlayScreen,
                    'suppliers':[x.station_name for x in GAMES[this_game].network_stations[this_station].suppliers],
                    'customers':[x.station_name for x in GAMES[this_game].network_stations[this_station].customers],
                    'auto_ship':GAMES[this_game].network_stations[this_station].auto_decide_ship_qty,
@@ -372,16 +388,20 @@ def play_screen():
 @app.route('/monitor_games_screen', methods=['POST','GET'])
 def monitor_games_screen():
     games_list = []
+    actions_allowed = {}  # (T/F) for each
     if request.method == 'GET':  # when user reloads page
         pass
     if request.method == 'POST':
-        for i in range(10):
+        for i in [x for x in range(MaxGamesMonitored)]:
             G = request.form.get('selected_game'+str(i))
             P = request.form.get('password'+str(i))
-            if G in GAMES.keys():
+            if G not in games_list and G in GAMES.keys():
+                games_list.append(G)
                 if GAMES[G].admin_password == P:
-                    games_list.append(G)
-    return render_template('multi-game-monitor.html', games_list=games_list)
+                    actions_allowed[G] = True
+                else:
+                    actions_allowed[G] = False
+    return render_template('multi-game-monitor.html', games_list=games_list, actions_allowed=actions_allowed,RefreshInterval=RefreshInterval_GameMonitor)
 
 
 @app.route('/monitor_screen', methods=['GET'])
@@ -394,7 +414,8 @@ def monitor_screen():
                    'weeks':GAMES[this_game].weeks,
                    'stations':GAMES[this_game].auto_stations_names + GAMES[this_game].manual_stations_names,
                    'demands':GAMES[this_game].demand_stations_names,
-                   'station_players':{k:v.player_name for (k,v) in GAMES[this_game].network_stations.items()}}
+                   'station_players':{k:v.player_name for (k,v) in GAMES[this_game].network_stations.items()},
+                   'RefreshInterval_GameMonitor':RefreshInterval_GameMonitor}
     return render_template('monitor_screen.html', static_info=static_info)
 
 
@@ -406,7 +427,8 @@ def monitor_screen_radar():
         return redirect(url_for('admin_game'))
     static_info = {'game':this_game,
                    'stations':GAMES[this_game].auto_stations_names + GAMES[this_game].manual_stations_names,
-                   'station_players':{k:v.player_name for (k,v) in GAMES[this_game].network_stations.items()}}
+                   'station_players':{k:v.player_name for (k,v) in GAMES[this_game].network_stations.items()},
+                   'RefreshInterval_GameMonitor':RefreshInterval_GameMonitor}
     return render_template('monitor_screen_radar.html', static_info=static_info)
 
 
@@ -506,6 +528,7 @@ def edit_game_setup():
                 if this_game in GAMES.keys():
                     del GAMES[this_game]
                 show_error("Could not create game", e)
+                return redirect(request.url)
         else:
             flash('Error: no action type provided; must include edit or create actions call.')
             return redirect(request.url)
@@ -535,7 +558,7 @@ def import_game_file():
             GAMES[game_data['team_name']] = game.Game(game_data)
             flash(game_data['team_name'] + ': Game successfully added.')
         except Exception as e:
-            if game_data['team_name'] in GAMES.keys():
+            if game_data.get('team_name','') in GAMES.keys():
                 del GAMES[game_data['team_name']]
             show_error("Could not create game",e)
     return redirect(url_for('cmd',cmd='import_game'))
@@ -565,7 +588,7 @@ def show_game_setup():
             game_setup = GAMES[game_name].get_config()
             return render_template('show_game_setup.html', setup=game_setup, sort_keys=True)
         except Exception as e:
-            show_error("Could get game setup data",e)
+            show_error("Couldn't get game setup data",e)
             return redirect(url_for('admin_game'))
 
 
@@ -637,7 +660,7 @@ def reset_game():
             try:
                 GAMES[game_name].reset()
             except Exception as e:
-                return jsonify({'Result': '{:}:{:}'.format(type(e).__name__, e.args)})
+                return jsonify({'Result': '{0}:{1!r}'.format(type(e).__name__, e.args)})
             return jsonify({'Result': ''})  # game_name + ' was successfully reset.'}) # # reset effects are obvious on the screen, no need for a message
         else:
             return jsonify({'Result': game_name + ' is no longer valid.'})
@@ -700,7 +723,8 @@ def debug_screen():
         session['selected_game'] = this_game
     static_info = {'game':this_game,
                    'weeks':GAMES[this_game].weeks,
-                   'number_of_players':len(GAMES[this_game].manual_stations_names)}
+                   'number_of_players':len(GAMES[this_game].manual_stations_names),
+                   'RefreshInterval_GameDebug':RefreshInterval_GameDebug}
     return render_template('admin_debug.html', static_info=static_info)
 #
 #
@@ -728,8 +752,12 @@ def change_game_settings():
         for x in game_settings['demands']:
             x['demand'] = txt2list(x['demand'])
         for x in game_settings['stations']:
-            x['production_max'] = txt2list(x['production_max'])
-            x['production_min'] = txt2list(x['production_min'])
+            x['order_max'] = txt2list(x['order_max'])
+            x['order_min'] = txt2list(x['order_min'])
+            x['ship_max'] = txt2list(x['ship_max'])
+            x['ship_min'] = txt2list(x['ship_min'])
+        for x in game_settings['script']:
+            x['week'] = int(x['week'])
         if this_game != game_settings['team_name']:
             if game_settings['team_name'] in GAMES.keys():
                 return jsonify({'result':False,'msg':'Couldn\'t save game setting: the changed game name conflicts with an existing game.'})
@@ -759,7 +787,7 @@ def submit():
         GAMES[this_game].SetPlayerTurnData(
             this_station, this_week, suppliers, customers)
     except Exception as e:
-        log_msg("Issue in player submission. Game: {:}. Exception: {:} - {:!r}".format(this_game,type(e).__name__, e.args))
+        log_msg("Issue in player submission. Game: {0}. Exception: {1} - {2!r}".format(this_game,type(e).__name__, e.args))
     return Response("this will not change the user view"), 204
 
 
@@ -784,6 +812,8 @@ def get_station_status():
 
     return jsonify({
         'current_week':w,
+        'server_time':current_time,
+        'script': next((i for i in GAMES[this_game].script if i['week']==w+1),{'msg':''})['msg'],
         'turn_start_time':GAMES[this_game].turn_start_time,
         'game_done':GAMES[this_game].game_done,
         'players_completed_turn':GAMES[this_game].players_completed_turn,
@@ -793,15 +823,18 @@ def get_station_status():
         'cost_backorder':game.currency(sum(GAMES[this_game].network_stations[this_station].kpi_weeklycost_backorder)),
         'cost_transport':game.currency(sum(GAMES[this_game].network_stations[this_station].kpi_weeklycost_transport)),
         'total_cost':game.currency(sum(GAMES[this_game].network_stations[this_station].kpi_total_cost)),
-        'fulfillment_rate':game.percent(list_avg(GAMES[this_game].network_stations[this_station].kpi_fulfillment_rate[:w])),
+        'fulfilment_rate':game.percent(list_avg(GAMES[this_game].network_stations[this_station].kpi_fulfilment_rate[:w])),
         'truck_utilization':game.percent(list_avg(GAMES[this_game].network_stations[this_station].kpi_truck_utilization[:w])),
         'inventory':GAMES[this_game].network_stations[this_station].inventory[w],
         'backorder':show_week(GAMES[this_game].network_stations[this_station].backorder,w),
         'incomming_order':show_week(GAMES[this_game].network_stations[this_station].received_po,w),
         'incomming_delivery':show_week(GAMES[this_game].network_stations[this_station].inbound,w),
-        'production_min':str(GAMES[this_game].network_stations[this_station].production_min[w]),
-        'production_max':str(GAMES[this_game].network_stations[this_station].production_max[w]),
-        'production_limits':toHTMLtbl([('wk','min','max')]+GAMES[this_game].network_stations[this_station].production_limits[w+1:w+11])})
+        'order_min':str(GAMES[this_game].network_stations[this_station].order_min[w]),
+        'order_max':str(GAMES[this_game].network_stations[this_station].order_max[w]),
+        'ship_min':str(GAMES[this_game].network_stations[this_station].ship_min[w]),
+        'ship_max':str(GAMES[this_game].network_stations[this_station].ship_max[w]),
+        'ordering_limits':toHTMLtbl([('wk','min','max')]+GAMES[this_game].network_stations[this_station].ordering_limits[w+1:w+11]),
+        'shipping_limits':toHTMLtbl([('wk','min','max')]+GAMES[this_game].network_stations[this_station].shipping_limits[w+1:w+11])})
 
 
 @app.route('/get_game_status', methods=['GET'])
@@ -823,11 +856,14 @@ def get_game_status():
 
     stations_list = GAMES[this_game].manual_stations_names + GAMES[this_game].auto_stations_names
     demands_list = GAMES[this_game].demand_stations_names
-    cost_inventory = {k:[0]*current_week for k in stations_list}
-    cost_backorder = {k:[0]*current_week for k in stations_list}
-    cost_transport = {k:[0]*current_week for k in stations_list}
-    cost_total = {k:[0]*current_week for k in stations_list}
-    fulfillment = {k:[0]*current_week for k in stations_list}
+    cost_inventory_sum = {k:[0] for k in stations_list}
+    cost_backorder_sum = {k:[0] for k in stations_list}
+    cost_transport_sum = {k:[0] for k in stations_list}
+    cost_total_sum = {k:[0] for k in stations_list}
+    fulfilment_avg = {k:[0] for k in stations_list}
+    green_score_avg = {k:[0] for k in stations_list}
+    cost = {k:[0]*current_week for k in stations_list}
+    fulfilment = {k:[0]*current_week for k in stations_list}
     green_score = {k:[0]*current_week for k in stations_list}
     shipments = {k:[0]*current_week for k in stations_list}
     extra_shipments = {k:[0]*current_week for k in stations_list}
@@ -841,15 +877,18 @@ def get_game_status():
         if x in GAMES[this_game].demand_stations_names:
             orders[x] = S.demand
         else:
-            cost_inventory[x] = sum(S.kpi_weeklycost_inventory[:current_week])
-            cost_backorder[x] = sum(S.kpi_weeklycost_backorder[:current_week])
-            cost_transport[x] = sum(S.kpi_weeklycost_transport[:current_week])
-            cost_total[x] = sum(S.kpi_total_cost[:current_week])
-            fulfillment[x] = sum(S.kpi_fulfillment_rate[:current_week])/(current_week)
-            green_score[x] = sum(S.kpi_truck_utilization[:current_week])/(current_week)
+            cost_inventory_sum[x] = sum(S.kpi_weeklycost_inventory[:current_week])
+            cost_backorder_sum[x] = sum(S.kpi_weeklycost_backorder[:current_week])
+            cost_transport_sum[x] = sum(S.kpi_weeklycost_transport[:current_week])
+            cost_total_sum[x] = sum(S.kpi_total_cost[:current_week])
+            fulfilment_avg[x] = sum(S.kpi_fulfilment_rate[:current_week])/(current_week)
+            green_score_avg[x] = sum(S.kpi_truck_utilization[:current_week])/(current_week)
+            cost[x] = S.kpi_total_cost
+            fulfilment[x] = S.kpi_fulfilment_rate
+            green_score[x] = S.kpi_truck_utilization
             shipments[x] = S.kpi_shipment_trucks
             for w in range(current_week):
-                extra_shipments[x][w] = floor(S.kpi_shipment_trucks[w]*(1-S.kpi_fulfillment_rate[w]))
+                extra_shipments[x][w] = floor(S.kpi_shipment_trucks[w]*(1-S.kpi_fulfilment_rate[w]))
             backorder[x] = game.combine_weekly(S.backorder)
             inventory[x] = S.inventory
             orders[x] = game.combine_weekly(S.sent_po)
@@ -862,11 +901,14 @@ def get_game_status():
         'disconnected':[GAMES[this_game].network_stations[x].station_name for x in GAMES[this_game].manual_stations_names
                         if (current_time - GAMES[this_game].network_stations[x].last_communication_time) >= SecondsAway_to_Disconnect],
         'data':{
-            'cost_inventory':cost_inventory,
-            'cost_backorder':cost_backorder,
-            'cost_transport':cost_transport,
-            'cost_total':cost_total,
-            'fulfillment':fulfillment,
+            'cost_inventory_sum':cost_inventory_sum,
+            'cost_backorder_sum':cost_backorder_sum,
+            'cost_transport_sum':cost_transport_sum,
+            'cost_total_sum':cost_total_sum,
+            'fulfilment_avg':fulfilment_avg,
+            'green_score_avg':green_score_avg,
+            'cost':cost,
+            'fulfilment':fulfilment,
             'green_score':green_score,
             'shipments':shipments,
             'extra-shipments':extra_shipments,
@@ -880,7 +922,7 @@ def get_game_status():
 @app.route('/get_game_status_radar', methods=['GET'])
 def get_game_status_radar():
     data = {}
-    best = {'inventory':float("inf"),'backorder':float("inf"),'transport':float("inf"),'fulfillment':0,'green':0}
+    best = {'inventory':float("inf"),'backorder':float("inf"),'transport':float("inf"),'fulfilment':0,'green':0}
     this_game = request.args.get('game','')
     if this_game not in GAMES.keys():
         log_msg("'{:}' is no longer a valid game. AJAX get_game_status_radar request ignored.".format(this_game))
@@ -895,18 +937,18 @@ def get_game_status_radar():
         data[x] = {'inventory':sum(S.kpi_weeklycost_inventory[:current_week]),
                    'backorder':sum(S.kpi_weeklycost_backorder[:current_week]),
                    'transport':sum(S.kpi_weeklycost_transport[:current_week]),
-                   'fulfillment':sum(S.kpi_fulfillment_rate[:current_week])/(current_week),
+                   'fulfilment':sum(S.kpi_fulfilment_rate[:current_week])/(current_week),
                    'green':sum(S.kpi_truck_utilization[:current_week])/(current_week)}
         for k,v in data[x].items():
             if k in ['inventory','backorder','transport']:
                 if v < best[k]:
                     best[k] = v
-            if k in ['fulfillment','green']:
+            if k in ['fulfilment','green']:
                 if v > best[k]:
                     best[k] = v
     for x in stations_list:
         for k,v in data[x].items():
-            if k in ['fulfillment','green']:
+            if k in ['fulfilment','green']:
                 if best[k] > 0:
                     data[x][k] = data[x][k]/best[k]
             if k in ['inventory','backorder','transport']:
@@ -927,27 +969,39 @@ def get_games_status():
             current_week = GAMES[g].current_week
             if current_week >= GAMES[g].weeks:
                 current_week = GAMES[g].weeks - 1
+
+            # list disconnected/waiting stations, making sure missing stations are replaced with an empty entry for sake of constant table size creation
+            waiting_list = [(GAMES[g].network_stations[x].station_name,) for x in GAMES[g].manual_stations_names if GAMES[g].network_stations[x].week_turn_completed < current_week]
+            waiting_list.extend((('---',),)*(len(GAMES[g].manual_stations_names)-len(waiting_list)))
+            disconnected_list = [(GAMES[g].network_stations[x].station_name,) for x in GAMES[g].manual_stations_names if (current_time - GAMES[g].network_stations[x].last_communication_time) >= SecondsAway_to_Disconnect]
+            disconnected_list.extend((('---',),)*(len(GAMES[g].manual_stations_names)-len(disconnected_list)))
+
             if current_week == 0:
                 data[g] = {'week':current_week+1,
-                           'waiting':[GAMES[g].network_stations[x].station_name for x in GAMES[g].manual_stations_names if GAMES[g].network_stations[x].week_turn_completed < current_week],
-                           'disconnected':[GAMES[g].network_stations[x].station_name for x in GAMES[g].manual_stations_names if (current_time - GAMES[g].network_stations[x].last_communication_time) >= SecondsAway_to_Disconnect],
-                           'inventory':0,'backorder':0,'trucks':0,'cost':0,'fulfillment':0,'greenscore':0}
+                           'waiting':toHTMLtbl(waiting_list).replace(',',''),
+                           'disconnected':toHTMLtbl(disconnected_list).replace(',',''),
+                           'inventory':0,'backorder':0,'trucks':0,'cost':0,'fulfilment':0,'greenscore':0,'totalcost':[0],'avgfulfilment':[0],'avggreenscore':[0]}
             else:
                 if GAMES[g].game_done:
-                    fulfillment = GAMES[g].kpi_customer_satisfaction
+                    cost = GAMES[g].kpi_cost['total']
+                    fulfilment = GAMES[g].kpi_customer_satisfaction
                     greenscore = GAMES[g].kpi_green_score
                 else:
-                    fulfillment = GAMES[g].kpi_customer_satisfaction[:current_week]
+                    cost = GAMES[g].kpi_cost['total'][:current_week]
+                    fulfilment = GAMES[g].kpi_customer_satisfaction[:current_week]
                     greenscore = GAMES[g].kpi_green_score[:current_week]
                 data[g] = {'week':current_week+1,
-                           'waiting':[GAMES[g].network_stations[x].station_name for x in GAMES[g].manual_stations_names if GAMES[g].network_stations[x].week_turn_completed < current_week],
-                           'disconnected':[GAMES[g].network_stations[x].station_name for x in GAMES[g].manual_stations_names if (current_time - GAMES[g].network_stations[x].last_communication_time) >= SecondsAway_to_Disconnect],
+                           'waiting':toHTMLtbl(waiting_list).replace(',',''),
+                           'disconnected':toHTMLtbl(disconnected_list).replace(',',''),
                            'inventory':sum([x.inventory[current_week] for x in GAMES[g].network_stations.values() if type(x) is not game.stations.Demand]),
                            'backorder':sum([week_sum(x.backorder,current_week) for x in GAMES[g].network_stations.values() if type(x) is not game.stations.Demand]),
                            'trucks':sum(GAMES[g].kpi_trucks),
-                           'cost':sum(GAMES[g].kpi_cost['total']),
-                           'fulfillment':list_avg(fulfillment),
-                           'greenscore':list_avg(greenscore)}
+                           'cost':sum(cost),
+                           'fulfilment':list_avg(fulfilment),
+                           'greenscore':list_avg(greenscore),
+                           'totalcost':[numpy.asscalar(x) for x in numpy.cumsum(cost)],
+                           'avgfulfilment':list_cum_avg(fulfilment),
+                           'avggreenscore':list_cum_avg(greenscore)}
     return jsonify(data)
 
 

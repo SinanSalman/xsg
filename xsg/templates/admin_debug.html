@@ -2,6 +2,7 @@
 <title>X Supply Chain Game (XSG)</title>
 <script type=text/javascript>
   $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+  $REFRESH_INTERVAL = {{ static_info.RefreshInterval_GameDebug|tojson|safe }};
   $GAME = {{ static_info.game|tojson|safe }}.trim().replace(/ /g, '%20');
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

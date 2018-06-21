@@ -33,6 +33,24 @@ img.demo-img {
   width: 60%
 }
 
+img.logo {
+  display: inline;
+  height: 0.7em;
+  margin: 0 0.1em 0 0;
+}
+
+img.logo_large {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 80%;
+}
+
+td.logo_large_cell {
+  vertical-align: top;
+  width: 35vw;
+}
+
 div.ver {
   text-align: right;
 }
@@ -40,6 +58,13 @@ div.ver {
 span.version {
   font-size: 1vw;
   padding-right: 1vw;
+}
+
+span.week_msg {
+  font-size: 1.25vw;
+  color: darkred;
+  font-weight: bold;
+  font-style: italic;
 }
 
 table.tbl_results {
@@ -54,9 +79,10 @@ table.tbl_results tr {
 }
 
 table.tbl_results th, table.tbl_results td {
+  white-space: nowrap;
   text-align: right;
   padding: 0.25vw;
-  width: 7vw;
+  width: 6vw;
   font-size: 1.25vw;
 }
 
@@ -85,9 +111,33 @@ table.tbl_c {
   margin-right: auto;
 }
 
-.about {
+.cssgrid .BrowserAlertBox {
+  display: none;
+}
+.no-cssgrid .BrowserAlertBox {
   font-size: 1.5vw;
+  color: #9F6000;
+  background-color: #FEEFB3;
+  padding:10px;
+  margin:10px 0;
+  border: 0.25vw solid lightgrey;
+  box-shadow:2px 2px 2px grey;
+}
+
+.cssgrid .icon {
+  display: none;
+}
+.no-cssgrid .icon {
+  font-size: 5vw;
+  font-weight: bold;
+  width:1em;
+  margin-right:.2em;
+  text-align:center;
+}
+
+.about {
   font-family: serif;
+  font-size: 1.5vw;
   width: 60vw;
 }
 
@@ -142,22 +192,19 @@ table.tbl_c {
   border-bottom: 0.25vw solid #eee;
 }
 
-img.logo {
-  display: inline;
-  height: 0.7em;
-  margin: 0 0.1em 0 0;
-}
-
 .metanav {
   font-size: 1.5vw;
   align-self: flex-end;
 }
 
 .flash {
-  font-size: 1.75vw;
+  font-size: 1.5vw;
+  color: #004777;
   background: #cee5F5;
-  padding: 1vw;
-  border: 0.5vw solid #aacbe2;
+  padding: 10px;
+  margin: 10px 0;
+  border: 0.25vw solid lightgrey;
+  box-shadow:2px 2px 2px grey;
 }
 
 .output {
@@ -232,7 +279,7 @@ img.logo {
   grid-gap: 0.25vw;
 }
 
-.cell11, .cell12, .cell13, .cell21, .cell22, .cell23 {
+.cell11, .cell12, .cell13, .cell21, .cell22, .cell23, .cell3_ {
   font-size: 1.5vw;
   padding: 1vw;
   line-height: 150%;
@@ -273,6 +320,12 @@ img.logo {
 .cell23 {
   grid-column: 3;
   grid-row: 2;
+  text-align: center;
+}
+
+.cell3_ {
+  grid-column: 1/4;
+  grid-row: 3;
   text-align: center;
 }
 

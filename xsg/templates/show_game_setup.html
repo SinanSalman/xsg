@@ -1,9 +1,8 @@
 {% extends "layout.html" %} {% block body %}
 <div>
-  <button type="button" class="InScreenButton" onclick="javascript:history.back()">Back</button>
   <ul>
     {% for key, value in setup.items() %}
-      {% if key not in ['stations','demands','connections'] %}
+      {% if key not in ['stations','demands','connections','script'] %}
         <li>
           {{ key }}: {{value}}
           {% if key == 'expiry' %}days{% endif %}
@@ -26,7 +25,11 @@
             {% endfor %}
           </ul>
         </li>
-      {% elif key == 'connections' %}
+      {% endif %}
+    {% endfor %}
+
+    {% for key, value in setup.items() %}
+      {% if key == 'connections' %}
         <li>
           {{ key }}:
             <ul>
@@ -38,6 +41,18 @@
       {% endif %}
     {% endfor %}
 
+    {% for key, value in setup.items() %}
+      {% if key == 'script' %}
+        <li>
+          {{ key }}:
+            <ul>
+            {% for dict in value %}
+              <li>{{ dict.week }} : {{ dict.msg }}</li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% endif %}
+    {% endfor %}
   </ul>
 </div>
 {% endblock %}
