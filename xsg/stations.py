@@ -229,13 +229,13 @@ class Station():
         if self.week_turn_completed < week:
             for k in order.keys():
                 if order[k] < 0:
-                    msg = 'Error - player passed negative order value; using zeros instead.(st:{:}:{:}/sup:{:}/wk:{:}/po:{:})'.format(self.game.team_name,self.station_name,k,week,order[k])
+                    msg = 'Error - player passed negative order value; using zeros instead.({:}:{:}/sup:{:}/wk:{:}/po:{:})'.format(self.game.team_name,self.station_name,k,week,order[k])
                     logger.error(msg)
                     flash(msg)
                     order[k] = 0
             for k in shipment.keys():
                 if shipment[k] < 0:
-                    msg = 'Error - player passed negative shipment value; using zeros instead.(st:{:}:{:}/cus:{:}/wk:{:}/shp:{:})'.format(self.game.team_name,self.station_name,k,week,shipment[k])
+                    msg = 'Error - player passed negative shipment value; using zeros instead.({:}:{:}/cus:{:}/wk:{:}/shp:{:})'.format(self.game.team_name,self.station_name,k,week,shipment[k])
                     logger.error(msg)
                     flash(msg)
                     shipment[k] = 0
@@ -243,36 +243,36 @@ class Station():
             shipments_sum = sum(shipment.values())
             totaldemand = week_sum(self.received_po,week) + week_sum(self.backorder,week)
             if orders_sum > self.order_max[week] or orders_sum < self.order_min[week]:
-                msg = 'Warning - player passed order value(s) that is out of ordering limits.(st:{:}:{:}/wk:{:}/sum.po:{:})'.format(self.game.team_name,self.station_name,week,orders_sum)
+                msg = 'Warning - player passed order value(s) that is out of ordering limits.({:}:{:}/wk:{:}/sum.po:{:})'.format(self.game.team_name,self.station_name,week,orders_sum)
                 logger.warning(msg)
                 flash(msg)
             if (shipments_sum > self.ship_max[week] or shipments_sum < self.ship_min[week]) and shipments_sum > 0:
-                msg = 'Warning - player passed ship value(s) that is out of shipping limits.(st:{:}:{:}/wk:{:}/sum.shp:{:})'.format(self.game.team_name,self.station_name,week,shipments_sum)
+                msg = 'Warning - player passed ship value(s) that is out of shipping limits.({:}:{:}/wk:{:}/sum.shp:{:})'.format(self.game.team_name,self.station_name,week,shipments_sum)
                 logger.warning(msg)
                 flash(msg)
             if self.ship_min[week] > self.inventory[week] and shipments_sum > 0:
-                msg = 'Error - player inventory is below shipping mimumum limit, must ship 0 units for this week; using zeros instead.(st:{:}:{:}/wk:{:}/sum.shp:{:})'.format(self.game.team_name,self.station_name,week,shipments_sum)
+                msg = 'Error - player inventory is below shipping mimumum limit, must ship 0 units for this week; using zeros instead.({:}:{:}/wk:{:}/sum.shp:{:})'.format(self.game.team_name,self.station_name,week,shipments_sum)
                 logger.warning(msg)
                 flash(msg)
                 for k in shipment.keys():
                     shipment[k] = 0
                 shipments_sum = 0
             if self.ship_min[week] > totaldemand and shipments_sum > 0:
-                msg = 'Error - total customer(s) demand (POs+BackOrders) is below the shipping mimumum limit, must ship 0 units for this week; using zeros instead.(st:{:}:{:}/wk:{:})'.format(self.game.team_name,self.station_name,week)
+                msg = 'Error - total customer(s) demand (POs+BackOrders) is below the shipping mimumum limit, must ship 0 units for this week; using zeros instead.({:}:{:}/wk:{:})'.format(self.game.team_name,self.station_name,week)
                 logger.warning(msg)
                 flash(msg)
                 for k in shipment.keys():
                     shipment[k] = 0
                 shipments_sum = 0
             if shipments_sum > self.inventory[week] or shipments_sum < 0:
-                msg = 'Error - player passed shipment value(s) that is out of inventory limits, using zeros instead.(st:{:}:{:}/wk:{:}/sum.shp:{:})'.format(self.game.team_name,self.station_name,week,shipments_sum)
+                msg = 'Error - player passed shipment value(s) that is out of inventory limits, using zeros instead.({:}:{:}/wk:{:}/sum.shp:{:})'.format(self.game.team_name,self.station_name,week,shipments_sum)
                 logger.error(msg)
                 flash(msg)
                 for k in shipment.keys():
                     shipment[k] = 0
             for k,v in shipment.items():
                 if v > (self.received_po[k][week] + self.backorder[k][week]):
-                    msg = 'Error - player passed shipment value that is greater than the requested amount (PO+backorder). Defaulting to zero instead.(st:{:}:{:}/cus:{:}/wk:{:}/shp:{:})'.format(self.game.team_name,self.station_name,k,week,v)
+                    msg = 'Error - player passed shipment value that is greater than the requested amount (PO+backorder). Defaulting to zero instead.({:}:{:}/cus:{:}/wk:{:}/shp:{:})'.format(self.game.team_name,self.station_name,k,week,v)
                     logger.error(msg)
                     flash(msg)
                     shipment[k] = 0
@@ -282,7 +282,7 @@ class Station():
             self.week_turn_completed += 1
             return True
         else:
-            msg = 'Warning - player sent multiple orders/shipments for the same week. Most recent data ignored.(st:{:}:{:}/wk:{:})'.format(self.game.team_name,self.station_name,week)
+            msg = 'Warning - player sent multiple orders/shipments for the same week. Most recent data ignored.({:}:{:}/wk:{:})'.format(self.game.team_name,self.station_name,week)
             logger.warning(msg)
             flash(msg)
             return False

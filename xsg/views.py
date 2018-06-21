@@ -39,7 +39,7 @@ def show_error(m: str, e: Exception):
 ################################################################################
 log_msg('****** XSG server started')
 log_msg('   Local working folder location: ' + os.getcwd())
-log_msg('   Current instance location:     ' + app.instance_path)
+# log_msg('   Current instance location:     ' + app.instance_path)
 app.config.from_object(__name__)  # load config from this file
 try:
     with open('./xsg/config.json') as config_file:  # Load default config and override config from an environment variable
@@ -47,7 +47,8 @@ try:
     log_msg('   Read config from ' + os.getcwd() + '/xsg/config.json')
 except Exception as e:
     show_error('Error in reading XSG\'s config file',e)
-config_data['GameStatusData'] = os.path.join(app.instance_path, config_data['GameStatusData'])
+# config_data['GameStatusData'] = os.path.join(app.instance_path, config_data['GameStatusData'])
+config_data['GameStatusData'] = os.getcwd() + '/instance/' + config_data['GameStatusData']
 app.secret_key = config_data['SECRET_KEY']  # set the secret key for 'session'
 app.config.update(config_data)
 app.config.from_envvar('XSG_SETTINGS', silent=True)
@@ -97,9 +98,10 @@ def load_games_state():
             GAMES.clear()
             GAMES.update(pickle.load(f))
             kill_expired_games()
+            log_msg('   loaded previous game state file: ' + app.config['GameStatusData'])
             return True
     else:
-        log_msg('   previous gastate file not found: ' + app.config['GameStatusData'])
+        log_msg('   previous game state file not found: ' + app.config['GameStatusData'])
     return False
 
 
