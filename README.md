@@ -4,10 +4,10 @@
 The X-Supply Game (**XSG**) is an educational simulation game used to help participants explore the dynamics of real supply chains. The game is a team-based multi-player online simulation where each player take on the role of managing a virtual station in a simple supply chain. The game is played in turns, in which players analyze weekly standing of their stations and decide on orders to suppliers and shipment to customers. At the end of the game, individual and team performances are analyzed and discussed in groups.
 XSG is influenced by previous supply chain management games, such as the beer game and the wood supply game, but it introduces several new concepts, including:
 
-*   **Configurable supply chain design**: the simulated simple supply chain can be of virtually any design; number of nodes, number of layers, number of suppliers/customers per node (although this is currently limited to two for user interface simplicity). The only exception is supply chains containing closed-loop.
-*   **Ordering/Shipping capacity**: stations (or SC nodes) can have weekly ordering/shipping minimums and/or maximums.
-*   **Triple-bottom-line objective**: previous games focused on cost and/or service level as performance metrics for the game. XGS extends this with an environmental objective to require the player to consider all three objectives while making turn decisions. This is incorporated through the shipping decision, as explained in the transportation point below.
-*   **Transportation environmental/monetary**: a game can be configured to require players to consider either, or both ordering (from suppliers) and shipping (to customers) decisions. In the latter case, an environmental impact based on truck utilization results and necessitate that the player make decisions on order deferment or partial shipping to minimize the environmental impact. In addition, a transportation cost results, allowing the players to fully engage in triple bottom line evaluation.
+*   **Configurable supply chain design**: the simulated simple supply chain can be of virtually any design; number of nodes, number of layers, number of suppliers/customers per node (although this is currently limited to four for user interface simplicity). The only exception is that XSG cannot model supply chains containing closed-loops.
+*   **Ordering/Shipping capacity**: stations (i.e. supply chain nodes) can have weekly ordering and/or shipping minimums and maximums.
+*   **Triple-bottom-line objective**: previous games focused on cost and/or service level as performance metrics for the game. XSG extends this with an environmental objective to require the player to consider all three objectives while making decisions. This is incorporated through the shipping decision, as explained in the transportation point below.
+*   **Transportation environmental/monetary**: a game can be configured to require players to consider either, or both ordering (from suppliers) and shipping (to customers) decisions. In the latter case, an environmental impact based on truck utilization results and necessitate that players make decisions on order deferment or partial shipping to minimize the environmental impact. In addition, a transportation cost results, allowing the players to fully engage in triple bottom line evaluation.
 
 Other features include:
 
@@ -47,7 +47,7 @@ You may also install XSG on Web server. The following tutorials provide help on 
 *   [How To Flask, Python, Centos7, Apache, uWSGI 7](https://mitchjacksontech.github.io/How-To-Flask-Python-Centos7-Apache-uWSGI/).
 
 ## Source Code ##
-The source distribution contains Python, JavaScript, CSS, HTML code, in addition to a sample of supply chain game designs, including: the root-beer game, the wood supply game. The code makes use of several libraries including Python-Flask, jQuery, AlpacaJs, charts.js, and vis.js. The game analytical engine is written exclusively in Python.
+The source distribution contains Python, JavaScript, CSS, HTML code, in addition to a sample of supply chain game designs, including: the root-beer game and the wood supply game. The code makes use of several libraries including Python-Flask, jQuery, AlpacaJs, charts.js, and vis.js. The game analytical engine is written exclusively in Python.
 
 ## Contribute ##
 Code submissions are greatly appreciated and highly encouraged. Please send fixes, enhancements, etc. to SinanSalman at GitHub or sinan\[dot\]salman\[at\]zu\[dot\]ac\[dot\]ae.
@@ -65,7 +65,7 @@ XSG is released under the GPLv3 license, which is available at [GNU](https://www
 *   Games and/or games player data may also be lost due to upgrades or new feature introductions. You may export your game setup file and take screen shots of the game results to keep on your computer.
 
 ## Copyright ##
-2017-2018 Sinan Salman, PhD.
+2017-2019 Sinan Salman, PhD.
 
 ## Version and History ##
 *   Jun 21st, 2018    v0.14b, Major revision, includes:
