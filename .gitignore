@@ -102,7 +102,7 @@ venv.bak/
 
 # XSG #
 #######
-# xsg.git*
+xsg.git*
 *.dat
 server.log*
 
