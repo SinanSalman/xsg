@@ -16,7 +16,7 @@ Other features include:
 
 The **XSG** name comes from the game ability to be configured in various supply chain designs, allowing it to model almost any "X" supply chain.
 
-## Test drive XSG
+### Test drive XSG
 You can use XSG on the following website, which is generously hosted by Zayed University:
 [ZU's XSG](https://istm.zu.ac.ae/xsg).
 
@@ -46,10 +46,15 @@ The following figure briefly explains the player user interface:
 XSG's user interface:
 
 1) **Station/Turn area** (*top-mid*): includes information on station position, weekly progress, and turn timer (if enabled)
+
 2) **Game area** (*top-left*): includes information on server connection, team's status, and details on game setup
+
 3) **Performance area** (*top-right*): includes key supply chain performance indicators (KPIs); this is for the whole supply chain and so it reflects the team's performance as a whole
+
 4) **Ordering area** (*bottom-left*): includes current deliveries received from suppliers, entry_field(s) for the player to enter their order(s) decision (if it is enabled in game settings), and ordering limits
+
 5) **Shipping area** (*bottom-right*): includes current orders received from customers, entry_field(s) for the player to enter their shipment(s) decision (if it is enabled in game settings), and shipping limits
+
 6) **Station status area** (*bottom-mid*): includes information on the station's inventory level, backorder level (total and separated by customer), and the `Send` button for submitting the players turn decision to the server
 
 Every week players evaluate their station's standing and make their decision by considering:
@@ -104,7 +109,7 @@ Game setup is split into five sections, all are mandatory except for `Game scrip
 ![GameSetup](./UserManualImages/3.03_GameSetup1.png "GameSetup")
 
 |Attribute|Description|
-|--:|:--|
+|---|---|
 Game name|A unique name to identify your new game; must be unique across all games existing on the server at that time
 Admin password|Game-instructor/administrator password; used for managing the game
 Player password|Player/student password; used for registering players into the game
@@ -118,7 +123,7 @@ Turn time|Player decision time limit in seconds; -1 deactivates the timer, such 
 ![GameSetup](./UserManualImages/3.03_GameSetup2.png "GameSetup")
 
 |Attribute|Description|
-|--:|:--|
+|---|---|
 Demand point name|A unique name for the demand point; must be unique across all demand points and stations in the game
 Weekly demand|A list of demanded units; list size must be equal to the game's number of weeks (see #1 above). Each week's demand is entered as an integer. Weekly demand is hidden from players until the game reaches that week in the simulation
 
@@ -127,7 +132,7 @@ Weekly demand|A list of demanded units; list size must be equal to the game's nu
 ![GameSetup](./UserManualImages/3.03_GameSetup4.png "GameSetup")
 
 |Attribute|Description|
-|--:|:--|
+|---|---|
 Station name|A unique name for the station; must be unique across all demand points and stations in the game
 Player name|*Optional*, will be over-written by the player registration menu (when the player enters the game)
 Auto-decide shipments|If checked, XSG will automatically calculate shipments every week. The player will not see a box on their screen for this decision. If unchecked, the player will make this decision. For more information, please see the below section on `Station automation logic`
@@ -150,7 +155,7 @@ Weekly ship maximum|Weekly shipping limit (maximum units); A list of integers de
 ![GameSetup](./UserManualImages/3.03_GameSetup5.png "GameSetup")
 
 |Attribute|Description|
-|--:|:--|
+|---|---|
 Supplier|Node name (stations only); must be exactly as entered by the user (see `station name`)
 Customer|Node name (stations and demand points); must be exactly as entered by the user (see `Station name` or `Demand point name`)
 
@@ -159,7 +164,7 @@ Customer|Node name (stations and demand points); must be exactly as entered by t
 ![GameSetup](./UserManualImages/3.03_GameSetup6.png "GameSetup")
 
 |Attribute|Description|
-|--:|:--|
+|---|---|
 Week|the week at which a message is displayed o the players
 Message|the text displayed to players at the week defined above
 
