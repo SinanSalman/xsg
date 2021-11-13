@@ -1,4 +1,36 @@
 # XSG User Manual
+
+## Table of Contents
+1. [Introduction](#Introduction)
+   - [Test drive XSG](#Test-drive-XSG)
+2. [Student/Player interface](#2.-Student/Player-interface)
+   - [Try a demo](#Try-a-demo)
+   - [Join a game](#Join-a-game)
+   - [How to play – The interface](#How-to-play-–-The-interface)
+3. [Instructor/Game administrator interface](#3.-Instructor/Game-administrator-interface)
+   - [Quick start guide: *The HARD Game*](#Quick-start-guide:-The-HARD-Game)
+   - [Instructional material: introduction and debriefing slides](#Instructional-material:-introduction-and-debriefing-slides)
+   - [Creating a game](#Creating-a-game)
+   - [Game setup and configuration](#Game-setup-and-configuration)
+   - [Station automation logic](#Station-automation-logic)
+   - [Game management](#Game-management)
+   - [Game monitoring and exploring game results](#Game-monitoring-and-exploring-game-results)
+   - [Importing game setup](#Importing-game-setup)
+4. [Server administration](#4.-Server-administration)
+   - [Installation instructions](#Installation-instructions)
+   - [Game server configurations](#Game-server-configurations)
+   - [Server management](#Server-management)
+5. [XSG: the code](#5.-XSG:-the-code)
+   - [License](#License)
+   - [Source Code](#Source-Code)
+   - [Contribute](#Contribute)
+   - [Publications on XSG](#Publications-on-XSG)
+   - [Disclaimers](#Disclaimers)
+   - [User Manual Version History](#User-Manual-Version-History)
+   - [Copyright](#Copyright)
+
+***
+
 ## 1. Introduction
 The X-Supply Game (**XSG**) is an educational simulation game used to help participants explore the dynamics of real supply chains. The game is a team-based multi-player online simulation where each player take on the role of managing a virtual station in a simple supply chain. The game is played in turns, in which players analyze weekly standing of their stations and decide on orders to suppliers and shipment to customers. At the end of the game, individual and team performances are analyzed and discussed in groups.
 XSG is influenced by previous supply chain management games, such as the beer game and the wood supply game, but it introduces several new concepts, including:
@@ -71,6 +103,7 @@ Every week players evaluate their station's standing and make their decision by 
 The player's decision includes:
 * units shipped to each customer, without exceeding available inventory
 * units ordered from each supplier
+
 ***
 
 ## 3. Instructor/Game administrator interface
@@ -93,7 +126,7 @@ The following slides may be used by instructors to help introduce the HARD game 
 * [Introduction slides](./HARD_Intro.pptx )
 * [Debriefing slides](./HARD_Debrief.pptx)
 
-### Creating a game:
+### Creating a game
 * From the XSG's main menu, select `Create game`:
 ![MainMenu](./UserManualImages/0.01_MainMenu.png "MainMenu")
 * Select a game template to base your new game on and then click `Go`:
@@ -345,9 +378,11 @@ Code submissions are greatly appreciated and highly encouraged. Please send fixe
 
 
 ## Publications on XSG
-* Alaswad S., Salman S. Humanitarian Aid and Relief Distribution (HARD) Game. Advances in Engineering Education. Under Review
-* Salman S, Alaswad S. The X-Supply Game. Proceedings of the 2018 Industrial and Systems Engineering Conference, 2018. [Download pdf](https://sinansalman.github.io/xsg/docs/2018IISE_XSG_Paper.pdf)
-* XSG presentation at the 2018 Industrial and Systems Engineering Conference, 2018. [Download pdf](https://sinansalman.github.io/xsg/docs/2018IISE_XSG_Presentation.pdf)
+* Alaswad, S. & Salman, S. (2020) Humanitarian aid and relief distribution (HARD) game. *Advances in Engineering Education*, 8(2). [[Download pdf](https://files.eric.ed.gov/fulltext/EJ1269642.pdf)]
+* Salman, S. (2019) Upgrade Your Teaching Game: Using Simulation Games in Supply Chain Management Education, *OR/MS Today Magazine, INFORMS*, June 2019. [[link](https://doi.org/10.1287/orms.2019.03.07)]
+* Alaswad, S., Salman, S., AlHashmi, A., AlMarzooqi, H., & AlHammadi, M. (2019). The Effect of Demand Variability on Supply Chain Performance. *Proceedings of the 8th International conference on Modeling, Simulation, and Applied Optimization*, Bahrain. [[Download pdf](https://doi.org/10.1109/ICMSAO.2019.8880346)]
+* Salman S. & Alaswad S. (2018) The X-Supply Game. *Proceedings of the 2018 Industrial and Systems Engineering Conference*. [[Download pdf](https://sinansalman.github.io/xsg/docs/2018IISE_XSG_Paper.pdf)]
+* XSG presentation at the *2018 Industrial and Systems Engineering Conference*, Orlando, FL, USA, May 2018. [[Download pdf](https://sinansalman.github.io/xsg/docs/2018IISE_XSG_Presentation.pdf)]
 
 ## Disclaimers
 *   XSG uses Google analytics to measure its use.
@@ -355,7 +390,8 @@ Code submissions are greatly appreciated and highly encouraged. Please send fixe
 *   Games and/or games player data may also be lost due to upgrades or new feature introductions. You may export your game setup file and take screenshots of game results to keep on your computer.
 
 ## User Manual Version History
+*   Nov 11th, 2021    v0.16, edit UserManual; add TOC & update publications
 *   Aug 14th, 2019    v0.15, add UserManual
 
 ## Copyright
-2017-2019 Sinan Salman, PhD.
+2017-2022 Sinan Salman, PhD.

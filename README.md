@@ -39,6 +39,7 @@ XSG is released under the GPLv3 license, which is available at [GNU](https://www
 *   Games and/or games player data may also be lost due to upgrades or new feature introductions. You may export your game setup file and take screen shots of the game results to keep on your computer.
 
 ## Version History
+*   Nov 11th, 2021    v0.16, edit UserManual; add TOC & update publications
 *   Aug 14th, 2019    v0.15, add UserManual
 *   Jun 21st, 2018    v0.14b, Major revision, includes:
       * change max customer/supplier nodes per station 3 -> 4
@@ -69,4 +70,4 @@ XSG is released under the GPLv3 license, which is available at [GNU](https://www
 *   Oct 05th, 2017    v0.00,  Initial release
 
 ## Copyright
-2017-2019 Sinan Salman, PhD.
+2017-2022 Sinan Salman, PhD.

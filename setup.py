@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='xsg',
-    version="0.15",
+    version="0.16",
     license="GPLv3",
     author='Sinan Salman',
     author_email='sinan[dot]salman[at]zu[dot]ac[dot]ae',
