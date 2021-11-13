@@ -1,26 +1,26 @@
 # XSG User Manual
 
 ## Table of Contents
-1. [Introduction](#Introduction)
+1. [Introduction](#1-Introduction)
    - [Test drive XSG](#Test-drive-XSG)
-2. [Student/Player interface](#2.-Student/Player-interface)
+2. [Student/Player interface](#2-StudentPlayer-interface)
    - [Try a demo](#Try-a-demo)
    - [Join a game](#Join-a-game)
    - [How to play – The interface](#How-to-play-–-The-interface)
-3. [Instructor/Game administrator interface](#3.-Instructor/Game-administrator-interface)
-   - [Quick start guide: *The HARD Game*](#Quick-start-guide:-The-HARD-Game)
-   - [Instructional material: introduction and debriefing slides](#Instructional-material:-introduction-and-debriefing-slides)
+3. [Instructor/Game administrator interface](#3-InstructorGame-administrator-interface)
+   - [Quick start guide: *The HARD Game*](#Quick-start-guide-The-HARD-Game)
+   - [Instructional material: introduction and debriefing slides](#Instructional-material-introduction-and-debriefing-slides)
    - [Creating a game](#Creating-a-game)
    - [Game setup and configuration](#Game-setup-and-configuration)
    - [Station automation logic](#Station-automation-logic)
    - [Game management](#Game-management)
    - [Game monitoring and exploring game results](#Game-monitoring-and-exploring-game-results)
    - [Importing game setup](#Importing-game-setup)
-4. [Server administration](#4.-Server-administration)
+4. [Server administration](#4-Server-administration)
    - [Installation instructions](#Installation-instructions)
    - [Game server configurations](#Game-server-configurations)
    - [Server management](#Server-management)
-5. [XSG: the code](#5.-XSG:-the-code)
+5. [XSG: the code](#5-XSG-the-code)
    - [License](#License)
    - [Source Code](#Source-Code)
    - [Contribute](#Contribute)
@@ -356,7 +356,7 @@ SECONDS_TO_REFRESH_PLAY_SCREEN|integer; number of seconds between player screen 
 SECONDS_TO_REFRESH_GAME_MONITOR|integer; number of seconds between game monitor screen refreshes
 SECONDS_TO_REFRESH_GAME_DEBUG|integer; number of seconds between debug screen refreshes (undocumented feature for developing/debugging)
 
-### Server management:
+### Server management
 Server adminstration menu can be accessed using the `[Sever URL]/admin` address (e.g., for a server booted into debugging mode: `127.0.0.1:5000/admin`). Once logged in using the server username/password the following screen appears:
 
 ![ServerAdmin](./UserManualImages/4.01_ServerAdmin.png "ServerAdmin")
