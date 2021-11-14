@@ -48,6 +48,9 @@ Other features include:
 
 The **XSG** name comes from the game ability to be configured in various supply chain designs, allowing it to model almost any "X" supply chain.
 
+To cite XSG in your work, please reference:
+* Alaswad, S. & Salman, S. (2020) Humanitarian aid and relief distribution (HARD) game. *Advances in Engineering Education*, 8(2). [[Download pdf](https://files.eric.ed.gov/fulltext/EJ1269642.pdf)]
+
 ### Test drive XSG
 You can use XSG on the following website, which is generously hosted by Zayed University:
 [ZU's XSG](https://istm.zu.ac.ae/xsg).
