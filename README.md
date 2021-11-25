@@ -26,6 +26,7 @@ You can use XSG on the following website, which is generously hosted by Zayed Un
 
 ## Source Code ##
 The source distribution contains Python, JavaScript, CSS, HTML code, in addition to a sample of supply chain game designs, including: the root-beer game and the wood supply game. The code makes use of several libraries including Python-Flask, jQuery, AlpacaJs, charts.js, and vis.js. The game analytical engine is written exclusively in Python.
+Source code available at: [GitHub](https://github.com/SinanSalman/xsg)
 
 ## Contribute ##
 Code submissions are greatly appreciated and highly encouraged. Please send fixes, enhancements, etc. to SinanSalman at GitHub or sinan\[dot\]salman\[at\]zu\[dot\]ac\[dot\]ae.
