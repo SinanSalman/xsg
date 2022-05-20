@@ -16,8 +16,12 @@ Other features include:
 
 The **XSG** name comes from the game ability to be configured in various supply chain designs, allowing it to model almost any "X" supply chain.
 
-## User Manual
+## How to cite XSG ##
+To cite XSG in your work, please reference:
 
+* Alaswad, S. & Salman, S. (2020) Humanitarian aid and relief distribution (HARD) game. Advances in Engineering Education, 8(2).
+
+## User Manual ##
 The [User Manual](./docs/UserManual.MD) includes detailed instructions on player and instructor screens, XSG installation, and server administration. It also includes several screenshots showcasing the use of XSG.
 
 ## Test Drive XSG ##
@@ -70,5 +74,5 @@ XSG is released under the GPLv3 license, which is available at [GNU](https://www
 *   Feb 22nd, 2018    v0.10b, add: multi-game monitor, create/edit games, timer, game expiry  
 *   Oct 05th, 2017    v0.00,  Initial release
 
-## Copyright
+## Copyright ##
 2017-2022 Sinan Salman, PhD.
