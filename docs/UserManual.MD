@@ -112,7 +112,7 @@ The player's decision includes:
 ## 3. Instructor/Game administrator interface
 
 ### Quick start guide: *The HARD Game*
-This section describes briefly the process of conducting a HARD game activity in a classroom setting. A journal paper is currently under review describing this activity in detail; see Publications on XSG section toward the end of this manual. Detailed instructions on carrying out the steps highlighted here are detailed throughout this manual. In summary the instructor can follow the below steps:
+This section describes briefly the process of conducting a HARD game activity in a classroom setting. A thorough description of this activity can be found in the paper published in the journal of Advances in Engineering Education [[Download pdf](https://files.eric.ed.gov/fulltext/EJ1269642.pdf)]; see Publications section toward the end of this manual. Additional instructions on carrying out the steps highlighted here are detailed throughout this manual. In summary the instructor can follow the below steps:
 
 * Send to the students a link to the XSG server, and ask the students to try a Demo game before arriving at class
 * The instructor can create HARD game instances as needed through `Create game` option in the main menu, and then selecting `the humanitarian aid and relief distribution game` template
@@ -393,8 +393,9 @@ Code submissions are greatly appreciated and highly encouraged. Please send fixe
 *   Games and/or games player data may also be lost due to upgrades or new feature introductions. You may export your game setup file and take screenshots of game results to keep on your computer.
 
 ## User Manual Version History
+*   Apr 18th, 2024    v0.17, updated dates and the [Quick start guide](#Quick-start-guide-The-HARD-Game) section in the UserManual
 *   Nov 11th, 2021    v0.16, edit UserManual; add TOC & update publications
 *   Aug 14th, 2019    v0.15, add UserManual
 
 ## Copyright
-2017-2022 Sinan Salman, PhD.
+2017-2024 Sinan Salman, PhD.
